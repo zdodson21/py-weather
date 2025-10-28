@@ -23,3 +23,14 @@ pip install Jinja2
 # Run Jinja Python Script
 python jinja.py
 ```
+
+**Note: The following command is not required to use this project. CSS will be updated before `git push`, so you do not have to build it yourself.**
+
+```bash
+# Install Sass (Node.Js Required)
+npm install -g sass
+
+# Compile .sass to .css
+sass style.sass style.css
+
+```
