@@ -67,4 +67,10 @@ Included is a file named `.sample.env`. This file is prepopulated with all envir
 
 4. Rename `.sample.env` to `.env`
 
-You should now be able to properly populate an html file from the `template.html.j2` file by running the `python jinja.py` command.
+You should now be able to properly populate an html file from the `template.html` file by running the `python jinja.py` command.
+
+## What does all the weather lingo mean?
+
+**Note: not written by a weather expert.**
+
+

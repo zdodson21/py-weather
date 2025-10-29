@@ -1,10 +1,7 @@
-from jinja2 import Environment, FileSystemLoader
-import requests
-import os
 from dotenv import load_dotenv
-
-# ! Ensure this is set to `False` before using in production environment
-developer_mode = True
+from jinja2 import Environment, FileSystemLoader
+import os
+import requests
 
 # Env Variables
 load_dotenv()
@@ -13,15 +10,26 @@ API_KEY = os.getenv('API_KEY')
 LATITUDE = os.getenv('LATITUDE')
 LONGITUDE = os.getenv('LONGITUDE')
 
-if (developer_mode):
-  print(f'API Key: {API_KEY}')
-  print(f'Latitude Coordinate: {LATITUDE}')
-  print(f'Longitude Coordinate: {LONGITUDE}')
-
 # Open Weather API Stuff
-
 temp_units = ['standard', 'metric', 'imperial']
-units = temp_units[2] # [modifiable] Change this index value if you wish to use different temperature units (Imperial default)
+t_units = temp_units[2] # [modifiable] Change this index value if you wish to use different temperature units (Imperial default)
+disp_temp_units = None
+
+match t_units:
+  case 'standard': disp_temp_units = 'K'
+  case 'metric': disp_temp_units = 'C'
+  case 'imperial': disp_temp_units = 'F'
+  case _: disp_temp_units = 'K'
+
+speed_units = ['standard', 'imperial']
+s_units = speed_units[1]
+
+match s_units:
+  case 'standard': s_units = 'm/s'
+  case 'imperial': s_units = 'mph'
+  case _: s_units = 'm/s'
+
+twelveHourTime = True # [modifiable] Change to false to use a 24 hour clock
 
 supported_langs = [
   "sq", # 0: Albanian
@@ -76,43 +84,46 @@ supported_langs = [
 ]
 language = supported_langs[14] # [modifiable] Change the index value if you wish to use a different language (English default)
 
-one_call_api = f'https://api.openweathermap.org/data/3.0/onecall?lat={LATITUDE}&lon={LONGITUDE}&exclude=minutely&units={units}&lang={language}&appid={API_KEY}'
-air_quality_api = f'http://api.openweathermap.org/data/2.5/air_pollution?lat={LATITUDE}&lon={LONGITUDE}&appid={API_KEY}'
-geocoding_api = f'http://api.openweathermap.org/geo/1.0/reverse?lat={LATITUDE}&lon={LONGITUDE}&limit=1&appid={API_KEY}'
+one_call_api: str = f'https://api.openweathermap.org/data/3.0/onecall?lat={LATITUDE}&lon={LONGITUDE}&exclude=minutely&units={t_units}&lang={language}&appid={API_KEY}'
+air_quality_api: str = f'http://api.openweathermap.org/data/2.5/air_pollution?lat={LATITUDE}&lon={LONGITUDE}&appid={API_KEY}'
+geocoding_api: str = f'http://api.openweathermap.org/geo/1.0/reverse?lat={LATITUDE}&lon={LONGITUDE}&limit=1&appid={API_KEY}'
 
-sun = {
+sun_data = {
   'rise': None,
   'set': None,
+  'rise-half': None,
+  'set-half': None,
 }
-curr_temp = None
-pressure = None
-humidity = None
-dew_point = None
-uvi = None
-clouds = None
-visibility = None
-wind = {
+curr_temp: float = None
+pressure_data: float = None
+humidity_data: float = None
+dew_point_data: float = None
+uvi_data: float = None
+cloud_data: float = None
+visibility_data: float = None
+wind_data = {
   'speed': None,
   'deg': None,
   'gust': None,
 }
 
-curr_weather = {
+curr_weather_data = {
   'id': None,
   'forecast': None,
   'description': None,
   'icon': None,
 }
-hourly = []
-daily = []
+hourly_data = []
+daily_data = []
 
-air_quality_index = None
+aqi_data: float = None
 
-location = {
+location_data = {
   'name': None,
   'country': None,
   'state': None,
 }
+
 
 r_one_call_data = requests.get(one_call_api)
 if (r_one_call_data.status_code == 200):
@@ -120,25 +131,85 @@ if (r_one_call_data.status_code == 200):
 else:
   print(f'Could not get One Call API data: {r_one_call_data.status_code}')
 
+
 r_air_quality_data = requests.get(air_quality_api)
-if (r_air_quality_data == 200):
+if (r_air_quality_data.status_code == 200):
   air_quality_json = r_air_quality_data.json()
+
+  aqi_data = air_quality_json['list'][0]['main']['aqi']
+  
+  match aqi_data:
+    case 1: aqi_data = 'Good'
+    case 2: aqi_data = 'Fair'
+    case 3: aqi_data = 'Moderate'
+    case 4: aqi_data = 'Poor'
+    case 5: aqi_data = 'Very Poor'
+    case _: aqi_data = 'ERROR'
 else:
   print(f'Could not get Air Quality API data: {r_air_quality_data.status_code}')
 
+
 r_geocoding_data = requests.get(geocoding_api)
-if (r_geocoding_data == 200):
+if (r_geocoding_data.status_code == 200):
   geocoding_json = r_geocoding_data.json()
+
+  location_data["name"] = geocoding_json[0]['name']
+  location_data["country"] = geocoding_json[0]['country']
+  location_data["state"] = geocoding_json[0]['state']
 else:
   print(f'Could not get Geocoding API data: {r_geocoding_data.status_code}')
 
+
 # Jinja Environment
 env = Environment(loader = FileSystemLoader('./'))
-template = env.get_template('template.html') # Change to template.html.j2 when done
+template = env.get_template('template.html')
 
 output = template.render(
-  name = 'Test',
-  test2 = 'Test2',
+  # Selected Units
+  temp_unit = disp_temp_units,
+  speed_unit = s_units,
+
+  # Location Data
+  location_name = location_data["name"],
+  location_state = location_data["state"],
+  
+  # Current Weather Data
+  cw_icon = '',
+  cw_icon_alt = '',
+  curr_temp = '',
+  curr_description = '',
+
+  # Sun Data
+  use_half_of_day = twelveHourTime,
+  sun_rise_time = sun_data["rise"],
+  sun_rise_half_of_day = sun_data["rise-half"],
+
+  sun_set_time = sun_data["set"],
+  sun_set_half_of_day = sun_data["set-half"],
+  
+  # Wind Speed Data
+  wind_speed = wind_data["speed"],
+  wind_deg = wind_data["deg"],
+  wind_gust = wind_data["gust"],
+
+  # Humidity Data
+  humidity = humidity_data,
+
+  # Visibility Data
+  visibiliy = visibility_data,
+
+  # Pressure Data
+  pressure = pressure_data,
+
+  # Ultra-Violet Index Data
+  uvi = uvi_data,
+
+  # Air Quality Index Data
+  aqi = aqi_data
+
+  # Hourly Data
+
+  # Daily Data
 )
 
 # Output populated template

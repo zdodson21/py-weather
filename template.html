@@ -1,15 +1,94 @@
-<!-- TODO change filetype to .html.j2 when done making template-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
-  <title>Document</title>
+  <title>Py-Weather</title>
 </head>
 
 <body>
-  <p>{{name}}</p>
-  <p>{{test2}}</p>
+  <div class="contents">
+    <div class="top">
+      <p>{{ location_name }}, {{ location_state }}</p>
+    </div>
+
+    <div class="middle">
+      <div class="current-weather">
+        <div class="cw-top">
+          <div class="cw-left">
+            <img src="./icons/{{ cw_icon }}" alt="{{ cw_icon_alt }}">
+          </div>
+
+          <div class="cw-right">
+            <p>{{ curr_temp }}&#176; {{ temp_unit }}</p>
+          </div>
+        </div>
+
+        <div class="cw-bottom">
+          <p>{{ curr_description }}</p>
+        </div>
+      </div>
+
+      <div class="right-side">
+        <!-- TODO use CSS grid here -->
+        <div class="sun-data sun-rise col-item">
+          <img src="./icons/01d.png" alt="sun rise icon">
+          <p>Sunrise</p>
+          <p>{{ sun_rise_time }} 
+            {% if use_half_of_day %}
+              {{ sun_rise_half_of_day }}
+            {% endif %}
+          </p>
+        </div>
+
+        <div class="wind-speed col-item">
+          <img src="./icons/50d.png" alt="wind icon">
+          <p>Wind Speed</p>
+          <p>{{ wind_speed }} {{ speed_unit }}</p>
+        </div>
+
+        <div class="humidity col-item"></div>
+
+        <div class="visibility col-item"></div>
+
+        <div class="sun-data sun-rise col-item">
+          <img src="./icons/01d.png" alt="sun set icon">
+          <p>Sunset</p>
+          <p>{{ sun_set_time }}
+            {% if use_half_of_day %}  
+              {{ sun_set_half_of_day }}
+            {% endif %}
+          </p>
+        </div>
+
+        <div class="pressure col-item"></div>
+
+        <div class="uvindex col-item"></div>
+
+        <div class="air-quality col-item">
+          <img src="./icons/50n.png" alt="air icon" />
+          <div class="col-item-right">
+            <p>Air Quality</p>
+            <p>{{ aqi }}</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="hourly-data">
+        <!-- One of these should be display none. Depends on screen orientation (CSS) -->
+        <div class="chart-horizontal">
+
+        </div>
+        <div class="chart-vertical">
+
+        </div>
+      </div>
+      <div class="daily-data"></div>
+    </div>
+  </div>
 </body>
 </html>
