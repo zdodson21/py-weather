@@ -16,7 +16,7 @@ source venv/bin/activate
 
 ```bash
 # Install Jinja2
-pip install Jinja2
+pip install Jinja2 requests
 ```
 
 ```bash
