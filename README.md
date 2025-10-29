@@ -1,6 +1,10 @@
 # Py-Weather
 
+Weather dashboard designed for Raspberry Pi computers paired with an external display.
+
 **Note: While this code is documented to make changing it as simple as possible, it is still assumed that you have at least a basic understanding of Python to be able to read and understand the code written here in order to configure this program for your personal use.**
+
+**For modifiable values, search for the string `[modifiable]` in the `jinja.py` file.**
 
 ## Setup / Commands
 
@@ -12,21 +16,27 @@ Run the following commands from root project directory to setup project:
 
 ```bash
 # Ensure virutal environment is created within project root directory
+
+# You can either run this command every time you use this project or place it in your `.bashrc` / `.zshenv`
+
 export PIPENV_VENV_IN_PROJECT=1
 ```
 
 ```bash
 # Install dependencies
+
 pipenv install
 ```
 
 ```bash
 # Enter virtual environment
+
 pipenv shell
 ```
 
 ```bash
 # Run Jinja Python Script (must be in virtual environment)
+
 python jinja.py
 ```
 
