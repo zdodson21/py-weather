@@ -1,30 +1,36 @@
 # Py-Weather
 
+**Note: While this code is documented to make changing it as simple as possible, it is still assumed that you have at least a basic understanding of Python to be able to read and understand the code written here in order to configure this program for your personal use.**
+
 ## Setup / Commands
+
+### Install Dependencies
+
+[Pipenv is used to install dependencies](https://packaging.python.org/en/latest/tutorials/managing-dependencies/)
 
 Run the following commands from root project directory to setup project:
 
 ```bash
-# Setup Python virtual environment
-python -m venv venv
+# Ensure virutal environment is created within project root directory
+export PIPENV_VENV_IN_PROJECT=1
 ```
 
 ```bash
-# Activate Python virtual environment
-source venv/bin/activate
+# Install dependencies
+pipenv install
 ```
 
 ```bash
-# Install Jinja2
-pip install Jinja2 requests
+# Enter virtual environment
+pipenv shell
 ```
 
 ```bash
-# Run Jinja Python Script
+# Run Jinja Python Script (must be in virtual environment)
 python jinja.py
 ```
 
-**Note: The following command is not required to use this project. CSS will be updated before `git push`, so you do not have to build it yourself.**
+**Optional: The following command is not required to use this project. CSS will be updated before `git push`, so you do not have to build it yourself. The following is provided in case I forgot to provide updated CSS or you wish to compile the CSS file yourself.**
 
 ```bash
 # Install Sass (Node.Js Required)
@@ -32,5 +38,23 @@ npm install -g sass
 
 # Compile .sass to .css
 sass style.sass style.css
-
 ```
+
+### Environment Variables
+
+Included is a file named `.sample.env`. This file is prepopulated with all environment variables set to blank values. For this project to run you must complete the following:
+
+1. Obtain an API key from [OpenWeather](https://openweathermap.org/api)
+   - Note: The code for this program is written to stay well below the "1,000 API calls per day for free", however I am not responsible for any charges that may occur for use of this API in conjunction with this code. You should audit / test this code yourself to ensure you will not exceed the API call limit, especially if you modify it for your needs.
+   - This project uses the following APIs:
+     - [One Call](https://openweathermap.org/api/one-call-3)
+     - [Geocoding](https://openweathermap.org/api/geocoding-api)
+     - [Air Pollution](https://openweathermap.org/api/air-pollution)
+
+2. Populate the environment variables with your API key & coordinates. You are responsible for finding the coordinates you wish to use.
+
+3. Remove the comments from the top of `.sample.env`
+
+4. Rename `.sample.env` to `.env`
+
+You should now be able to properly populate an html file from the `template.html.j2` file by running the `python jinja.py` command.
