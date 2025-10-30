@@ -1,6 +1,9 @@
 body {
   font-family: sans-serif;
 }
+body .contents .top p {
+  text-align: center;
+}
 body .contents .bottom .hourly-data .chart-horizontal {
   display: block;
 }

@@ -35,7 +35,7 @@
         <div class="sun-data sun-rise col-item">
           <img src="./icons/01d.png" alt="sun rise icon">
           <p>Sunrise</p>
-          <p>{{ sun_rise_time }} 
+          <p><time datetime="{{ sun_rise_time }}">{{ sun_rise_time }}</time> 
             {% if use_half_of_day %}
               {{ sun_rise_half_of_day }}
             {% endif %}
@@ -64,7 +64,7 @@
         <div class="sun-data sun-rise col-item">
           <img src="./icons/01d.png" alt="sun set icon">
           <p>Sunset</p>
-          <p>{{ sun_set_time }}
+          <p><time datetime="{{ sun_set_time }}">{{ sun_set_time }}</time>
             {% if use_half_of_day %}  
               {{ sun_set_half_of_day }}
             {% endif %}
@@ -90,6 +90,8 @@
             <p>{{ aqi }}</p>
           </div>
         </div>
+
+        <!-- TODO add sections for clouds and dew point -->
 
       </div>
     </div>

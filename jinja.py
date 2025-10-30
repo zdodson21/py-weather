@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from datetime import datetime
 from jinja2 import Environment, FileSystemLoader
 import os
 import requests
@@ -97,9 +98,9 @@ one_call_api: str = f'https://api.openweathermap.org/data/3.0/onecall?lat={LATIT
 
 sun_data = {
   'rise': None,
-  'rise-half': 'AM',
+  'rise-half': None,
   'set': None,
-  'set-half': 'PM',
+  'set-half': None,
 }
 pressure_data = None
 humidity_data = None
@@ -181,10 +182,40 @@ if (r_one_call_data.status_code == 200):
       curr_weather_data['alt-text'] = 'no icon'
 
   # Sun Data
-  sun_data['rise'] = one_call_json['current']['sunrise']
-  sun_data["rise-half"]
+  sun_data['rise'] = one_call_json['current']['sunrise'] # Unix time stamp (Epoch time / Posix time)
+  rise_dt = datetime.fromtimestamp(sun_data['rise'])
+  rise_hour = rise_dt.hour
+  rise_min = rise_dt.minute
+
+  if (twelveHourTime):
+    if (rise_hour < 12):
+      sun_data["rise-half"] = 'AM'
+      if (rise_hour == 0): rise_hour = 12
+    elif (rise_hour == 12):
+      sun_data['rise-half'] = 'PM'
+    else:
+      rise_hour -= 12
+      sun_data['rise-half'] = 'PM'
+
+  sun_data['rise'] = f'{rise_hour:02d}:{rise_min:02d}'
+
+
   sun_data["set"] = one_call_json['current']['sunset']
-  sun_data["set-half"]
+  set_dt = datetime.fromtimestamp(sun_data['set'])
+  set_hour = set_dt.hour
+  set_minute = set_dt.minute
+
+  if (twelveHourTime):
+    if (set_hour < 12):
+      sun_data["set-half"] = 'AM'
+      if (set_hour == 0): set_hour = 12
+    elif (set_hour == 12):
+        sun_data['set-half'] = 'PM'
+    else:
+        set_hour -= 12
+        sun_data['set-half'] = 'PM'
+
+  sun_data['set'] = f'{set_hour:02d}:{set_minute:02d}'
 
   # Wind Speed
   wind_data['speed'] = round(one_call_json['current']['wind_speed'])
@@ -320,3 +351,5 @@ output = template.render(
 
 with open("weather.html", "w") as html:
   html.write(output)
+
+print('Process completed successfully')
