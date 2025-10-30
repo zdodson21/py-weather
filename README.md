@@ -8,9 +8,15 @@ Beginner friendly weather dashboard designed for Raspberry Pi computers paired w
 
 ## Setup / Commands
 
+```bash
+# Ensure you have the latest updates
+
+git pull
+```
+
 ### Install Dependencies
 
-#### Pip
+#### Using Pip
 
 ```bash
 # Set up .venv
@@ -30,7 +36,7 @@ source .venv/bin/activate
 pip install requests jinja2 python-dotenv
 ```
 
-#### Pipenv
+#### Using Pipenv
 
 [Pipenv Install](https://packaging.python.org/en/latest/tutorials/managing-dependencies/)
 
