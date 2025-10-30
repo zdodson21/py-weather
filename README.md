@@ -1,6 +1,6 @@
 # Py-Weather
 
-Weather dashboard designed for Raspberry Pi computers paired with an external display.
+Beginner friendly weather dashboard designed for Raspberry Pi computers paired with an external display.
 
 **Note: While this code is documented to make changing it as simple as possible, it is still assumed that you have at least a basic understanding of Python to be able to read and understand the code written here in order to configure this program for your personal use.**
 
@@ -10,7 +10,29 @@ Weather dashboard designed for Raspberry Pi computers paired with an external di
 
 ### Install Dependencies
 
-[Pipenv is used to install dependencies](https://packaging.python.org/en/latest/tutorials/managing-dependencies/)
+#### Pip
+
+```bash
+# Set up .venv
+
+python -m venv .venv
+```
+
+```bash
+# Enter virtual environment 
+
+source .venv/bin/activate
+```
+
+```bash
+# Install packages
+
+pip install requests jinja2 python-dotenv
+```
+
+#### Pipenv
+
+[Pipenv Install](https://packaging.python.org/en/latest/tutorials/managing-dependencies/)
 
 Run the following commands from root project directory to setup project:
 
@@ -34,25 +56,7 @@ pipenv install
 pipenv shell
 ```
 
-#### If You Can't Use `pipenv`
-
-```bash
-# Set up .venv
-
-python -m venv .venv
-```
-
-```bash
-# Enter virtual environment 
-
-source .venv/bin/activate
-```
-
-```bash
-# Install packages
-
-pip install requests jinja2 python-dotenv
-```
+#### Running the Project
 
 ```bash
 # Run Jinja Python Script (must be in virtual environment)
@@ -89,8 +93,21 @@ Included is a file named `.sample.env`. This file is prepopulated with all envir
 
 You should now be able to properly populate an html file from the `template.html` file by running the `python jinja.py` command.
 
-## What does all the weather lingo mean?
+## Some Weather Terms Explained
 
-**Note: not written by a weather expert.**
+### Temperature
 
+### Wind
 
+### Pressure
+
+### Ultra Violet Index (UVI)
+
+### Air Quality
+
+## Other Information
+
+- [Project Repository](https://github.com/zdodson21/py-weather)
+- [License](https://github.com/zdodson21/py-weather/blob/main/LICENSE)
+- [OpenWeather](https://openweathermap.org/)
+- [Project Inspiration](https://youtu.be/65sda565l9Y?si=k6-RwbBIYO7BNilD)
