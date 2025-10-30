@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./styles/style.css">
   <title>Py-Weather</title>
 </head>
 
@@ -17,7 +17,7 @@
       <div class="current-weather">
         <div class="cw-top">
           <div class="cw-left">
-            <img src="./icons/{{ cw_icon }}" alt="{{ cw_icon_alt }}">
+            <img src="./icons/{{ cw_icon }}.png" alt="{{ cw_icon_alt }}">
           </div>
 
           <div class="cw-right">
@@ -48,10 +48,19 @@
           <p>{{ wind_speed }} {{ speed_unit }}</p>
         </div>
 
-        <div class="humidity col-item"></div>
+        <div class="humidity col-item">
+          <img src="./icons/50d.png" alt="humidity icon">
+          <p>Humidity</p>
+          <p>{{ humidity }}%</p>
+        </div>
 
-        <div class="visibility col-item"></div>
+        <div class="visibility col-item">
+          <img src="./icons/50n.png" alt="visibility icon">
+          <p>Visibility</p>
+          <p>{{ vis_symbol }} {{ visibility }} km</p>
+        </div>
 
+        
         <div class="sun-data sun-rise col-item">
           <img src="./icons/01d.png" alt="sun set icon">
           <p>Sunset</p>
@@ -62,9 +71,17 @@
           </p>
         </div>
 
-        <div class="pressure col-item"></div>
+        <div class="pressure col-item">
+          <img src="./icons/03d.png" alt="pressure icon">
+          <p>Pressure</p>
+          <p>{{ pressure }} hPa</p>
+        </div>
 
-        <div class="uvindex col-item"></div>
+        <div class="uvindex col-item">
+          <img src="./icons/01d.png" alt="ultra violet index icon">
+          <p>UV Index</p>
+          <p>{{ uvi }}</p>
+        </div>
 
         <div class="air-quality col-item">
           <img src="./icons/50n.png" alt="air icon" />
@@ -76,9 +93,10 @@
 
       </div>
     </div>
-
     <div class="bottom">
       <div class="hourly-data">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
         <!-- One of these should be display none. Depends on screen orientation (CSS) -->
         <div class="chart-horizontal">
 
@@ -87,7 +105,9 @@
 
         </div>
       </div>
-      <div class="daily-data"></div>
+      <div class="daily-data">
+
+      </div>
     </div>
   </div>
 </body>

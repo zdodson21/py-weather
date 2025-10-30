@@ -1,0 +1,30 @@
+body
+  font-family: sans-serif
+
+  .contents
+    .top
+      
+    .middle
+      .current-weather
+        .cw-top
+          .cw-left
+          .cw-right
+
+        .cw-bottom
+      
+      .right-side
+        .col-item
+
+    .bottom
+      .hourly-data
+        .chart-horizontal
+          display: block
+          @media (max-aspect-ratio: 1/1)
+            display: none
+        
+        .chart-vertical
+          display: none
+          @media (max-aspect-ratio: 1/1)
+            display: block
+
+      .daily-data

@@ -3,14 +3,19 @@ from jinja2 import Environment, FileSystemLoader
 import os
 import requests
 
-# Env Variables
+#################
+# Env Variables #
+#################
 load_dotenv()
 
 API_KEY = os.getenv('API_KEY')
 LATITUDE = os.getenv('LATITUDE')
 LONGITUDE = os.getenv('LONGITUDE')
 
-# Open Weather API Stuff
+##########################
+# Open Weather API Stuff #
+##########################
+
 temp_units = ['standard', 'metric', 'imperial']
 t_units = temp_units[2] # [modifiable] Change this index value if you wish to use different temperature units (Imperial default)
 disp_temp_units = None
@@ -84,23 +89,27 @@ supported_langs = [
 ]
 language = supported_langs[14] # [modifiable] Change the index value if you wish to use a different language (English default)
 
+#####################
+# One Call API Data #
+#####################
+
 one_call_api: str = f'https://api.openweathermap.org/data/3.0/onecall?lat={LATITUDE}&lon={LONGITUDE}&exclude=minutely&units={t_units}&lang={language}&appid={API_KEY}'
-air_quality_api: str = f'http://api.openweathermap.org/data/2.5/air_pollution?lat={LATITUDE}&lon={LONGITUDE}&appid={API_KEY}'
-geocoding_api: str = f'http://api.openweathermap.org/geo/1.0/reverse?lat={LATITUDE}&lon={LONGITUDE}&limit=1&appid={API_KEY}'
 
 sun_data = {
   'rise': None,
+  'rise-half': 'AM',
   'set': None,
-  'rise-half': None,
-  'set-half': None,
+  'set-half': 'PM',
 }
-curr_temp: float = None
-pressure_data: float = None
-humidity_data: float = None
-dew_point_data: float = None
-uvi_data: float = None
-cloud_data: float = None
-visibility_data: float = None
+pressure_data = None
+humidity_data = None
+dew_point_data = None
+uvi_data = None
+cloud_data = None
+visibility_data = {
+  'distance': None,
+  'symbol': '~',
+}
 wind_data = {
   'speed': None,
   'deg': None,
@@ -111,28 +120,110 @@ curr_weather_data = {
   'id': None,
   'forecast': None,
   'description': None,
+  'temp': None,
   'icon': None,
+  'alt-text': None
 }
+
 hourly_data = []
 daily_data = []
 
-aqi_data: float = None
-
-location_data = {
-  'name': None,
-  'country': None,
-  'state': None,
-}
-
-
 r_one_call_data = requests.get(one_call_api)
+
 if (r_one_call_data.status_code == 200):
   one_call_json = r_one_call_data.json()
+
+  # Current Weather
+  curr_weather_data['id'] = one_call_json['current']['weather'][0]['id']
+  curr_weather_data['forecast'] = one_call_json['current']['weather'][0]['main']
+  curr_weather_data['description'] = (one_call_json['current']['weather'][0]['description']).capitalize()
+  curr_weather_data['temp'] = round(one_call_json['current']['temp']) # [modifiable] Rounds value to no decimals by default, remove `round()` function to prevent rounding
+  curr_weather_data['icon'] = one_call_json['current']['weather'][0]['icon']
+
+  match curr_weather_data['icon']:
+    case '01d': 
+      curr_weather_data['alt-text'] = 'day time clear sky icon'
+    case '02d':
+      curr_weather_data['alt-text'] = 'day time few clouds icon'
+    case '03d':
+      curr_weather_data['alt-text'] = 'day time scattered clouds icons'
+    case '04d':
+      curr_weather_data['alt-text'] = 'day time break clouds icon'
+    case '09d':
+      curr_weather_data['alt-text'] = 'day time shower rain icon'
+    case '10d':
+      curr_weather_data['alt-text'] = 'day time rain icon'
+    case '11d':
+      curr_weather_data['alt-text'] = 'day time thunderstorm icon'
+    case '13d':
+      curr_weather_data['alt-text'] = 'day time snow icon'
+    case '50d':
+      curr_weather_data['alt-text'] = 'day time mist icon'
+    case '01n':
+      curr_weather_data['alt-text'] = 'night time clear sky icon'
+    case '02n':
+      curr_weather_data['alt-text'] = 'night time few clouds icon'
+    case '03n':
+      curr_weather_data['alt-text'] = 'night time scattered clouds icon'
+    case '04n':
+      curr_weather_data['alt-text'] = 'night time break clouds icon'
+    case '09n':
+      curr_weather_data['alt-text'] = 'night time shower rain icon'
+    case '10n':
+      curr_weather_data['alt-text'] = 'night time rain icon'
+    case '11n':
+      curr_weather_data['alt-text'] = 'night time thunderstorm icon'
+    case '13n':
+      curr_weather_data['alt-text'] = 'night time snow icon'
+    case '50n':
+      curr_weather_data['alt-text'] = 'night time mist icon'
+    case _: 
+      curr_weather_data['alt-text'] = 'no icon'
+
+  # Sun Data
+  sun_data['rise'] = one_call_json['current']['sunrise']
+  sun_data["rise-half"]
+  sun_data["set"] = one_call_json['current']['sunset']
+  sun_data["set-half"]
+
+  # Wind Speed
+  wind_data['speed'] = round(one_call_json['current']['wind_speed'])
+  wind_data['deg'] = one_call_json['current']['wind_deg']
+  wind_data['gust'] = one_call_json['current']['wind_gust']
+
+  # Humidity
+  humidity_data = one_call_json['current']['humidity']
+
+  # Visibility
+  visibility_data['distance'] = round(one_call_json['current']['visibility'] * 0.001, 2)
+
+  if (visibility_data['distance'] == 10.00):
+    visibility_data['symbol'] = '>'
+
+  # Pressure
+  pressure_data = one_call_json['current']['pressure']
+
+  # Ultra-Violet Index
+  uvi_data = one_call_json['current']['uvi']
+
+  # Dew Point Data
+  dew_point_data = one_call_json['current']['dew_point']
+
+  # Cloud Data
+  cloud_data = one_call_json['current']['clouds']
+
 else:
   print(f'Could not get One Call API data: {r_one_call_data.status_code}')
 
+########################
+# Air Quality Index Data
+########################
+
+air_quality_api: str = f'http://api.openweathermap.org/data/2.5/air_pollution?lat={LATITUDE}&lon={LONGITUDE}&appid={API_KEY}'
+aqi_data = None
 
 r_air_quality_data = requests.get(air_quality_api)
+
 if (r_air_quality_data.status_code == 200):
   air_quality_json = r_air_quality_data.json()
 
@@ -148,8 +239,20 @@ if (r_air_quality_data.status_code == 200):
 else:
   print(f'Could not get Air Quality API data: {r_air_quality_data.status_code}')
 
+####################
+# Geocoding API Data
+####################
+
+geocoding_api: str = f'http://api.openweathermap.org/geo/1.0/reverse?lat={LATITUDE}&lon={LONGITUDE}&limit=1&appid={API_KEY}'
+
+location_data = {
+  'name': None,
+  'country': None,
+  'state': None,
+}
 
 r_geocoding_data = requests.get(geocoding_api)
+
 if (r_geocoding_data.status_code == 200):
   geocoding_json = r_geocoding_data.json()
 
@@ -159,8 +262,10 @@ if (r_geocoding_data.status_code == 200):
 else:
   print(f'Could not get Geocoding API data: {r_geocoding_data.status_code}')
 
+#####################
+# Jinja Environment #
+#####################
 
-# Jinja Environment
 env = Environment(loader = FileSystemLoader('./'))
 template = env.get_template('template.html')
 
@@ -174,10 +279,10 @@ output = template.render(
   location_state = location_data["state"],
   
   # Current Weather Data
-  cw_icon = '',
-  cw_icon_alt = '',
-  curr_temp = '',
-  curr_description = '',
+  cw_icon = curr_weather_data['icon'],
+  cw_icon_alt = curr_weather_data["alt-text"],
+  curr_temp = curr_weather_data["temp"],
+  curr_description = curr_weather_data['description'],
 
   # Sun Data
   use_half_of_day = twelveHourTime,
@@ -196,7 +301,8 @@ output = template.render(
   humidity = humidity_data,
 
   # Visibility Data
-  visibiliy = visibility_data,
+  visibility = visibility_data["distance"],
+  vis_symbol = visibility_data["symbol"],
 
   # Pressure Data
   pressure = pressure_data,
@@ -212,6 +318,5 @@ output = template.render(
   # Daily Data
 )
 
-# Output populated template
 with open("weather.html", "w") as html:
   html.write(output)

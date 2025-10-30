@@ -1,0 +1,21 @@
+body {
+  font-family: sans-serif;
+}
+body .contents .bottom .hourly-data .chart-horizontal {
+  display: block;
+}
+@media (max-aspect-ratio: 1/1) {
+  body .contents .bottom .hourly-data .chart-horizontal {
+    display: none;
+  }
+}
+body .contents .bottom .hourly-data .chart-vertical {
+  display: none;
+}
+@media (max-aspect-ratio: 1/1) {
+  body .contents .bottom .hourly-data .chart-vertical {
+    display: block;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */

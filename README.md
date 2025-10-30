@@ -34,6 +34,26 @@ pipenv install
 pipenv shell
 ```
 
+#### If You Can't Use `pipenv`
+
+```bash
+# Set up .venv
+
+python -m venv .venv
+```
+
+```bash
+# Enter virtual environment 
+
+source .venv/bin/activate
+```
+
+```bash
+# Install packages
+
+pip install requests jinja2 python-dotenv
+```
+
 ```bash
 # Run Jinja Python Script (must be in virtual environment)
 
@@ -47,7 +67,7 @@ python jinja.py
 npm install -g sass
 
 # Compile .sass to .css
-sass style.sass style.css
+sass styles/style.sass styles/style.css
 ```
 
 ### Environment Variables
