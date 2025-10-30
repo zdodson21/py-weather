@@ -4,6 +4,28 @@ from jinja2 import Environment, FileSystemLoader
 import os
 import requests
 
+#############
+# Functions #
+#############
+
+def find_half_of_day(hour):
+  """
+  Description: Finds half of day (AM or PM) and adjusts @param `half` if needed (subtract 12 from 24 hour clock) \n
+  Returns: hour (modified if needed)
+  """
+  half_of_day = None
+  
+  if (hour < 12):
+    half_of_day = 'AM'
+    if (hour == 0): hour = 12
+  elif (hour == 12):
+    half_of_day = 'PM'
+  else:
+    hour -= 12
+    half_of_day = 'PM'
+
+  return hour, half_of_day
+
 #################
 # Env Variables #
 #################
@@ -94,7 +116,8 @@ language = supported_langs[14] # [modifiable] Change the index value if you wish
 # One Call API Data #
 #####################
 
-one_call_api: str = f'https://api.openweathermap.org/data/3.0/onecall?lat={LATITUDE}&lon={LONGITUDE}&exclude=minutely&units={t_units}&lang={language}&appid={API_KEY}'
+one_call_api: str = f'https://api.openweathermap.org/data/3.0/onecall?lat={LATITUDE}&lon={LONGITUDE}&exclude=minutely,alerts&units={t_units}&lang={language}&appid={API_KEY}'
+# https://openweathermap.org/api/one-call-3#parameter
 
 sun_data = {
   'rise': None,
@@ -188,16 +211,10 @@ if (r_one_call_data.status_code == 200):
   rise_min = rise_dt.minute
 
   if (twelveHourTime):
-    if (rise_hour < 12):
-      sun_data["rise-half"] = 'AM'
-      if (rise_hour == 0): rise_hour = 12
-    elif (rise_hour == 12):
-      sun_data['rise-half'] = 'PM'
-    else:
-      rise_hour -= 12
-      sun_data['rise-half'] = 'PM'
-
-  sun_data['rise'] = f'{rise_hour:02d}:{rise_min:02d}'
+    rise_hour, sun_data['rise-half'] = find_half_of_day(rise_hour)
+    sun_data['rise'] = f'{rise_hour}:{rise_min:02d}'
+  else:
+    sun_data['rise'] = f'{rise_hour:02d}:{rise_min:02d}'
 
 
   sun_data["set"] = one_call_json['current']['sunset']
@@ -206,16 +223,10 @@ if (r_one_call_data.status_code == 200):
   set_minute = set_dt.minute
 
   if (twelveHourTime):
-    if (set_hour < 12):
-      sun_data["set-half"] = 'AM'
-      if (set_hour == 0): set_hour = 12
-    elif (set_hour == 12):
-        sun_data['set-half'] = 'PM'
-    else:
-        set_hour -= 12
-        sun_data['set-half'] = 'PM'
-
-  sun_data['set'] = f'{set_hour:02d}:{set_minute:02d}'
+    set_hour, sun_data['set-half'] = find_half_of_day(set_hour)
+    sun_data['set'] = f'{set_hour}:{set_minute:02d}'
+  else:
+    sun_data['set'] = f'{set_hour:02d}:{set_minute:02d}'
 
   # Wind Speed
   wind_data['speed'] = round(one_call_json['current']['wind_speed'])
@@ -242,6 +253,51 @@ if (r_one_call_data.status_code == 200):
 
   # Cloud Data
   cloud_data = one_call_json['current']['clouds']
+
+  # Hourly Data (might need to add for rain and snow)
+  # time, half of day, precipitation (0 - 1; will need to multiply by 100 for %, temp, rain || snow (both rain and snow in mm/h, convert to in/h for imperial), icon & alt)
+  # rain and snow will need conditions to check if they exist (try catch or if else?)
+  for i in range(12):
+    hourly_data.append(
+      {
+        'time': None,
+        'half_of_day': None,
+        'precipitation': None,
+        'temp': None,
+        'rain-exists': False,
+        'rain-vol': None,
+        'snow-exists': False,
+        'snow-vol': None,
+        'icon': None,
+        'alt-text': None,
+      }
+    )
+
+  # Daily Data (might need to add for rain and snow)
+  # rain and snow will need conditions to check if they exist
+  for i in range(5):
+    daily_data.append(
+      {
+        'date': None,
+        'low-temp': None,
+        'high-temp': None,
+        'sun-rise': None,
+        'sun-rise-half-of-day': None,
+        'sun-set': None,
+        'sun-set-half-of-day': None,
+        'moon-rise': None,
+        'moon-rise-half-of-day': None,
+        'moon-set': None,
+        'moon-set-half-of-day': None,
+        'precipitation': None,
+        'rain-exists': False,
+        'rain-vol': None,
+        'snow-exists': False,
+        'snow-vol': None,
+        'icon': None,
+        'alt-text': None,
+      }
+    )
 
 else:
   print(f'Could not get One Call API data: {r_one_call_data.status_code}')
@@ -337,6 +393,12 @@ output = template.render(
 
   # Pressure Data
   pressure = pressure_data,
+
+  # Cloud Data
+  cloud_coverage = cloud_data,
+
+  # Dew Point Data
+  dew_point = dew_point_data,
 
   # Ultra-Violet Index Data
   uvi = uvi_data,
