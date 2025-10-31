@@ -1,0 +1,13 @@
+{
+    "recommendations": [
+        "ms-python.python",
+        "ms-python.debugpy",
+        "ms-python.vscode-python-envs",
+        "ms-python.vscode-pylance",
+        "ms-python.autopep8",
+        "editorconfig.editorconfig",
+        "ritwickdey.liveserver",
+        "wholroyd.jinja",
+        "syler.sass-indented"
+    ]
+}
