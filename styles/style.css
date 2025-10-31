@@ -20,5 +20,13 @@ body .contents .bottom .hourly-data .chart-vertical {
     display: block;
   }
 }
+body .contents .bottom .daily-data {
+  display: block;
+}
+@media (max-aspect-ratio: 1/1) {
+  body .contents .bottom .daily-data {
+    display: none;
+  }
+}
 
 /*# sourceMappingURL=style.css.map */
