@@ -364,12 +364,10 @@ if (r_one_call_data.status_code == 200):
                 'sun-set': None,
                 'sun-set-half-of-day': None,
 
-                'moon-rise-hour': None,
-                'moon-rise-minute': None,
+                'moon-rise': None,
                 'moon-rise-half-of-day': None,
 
-                'moon-set-hour': None,
-                'moon-set-minute': None,
+                'moon-set': None,
                 'moon-set-half-of-day': None,
 
                 'prob-of-precip': None,
@@ -401,11 +399,10 @@ if (r_one_call_data.status_code == 200):
             daily_data[i]['sun-rise'] = one_call_json['daily'][x]['sunrise']
             daily_dt_s_rise = datetime.fromtimestamp(daily_data[i]['sun-rise'])
             daily_srh = daily_dt_s_rise.hour
-            daily_srm = daily_dt_s_rise.min
+            daily_srm = daily_dt_s_rise.minute
 
             if (twelveHourTime):
-                daily_srh, daily_data[i]['sun-rise-half-of-day'] = find_half_of_day(
-                    daily_srh)
+                daily_srh, daily_data[i]['sun-rise-half-of-day'] = find_half_of_day(daily_srh)
                 daily_data[i]['sun-rise'] = f'{daily_srh}:{daily_srm:02d}'
             else:
                 daily_data[i]['sun-rise'] = f'{daily_srh:02d}:{daily_srm:02d}'
@@ -418,11 +415,10 @@ if (r_one_call_data.status_code == 200):
             daily_data[i]['sun-set'] = one_call_json['daily'][i]['sunset']
             daily_dt_s_set = datetime.fromtimestamp(daily_data[i]['sun-set'])
             daily_ssh = daily_dt_s_set.hour
-            daily_ssm = daily_dt_s_set.min
+            daily_ssm = daily_dt_s_set.minute
 
             if (twelveHourTime):
-                daily_ssh, daily_data[i]['sun-set-half-of-day'] = find_half_of_day(
-                    daily_ssh)
+                daily_ssh, daily_data[i]['sun-set-half-of-day'] = find_half_of_day(daily_ssh)
                 daily_data[i]['sun-set'] = f'{daily_ssh}:{daily_ssm:02d}'
             else:
                 daily_data[i]['sun-set'] = f'{daily_ssh:02d}:{daily_ssm:02d}'
@@ -431,8 +427,36 @@ if (r_one_call_data.status_code == 200):
                 print('Cannot find daily sun set')
 
         # Moon Rise
+        try:
+            daily_data[i]['moon-rise'] = one_call_json['daily'][i]['moonrise']
+            daily_dt_m_rise = datetime.fromtimestamp(daily_data[i]['moon-rise'])
+            daily_mrh = daily_dt_m_rise.hour
+            daily_mrm = daily_dt_m_rise.minute
+
+            if (twelveHourTime):
+                daily_mrh, daily_data[i]['moon-rise-half-of-day'] = find_half_of_day(daily_mrh)
+                daily_data[i]['moon-rise'] = f'{daily_mrh}:{daily_mrh:02d}'
+            else:
+                daily_data[i]['moon-rise'] = f'{daily_mrh:02d}:{daily_mrh:02d}'
+        except:
+            if (dev_mode):
+                print('Cannot find daily moon rise')
 
         # Moon Set
+        try:
+            daily_data[i]['moon-set'] = one_call_json['daily'][i]['moonset']
+            daily_dt_m_set = datetime.fromtimestamp(daily_data[i]['moon-set'])
+            daily_msh = daily_dt_m_set.hour
+            daily_msm = daily_dt_m_set.minute
+
+            if (twelveHourTime):
+                daily_msh, daily_data[i]['moon-set-half-of-day'] = find_half_of_day(daily_msh)
+                daily_data[i]['moon-set'] = f'{daily_msh}:{daily_msh:02d}'
+            else:
+                daily_data[i]['moon-set'] = f'{daily_msh:02d}:{daily_msh:02d}'
+        except:
+            if (dev_mode):
+                print('Cannot find daily moon set')
 
         # Probability of Precipitation
         daily_data[i]['prob-of-precip'] = one_call_json['daily'][x]['pop']
