@@ -10,7 +10,7 @@ import requests
 
 def find_half_of_day(hour):
   """
-  Description: Finds half of day (AM or PM) and adjusts @param `half` if needed (subtract 12 from 24 hour clock) \n
+  Description: Finds half of day (AM or PM) and adjusts param `half` if needed (subtract 12 from 24 hour clock) \n
   Returns: hour (modified if needed)
   """
   half_of_day = None
@@ -156,6 +156,7 @@ r_one_call_data = requests.get(one_call_api)
 
 if (r_one_call_data.status_code == 200):
   one_call_json = r_one_call_data.json()
+  # print(one_call_json)
 
   # Current Weather
   curr_weather_data['id'] = one_call_json['current']['weather'][0]['id']
@@ -254,50 +255,138 @@ if (r_one_call_data.status_code == 200):
   # Cloud Data
   cloud_data = one_call_json['current']['clouds']
 
-  # Hourly Data (might need to add for rain and snow)
-  # time, half of day, precipitation (0 - 1; will need to multiply by 100 for %, temp, rain || snow (both rain and snow in mm/h, convert to in/h for imperial), icon & alt)
-  # rain and snow will need conditions to check if they exist (try catch or if else?)
+  # Hourly Data
   for i in range(12):
     hourly_data.append(
       {
         'time': None,
-        'half_of_day': None,
-        'precipitation': None,
+        'half-of-day': None,
+        'prob-of-precip': None,
         'temp': None,
         'rain-exists': False,
         'rain-vol': None,
+        'rain-units': 'mm/h',
         'snow-exists': False,
         'snow-vol': None,
+        'snow-units': 'mm/h',
+      }
+    )
+
+    x = i + 1 # Index for json, 0 = current hour
+
+    # Time
+    hourly_data[i]['time'] = one_call_json['hourly'][x]['dt']
+    hourly_time = datetime.fromtimestamp(hourly_data[i]['time'])
+    hour = hourly_time.hour
+
+    if (twelveHourTime):
+      hour, hourly_data[i]['half-of-day'] = find_half_of_day(hour)
+      hourly_data[i]['time'] = f'{hour}'
+    else:
+      hourly_data[i]['time'] = f'{hour:02d}'
+
+    # Probability of Precipitation
+    hourly_data[i]['prob-of-precip'] = one_call_json['hourly'][x]['pop']
+
+    # Temp
+    hourly_data[i]['temp'] = one_call_json['hourly'][x]['temp']
+
+    # Rain & Snow Data
+    try:
+      hourly_data[i]['rain-vol'] = one_call_json['hourly'][x]['rain']['1h']
+
+      if (hourly_data[i]['rain-vol'] != None): 
+        hourly_data[i]['rain-exists'] = True
+    except:
+      # print('Could not find rain data')
+      hourly_data[i]['rain-exists'] = False
+
+    try:
+      hourly_data[i]['snow-vol'] = one_call_json['hourly'][x]['snow']['1h']
+
+      if (hourly_data[i]['snow-vol'] != None):
+        hourly_data[i]['snow-exists'] = True
+    except:
+      hourly_data[i]['snow-exists'] = False
+
+
+    if (t_units == 'imperial' and (hourly_data[i]['rain-exists'] or hourly_data[i]['snow-exists'])):
+      mm_to_inch = 0.03937008 # 1mm = 0.03937008 inch
+      
+      if (hourly_data[i]['rain-exists']):
+        hourly_data[i]['rain-vol'] *= mm_to_inch
+        hourly_data[i]['rain-units'] = 'in/h'
+      
+      if (hourly_data[i]['snow-exists']):
+        hourly_data[i]['snow-vol'] *= mm_to_inch
+        hourly_data[i]['snow-units'] = 'in/h'
+
+
+  # Daily Data
+  for i in range(5):
+    daily_data.append(
+      {
+        'date': None,
+
+        'low-temp': None,
+        'high-temp': None,
+
+        'sun-rise-hour': None,
+        'sun-rise-minute': None,
+        'sun-rise-half-of-day': None,
+
+        'sun-set-hour': None,
+        'sun-set-minute': None,
+        'sun-set-half-of-day': None,
+
+        'moon-rise-hour': None,
+        'moon-rise-minute': None,
+        'moon-rise-half-of-day': None,
+
+        'moon-set-hour': None,
+        'moon-set-minute': None,
+        'moon-set-half-of-day': None,
+
+        'prob-of-precip': None,
+
+        'rain-exists': False,
+        'rain-vol': None,
+        'rain-units': 'mm',
+
+        'snow-exists': False,
+        'snow-vol': None,
+        'snow-units': 'mm',
+
         'icon': None,
         'alt-text': None,
       }
     )
 
-  # Daily Data (might need to add for rain and snow)
-  # rain and snow will need conditions to check if they exist
-  for i in range(5):
-    daily_data.append(
-      {
-        'date': None,
-        'low-temp': None,
-        'high-temp': None,
-        'sun-rise': None,
-        'sun-rise-half-of-day': None,
-        'sun-set': None,
-        'sun-set-half-of-day': None,
-        'moon-rise': None,
-        'moon-rise-half-of-day': None,
-        'moon-set': None,
-        'moon-set-half-of-day': None,
-        'precipitation': None,
-        'rain-exists': False,
-        'rain-vol': None,
-        'snow-exists': False,
-        'snow-vol': None,
-        'icon': None,
-        'alt-text': None,
-      }
-    )
+    x = i + 1 # index for json, 0 = current day
+
+    # Date
+    daily_data['date'] = one_call_json['daily'][x]['dt']
+
+    # Temp
+    daily_data['low-temp'] = one_call_json['daily'][x]['temp']['min']
+    daily_data['high-temp'] = one_call_json['daily'][x]['temp']['max']
+
+    # Sun Rise
+
+    # Sun Set
+
+    # Moon Rise
+
+    # Moon Set
+
+    # Probability of Precipitation
+    daily_data['prob-of-precip'] = one_call_json['daily'][x]['pop']
+
+    # Rain & Snow
+
+    # Icon & Alt text
+    daily_data['icon'] = one_call_json['daily'][i]['weather']['icon']
+    # TODO make icon alt text match case a function
 
 else:
   print(f'Could not get One Call API data: {r_one_call_data.status_code}')
