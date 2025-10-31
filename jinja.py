@@ -26,6 +26,52 @@ def find_half_of_day(hour):
 
   return hour, half_of_day
 
+def set_alt_text(icon):
+  alt_text = ''
+  
+  match icon:
+    case '01d': 
+      alt_text = 'day time clear sky icon'
+    case '02d':
+      alt_text = 'day time few clouds icon'
+    case '03d':
+      alt_text = 'day time scattered clouds icons'
+    case '04d':
+      alt_text = 'day time break clouds icon'
+    case '09d':
+      alt_text = 'day time shower rain icon'
+    case '10d':
+      alt_text = 'day time rain icon'
+    case '11d':
+      alt_text = 'day time thunderstorm icon'
+    case '13d':
+      alt_text = 'day time snow icon'
+    case '50d':
+      alt_text = 'day time mist icon'
+    case '01n':
+      alt_text = 'night time clear sky icon'
+    case '02n':
+      alt_text = 'night time few clouds icon'
+    case '03n':
+      alt_text = 'night time scattered clouds icon'
+    case '04n':
+      alt_text = 'night time break clouds icon'
+    case '09n':
+      alt_text = 'night time shower rain icon'
+    case '10n':
+      alt_text = 'night time rain icon'
+    case '11n':
+      alt_text = 'night time thunderstorm icon'
+    case '13n':
+      alt_text = 'night time snow icon'
+    case '50n':
+      alt_text = 'night time mist icon'
+    case _: 
+      alt_text = 'no icon'
+    
+  return alt_text
+
+
 #################
 # Env Variables #
 #################
@@ -112,6 +158,10 @@ supported_langs = [
 ]
 language = supported_langs[14] # [modifiable] Change the index value if you wish to use a different language (English default)
 
+
+mm_to_inch = 0.03937008 # 1mm = 0.03937008 inch
+dev_mode = False
+
 #####################
 # One Call API Data #
 #####################
@@ -164,46 +214,7 @@ if (r_one_call_data.status_code == 200):
   curr_weather_data['description'] = (one_call_json['current']['weather'][0]['description']).capitalize()
   curr_weather_data['temp'] = round(one_call_json['current']['temp']) # [modifiable] Rounds value to no decimals by default, remove `round()` function to prevent rounding
   curr_weather_data['icon'] = one_call_json['current']['weather'][0]['icon']
-
-  match curr_weather_data['icon']:
-    case '01d': 
-      curr_weather_data['alt-text'] = 'day time clear sky icon'
-    case '02d':
-      curr_weather_data['alt-text'] = 'day time few clouds icon'
-    case '03d':
-      curr_weather_data['alt-text'] = 'day time scattered clouds icons'
-    case '04d':
-      curr_weather_data['alt-text'] = 'day time break clouds icon'
-    case '09d':
-      curr_weather_data['alt-text'] = 'day time shower rain icon'
-    case '10d':
-      curr_weather_data['alt-text'] = 'day time rain icon'
-    case '11d':
-      curr_weather_data['alt-text'] = 'day time thunderstorm icon'
-    case '13d':
-      curr_weather_data['alt-text'] = 'day time snow icon'
-    case '50d':
-      curr_weather_data['alt-text'] = 'day time mist icon'
-    case '01n':
-      curr_weather_data['alt-text'] = 'night time clear sky icon'
-    case '02n':
-      curr_weather_data['alt-text'] = 'night time few clouds icon'
-    case '03n':
-      curr_weather_data['alt-text'] = 'night time scattered clouds icon'
-    case '04n':
-      curr_weather_data['alt-text'] = 'night time break clouds icon'
-    case '09n':
-      curr_weather_data['alt-text'] = 'night time shower rain icon'
-    case '10n':
-      curr_weather_data['alt-text'] = 'night time rain icon'
-    case '11n':
-      curr_weather_data['alt-text'] = 'night time thunderstorm icon'
-    case '13n':
-      curr_weather_data['alt-text'] = 'night time snow icon'
-    case '50n':
-      curr_weather_data['alt-text'] = 'night time mist icon'
-    case _: 
-      curr_weather_data['alt-text'] = 'no icon'
+  curr_weather_data['alt-text'] = set_alt_text(curr_weather_data['icon'])
 
   # Sun Data
   sun_data['rise'] = one_call_json['current']['sunrise'] # Unix time stamp (Epoch time / Posix time)
@@ -299,7 +310,7 @@ if (r_one_call_data.status_code == 200):
         hourly_data[i]['rain-exists'] = True
     except:
       # print('Could not find rain data')
-      hourly_data[i]['rain-exists'] = False
+      if(dev_mode): print(f'No hourly rain data for json index: {x} | array index: {i}')
 
     try:
       hourly_data[i]['snow-vol'] = one_call_json['hourly'][x]['snow']['1h']
@@ -307,12 +318,10 @@ if (r_one_call_data.status_code == 200):
       if (hourly_data[i]['snow-vol'] != None):
         hourly_data[i]['snow-exists'] = True
     except:
-      hourly_data[i]['snow-exists'] = False
+      if(dev_mode): print(f'No hourly snow data for json index: {x} | array index: {i}')
 
 
     if (t_units == 'imperial' and (hourly_data[i]['rain-exists'] or hourly_data[i]['snow-exists'])):
-      mm_to_inch = 0.03937008 # 1mm = 0.03937008 inch
-      
       if (hourly_data[i]['rain-exists']):
         hourly_data[i]['rain-vol'] *= mm_to_inch
         hourly_data[i]['rain-units'] = 'in/h'
@@ -351,11 +360,11 @@ if (r_one_call_data.status_code == 200):
 
         'rain-exists': False,
         'rain-vol': None,
-        'rain-units': 'mm',
+        'rain-units': 'mm.',
 
         'snow-exists': False,
         'snow-vol': None,
-        'snow-units': 'mm',
+        'snow-units': 'mm.',
 
         'icon': None,
         'alt-text': None,
@@ -365,11 +374,11 @@ if (r_one_call_data.status_code == 200):
     x = i + 1 # index for json, 0 = current day
 
     # Date
-    daily_data['date'] = one_call_json['daily'][x]['dt']
+    daily_data[i]['date'] = one_call_json['daily'][x]['dt']
 
     # Temp
-    daily_data['low-temp'] = one_call_json['daily'][x]['temp']['min']
-    daily_data['high-temp'] = one_call_json['daily'][x]['temp']['max']
+    daily_data[i]['low-temp'] = one_call_json['daily'][x]['temp']['min']
+    daily_data[i]['high-temp'] = one_call_json['daily'][x]['temp']['max']
 
     # Sun Rise
 
@@ -380,13 +389,37 @@ if (r_one_call_data.status_code == 200):
     # Moon Set
 
     # Probability of Precipitation
-    daily_data['prob-of-precip'] = one_call_json['daily'][x]['pop']
+    daily_data[i]['prob-of-precip'] = one_call_json['daily'][x]['pop']
 
     # Rain & Snow
+    try:
+      daily_data[i]['rain-vol'] = one_call_json['daily'][x]['rain']
+
+      if (daily_data[i]['rain-vol'] != None):
+        daily_data[i]['rain-exists'] = True
+    except:
+      if(dev_mode): print(f'No daily rain data for json index: {x} | array index: {i}')
+
+    try:
+      daily_data[i]['snow-vol'] = one_call_json['daily'][x]['snow']
+
+      if (daily_data[i]['snow-vol'] != None):
+        daily_data[i]['snow-exists'] = True
+    except:
+      if(dev_mode): print(f'No daily snow data for json index: {x} | array index: {i}')
+
+    if (t_units == 'imperial' and (daily_data[i]['rain-exists'] or daily_data[i]['snow-exists'])):
+      if (daily_data[i]['rain-exists']):
+        daily_data[i]['rain-vol'] *= mm_to_inch
+        daily_data[i]['rain-units'] = 'in.'
+
+      if (daily_data[i]['snow-exists']):
+        daily_data[i]['snow-vol'] *= mm_to_inch
+        daily_data[i]['snow-units'] = 'in.'
 
     # Icon & Alt text
-    daily_data['icon'] = one_call_json['daily'][i]['weather']['icon']
-    # TODO make icon alt text match case a function
+    daily_data[i]['icon'] = one_call_json['daily'][x]['weather'][0]['icon']
+    daily_data[i]['alt-icon'] = set_alt_text(daily_data[i]['icon'])
 
 else:
   print(f'Could not get One Call API data: {r_one_call_data.status_code}')
