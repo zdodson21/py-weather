@@ -30,6 +30,10 @@ def find_half_of_day(hour):
 
 
 def set_alt_text(icon):
+    """
+    Description: returns alt text based on provided icon code
+    """
+    
     alt_text = ''
 
     match icon:
@@ -70,7 +74,7 @@ def set_alt_text(icon):
         case '50n':
             alt_text = 'night time mist icon'
         case _:
-            alt_text = 'no icon'
+            alt_text = f'no icon available for code: {icon}'
 
     return alt_text
 
@@ -163,8 +167,8 @@ supported_langs = [
 # [modifiable] Change the index value if you wish to use a different language (English default)
 language = supported_langs[14]
 
-
 mm_to_inch = 0.03937008  # 1mm = 0.03937008 inch
+
 dev_mode = False
 
 #####################
@@ -258,6 +262,31 @@ if (r_one_call_data.status_code == 200):
     # Wind Speed
     wind_data['speed'] = round(one_call_json['current']['wind_speed'])
     wind_data['deg'] = one_call_json['current']['wind_deg']
+    
+    if (wind_data['deg'] <= 23 or wind_data['deg'] > 338):
+        wind_data['deg'] = 'n'
+
+    elif (wind_data['deg'] > 23 and wind_data['deg'] <= 68):
+        wind_data['deg'] = 'ne'
+
+    elif (wind_data['deg'] > 68 and wind_data['deg'] <= 113):
+        wind_data['deg'] = 'e'
+
+    elif (wind_data['deg'] > 113 and wind_data['deg'] <= 158):
+        wind_data['deg'] = 'se'
+
+    elif (wind_data['deg'] > 158 and wind_data['deg'] <= 203):
+        wind_data['deg'] = 's'
+
+    elif (wind_data['deg'] > 203 and wind_data['deg'] <= 248):
+        wind_data['deg'] = 'sw'
+
+    elif (wind_data['deg'] > 248 and wind_data['deg'] <= 293):
+        wind_data['deg'] = 'w'
+
+    elif (wind_data['deg'] > 293 and wind_data['deg'] <= 338):
+        wind_data['deg'] = 'nw'
+
     wind_data['gust'] = one_call_json['current']['wind_gust']
 
     # Humidity
@@ -555,55 +584,56 @@ template = env.get_template('template.html')
 
 output = template.render(
     # Selected Units
-    temp_unit=disp_temp_units,
-    speed_unit=s_units,
+    temp_unit = disp_temp_units,
+    speed_unit = s_units,
 
     # Location Data
-    location_name=location_data["name"],
-    location_state=location_data["state"],
+    location_name = location_data["name"],
+    location_state = location_data["state"],
 
     # Current Weather Data
-    cw_icon=curr_weather_data['icon'],
-    cw_icon_alt=curr_weather_data["alt-text"],
-    curr_temp=curr_weather_data["temp"],
-    curr_description=curr_weather_data['description'],
+    cw_icon = curr_weather_data['icon'],
+    cw_icon_alt = curr_weather_data["alt-text"],
+    curr_temp = curr_weather_data["temp"],
+    curr_description = curr_weather_data['description'],
 
     # Sun Data
-    use_half_of_day=twelveHourTime,
-    sun_rise_time=sun_data["rise"],
-    sun_rise_half_of_day=sun_data["rise-half"],
+    use_half_of_day = twelveHourTime,
+    sun_rise_time = sun_data["rise"],
+    sun_rise_half_of_day = sun_data["rise-half"],
 
-    sun_set_time=sun_data["set"],
-    sun_set_half_of_day=sun_data["set-half"],
+    sun_set_time = sun_data["set"],
+    sun_set_half_of_day = sun_data["set-half"],
 
     # Wind Speed Data
-    wind_speed=wind_data["speed"],
-    wind_deg=wind_data["deg"],
-    wind_gust=wind_data["gust"],
+    wind_speed = wind_data["speed"],
+    wind_deg = wind_data["deg"],
+    wind_gust = wind_data["gust"],
 
     # Humidity Data
-    humidity=humidity_data,
+    humidity = humidity_data,
 
     # Visibility Data
-    visibility=visibility_data["distance"],
-    vis_symbol=visibility_data["symbol"],
+    visibility = visibility_data["distance"],
+    vis_symbol = visibility_data["symbol"],
 
     # Pressure Data
-    pressure=pressure_data,
+    pressure = pressure_data,
 
     # Cloud Data
-    cloud_coverage=cloud_data,
+    cloud_coverage = cloud_data,
 
     # Dew Point Data
-    dew_point=dew_point_data,
+    dew_point = dew_point_data,
 
     # Ultra-Violet Index Data
-    uvi=uvi_data,
+    uvi = uvi_data,
 
     # Air Quality Index Data
-    aqi=aqi_data
+    aqi = aqi_data,
 
     # Hourly Data
+    hourly_template_data = hourly_data,
 
     # Daily Data
 )

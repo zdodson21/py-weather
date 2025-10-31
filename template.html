@@ -43,7 +43,7 @@
         </div>
 
         <div class="wind-speed col-item">
-          <img src="./icons/50d.png" alt="wind icon">
+          <img src="./icons/direction-arrow-{{ wind_deg }}.png" alt="wind icon">
           <p>Wind Speed</p>
           <p>{{ wind_speed }} {{ speed_unit }}</p>
         </div>
@@ -107,8 +107,6 @@
           </div>
         </div>
 
-        <!-- TODO add sections for clouds and dew point -->
-
       </div>
     </div>
     <div class="bottom">
@@ -124,7 +122,7 @@
         </div>
       </div>
       <div class="daily-data">
-
+        <!-- TODO this first, jinja for loop for each item in daily, need ifs for anything that might be conditional -->
       </div>
     </div>
   </div>
