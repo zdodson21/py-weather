@@ -128,15 +128,74 @@
     
     <div class="bottom">
       <div class="hourly-data">
+        <div class="chart">
+          <canvas id="my-chart"></canvas>
+        </div>
+
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        <!-- One of these should be display none. Depends on screen orientation (CSS) -->
-        <div class="chart-horizontal">
+        <script>
+          const ctx = document.getElementById('my-chart');
 
-        </div>
-        <div class="chart-vertical">
-
-        </div>
+          new Chart(ctx, {
+            data: {
+              datasets: [
+                {
+                  type: 'line',
+                  backgroundColor: 'ffcc63',
+                  borderColor: '#ffcc63',
+                  data: {{ chart_temp_dataset }},
+                  yAxisID: 'temperature',
+                },
+                {
+                  type: 'bar',
+                  backgroundColor: '#00a1e7',
+                  data: {{ chart_pop_dataset }},
+                  yAxisID: 'precipitation',
+                },
+              ],
+              labels: {{ chart_labels }},
+            },
+            options: {
+              plugins: {
+                legend: {
+                  display: false
+                }
+              },
+              scales: {
+                x: {
+                  grid: {
+                    display: false
+                  },
+                  border: {
+                    display: false
+                  }
+                },
+                precipitation: {
+                  type: 'linear',
+                  position: 'right',
+                  min: 0,
+                  max: 100,
+                  grid: {
+                    display: false,
+                  },
+                  border: {
+                    display: false,
+                  },
+                  ticks: {
+                    callback: function(value) {
+                      if (value === 0 || value === 100) {
+                        return `${value}%`;
+                      }
+                      return '';
+                    }
+                  }
+                }
+              },
+              maintainAspectRatio: false,
+            },
+          });
+        </script>
       </div>
       <div class="daily-data">
         {% for item in daily_template_data %}

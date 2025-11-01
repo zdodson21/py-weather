@@ -14,11 +14,8 @@ body .contents .middle .current-weather .cw-bottom {
 body .contents .middle .right-side .col-item {
   border: 1px solid black;
 }
-body .contents .bottom .hourly-data .chart-horizontal {
+body .contents .bottom .hourly-data .chart {
   display: block;
-}
-body .contents .bottom .hourly-data .chart-vertical {
-  display: none;
 }
 body .contents .bottom .daily-data {
   display: block;

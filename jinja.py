@@ -388,10 +388,10 @@ if (r_one_call_data.status_code == 200):
             hourly_data[i]['time'] = f'{hour:02d}'
 
         # Probability of Precipitation
-        hourly_data[i]['prob_of_precip'] = one_call_json['hourly'][x]['pop']
+        hourly_data[i]['prob_of_precip'] = round(one_call_json['hourly'][x]['pop'] * 100)
 
         # Temp
-        hourly_data[i]['temp'] = one_call_json['hourly'][x]['temp']
+        hourly_data[i]['temp'] = round(one_call_json['hourly'][x]['temp'])
 
         # Rain & Snow Data
         try:
@@ -417,6 +417,23 @@ if (r_one_call_data.status_code == 200):
             if (hourly_data[i]['snow_vol'] != None):
                 hourly_data[i]['snow_vol'] *= mm_to_inch
                 hourly_data[i]['snow_units'] = 'in/h'
+
+    hourly_temp_values = []
+    hourly_pop_values = []
+    hourly_data_labels = []
+
+    for i in hourly_data:
+        hourly_temp_values.append(i['temp'])
+        hourly_pop_values.append(i['prob_of_precip'])
+
+        if (twelveHourTime):
+            hourly_data_labels.append(f'{i['time']} {i['half_of_day']}')
+        else:
+            hourly_data_labels.append(i['time'])
+
+    print(hourly_temp_values)
+    print(hourly_pop_values)
+    print(hourly_data_labels)
 
     # Daily Data
     for i in range(4):
@@ -547,8 +564,7 @@ if (r_one_call_data.status_code == 200):
                 print('Cannot find daily moon set')
 
         # Probability of Precipitation
-        daily_data[i]['prob_of_precip'] = one_call_json['daily'][x]['pop']
-        daily_data[i]['prob_of_precip'] = round(daily_data[i]['prob_of_precip'] * 100)
+        daily_data[i]['prob_of_precip'] = round(one_call_json['daily'][x]['pop'] * 100)
 
         # Rain & Snow
         try:
@@ -679,7 +695,9 @@ output = template.render(
     aqi = aqi_data,
 
     # Hourly Data
-    hourly_template_data = hourly_data,
+    chart_temp_dataset = hourly_temp_values,
+    chart_pop_dataset = hourly_pop_values,
+    chart_labels = hourly_data_labels,
 
     # Daily Data
     daily_template_data = daily_data,
