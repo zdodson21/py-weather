@@ -28,7 +28,6 @@ def find_half_of_day(hour):
 
     return hour, half_of_day
 
-
 def set_alt_text(icon):
     """
     Description: returns alt text based on provided icon code
@@ -78,6 +77,42 @@ def set_alt_text(icon):
 
     return alt_text
 
+def get_week_day(week_day_num):
+    """
+    Description: returns day of week from inputted isoweekday value
+    """
+
+    match week_day_num:
+        case 1: week_day_num = 'Monday'
+        case 2: week_day_num = 'Tuesday'
+        case 3: week_day_num = 'Wednesday'
+        case 4: week_day_num = 'Thursday'
+        case 5: week_day_num = 'Friday'
+        case 6: week_day_num = 'Saturday'
+        case 7: week_day_num = 'Sunday'
+    
+    return week_day_num
+
+def get_month(month_num):
+    """
+    Description returns month in string format
+    """
+
+    match month_num:
+        case 1: month_num = 'January'
+        case 2: month_num = 'February'
+        case 3: month_num = 'March'
+        case 4: month_num = 'April'
+        case 5: month_num = 'May'
+        case 6: month_num = 'June'
+        case 7: month_num = 'July'
+        case 8: month_num = 'August'
+        case 9: month_num = 'September'
+        case 10: month_num = 'October'
+        case 11: month_num = 'November'
+        case 12: month_num = 'December'
+
+    return month_num
 
 #################
 # Env Variables #
@@ -176,14 +211,18 @@ dev_mode = False
 one_call_api: str = f'https://api.openweathermap.org/data/3.0/onecall?lat={LATITUDE}&lon={LONGITUDE}&exclude=minutely,alerts&units={t_units}&lang={language}&appid={API_KEY}'
 # https://openweathermap.org/api/one-call-3#parameter
 
+curr_date = {
+    'weekday': None,
+    'month': None,
+    'day': None,
+}
+
 sun_data = {
     'rise': None,
     'rise_half': None,
-    'rise_exists': False,
 
     'set': None,
     'set_half': None,
-    'set_exists': False,
 }
 pressure_data = None
 humidity_data = None
@@ -216,7 +255,12 @@ r_one_call_data = requests.get(one_call_api)
 
 if (r_one_call_data.status_code == 200):
     one_call_json = r_one_call_data.json()
-    # print(one_call_json)
+    
+    # Current Date
+    converted_date = datetime.fromtimestamp(one_call_json['current']['dt'])
+    curr_date['weekday'] = get_week_day(converted_date.isoweekday())
+    curr_date['month'] = get_month(converted_date.month)
+    curr_date['day'] = converted_date.day
 
     # Current Weather
     curr_weather_data['id'] = one_call_json['current']['weather'][0]['id']
@@ -232,7 +276,6 @@ if (r_one_call_data.status_code == 200):
         sun_data['rise'] = one_call_json['current']['sunrise']
 
         if (sun_data['rise'] != None):
-            sun_data['rise_exists'] = True
             rise_dt = datetime.fromtimestamp(sun_data['rise'])
             rise_hour = rise_dt.hour
             rise_min = rise_dt.minute
@@ -250,7 +293,6 @@ if (r_one_call_data.status_code == 200):
         sun_data["set"] = one_call_json['current']['sunset']
 
         if (sun_data['set'] != None):
-            sun_data['set_exists'] = True
             set_dt = datetime.fromtimestamp(sun_data['set'])
             set_hour = set_dt.hour
             set_minute = set_dt.minute
@@ -325,10 +367,8 @@ if (r_one_call_data.status_code == 200):
                 'half_of_day': None,
                 'prob_of_precip': None,
                 'temp': None,
-                'rain_exists': False,
                 'rain_vol': None,
                 'rain_units': 'mm/h',
-                'snow_exists': False,
                 'snow_vol': None,
                 'snow_units': 'mm/h',
             }
@@ -356,9 +396,6 @@ if (r_one_call_data.status_code == 200):
         # Rain & Snow Data
         try:
             hourly_data[i]['rain_vol'] = one_call_json['hourly'][x]['rain']['1h']
-
-            if (hourly_data[i]['rain_vol'] != None):
-                hourly_data[i]['rain_exists'] = True
         except:
             # print('Could not find rain data')
             if (dev_mode):
@@ -367,25 +404,22 @@ if (r_one_call_data.status_code == 200):
 
         try:
             hourly_data[i]['snow_vol'] = one_call_json['hourly'][x]['snow']['1h']
-
-            if (hourly_data[i]['snow_vol'] != None):
-                hourly_data[i]['snow_exists'] = True
         except:
             if (dev_mode):
                 print(
                     f'No hourly snow data for json index: {x} | array index: {i}')
 
-        if (t_units == 'imperial' and (hourly_data[i]['rain_exists'] or hourly_data[i]['snow_exists'])):
-            if (hourly_data[i]['rain_exists']):
+        if (t_units == 'imperial' and (hourly_data[i]['rain_vol'] != None or hourly_data[i]['snow_vol'] != None)):
+            if (hourly_data[i]['rain_vol'] != None):
                 hourly_data[i]['rain_vol'] *= mm_to_inch
                 hourly_data[i]['rain_units'] = 'in/h'
 
-            if (hourly_data[i]['snow_exists']):
+            if (hourly_data[i]['snow_vol'] != None):
                 hourly_data[i]['snow_vol'] *= mm_to_inch
                 hourly_data[i]['snow_units'] = 'in/h'
 
     # Daily Data
-    for i in range(5):
+    for i in range(4):
         daily_data.append(
             {
                 'index': i,
@@ -397,27 +431,21 @@ if (r_one_call_data.status_code == 200):
 
                 'sun_rise': None,
                 'sun_rise_half_of_day': None,
-                'sun_rise_exists': False,
 
                 'sun_set': None,
                 'sun_set_half_of_day': None,
-                'sun_set_exists': False,
 
                 'moon_rise': None,
                 'moon_rise_half_of_day': None,
-                'moon_rise_exists': False,
 
                 'moon_set': None,
                 'moon_set_half_of_day': None,
-                'moon_set_exists': False,
 
                 'prob_of_precip': None,
 
-                'rain_exists': False,
                 'rain_vol': None,
                 'rain_units': 'mm.',
 
-                'snow_exists': False,
                 'snow_vol': None,
                 'snow_units': 'mm.',
 
@@ -431,53 +459,11 @@ if (r_one_call_data.status_code == 200):
         # Date
         daily_data[i]['date'] = one_call_json['daily'][x]['dt']
         daily_date_dt = datetime.fromtimestamp(daily_data[i]['date'])
-        daily_month = daily_date_dt.month
-
-        match daily_month:
-            case 1:
-                daily_month = 'January'
-            case 2:
-                daily_month = 'February'
-            case 3:
-                daily_month = 'March'
-            case 4:
-                daily_month = 'April'
-            case 5:
-                daily_month = 'May'
-            case 6:
-                daily_month = 'June'
-            case 7:
-                daily_month = 'July'
-            case 8:
-                daily_month = 'August'
-            case 9:
-                daily_month = 'September'
-            case 10:
-                daily_month = 'October'
-            case 11:
-                daily_month = 'November'
-            case 12:
-                daily_month = 'December'
+        daily_month = get_month(daily_date_dt.month)
 
         daily_day = daily_date_dt.day
 
-        daily_date = daily_date_dt.isoweekday()
-
-        match daily_date:
-            case 1:
-                daily_date = 'Monday'
-            case 2:
-                daily_date = 'Tuesday'
-            case 3:
-                daily_date = 'Wednesday'
-            case 4:
-                daily_date = 'Thursday'
-            case 5:
-                daily_date = 'Friday'
-            case 6:
-                daily_date = 'Saturday'
-            case 7:
-                daily_date = 'Sunday'
+        daily_date = get_week_day(daily_date_dt.isoweekday())
 
         daily_data[i]['date'] = f'{daily_date}, {daily_month} {daily_day}'
 
@@ -493,7 +479,6 @@ if (r_one_call_data.status_code == 200):
             daily_data[i]['sun_rise'] = one_call_json['daily'][x]['sunrise']
 
             if (daily_data[i]['sun_rise'] != None):
-                daily_data[i]['sun_rise_exists'] = True
                 daily_dt_s_rise = datetime.fromtimestamp(daily_data[i]['sun_rise'])
                 daily_srh = daily_dt_s_rise.hour
                 daily_srm = daily_dt_s_rise.minute
@@ -512,7 +497,6 @@ if (r_one_call_data.status_code == 200):
             daily_data[i]['sun_set'] = one_call_json['daily'][i]['sunset']
             
             if (daily_data[i]['sun_set'] != None):
-                daily_data[i]['sun_set_exists'] = True
                 daily_dt_s_set = datetime.fromtimestamp(daily_data[i]['sun_set'])
                 daily_ssh = daily_dt_s_set.hour
                 daily_ssm = daily_dt_s_set.minute
@@ -531,7 +515,6 @@ if (r_one_call_data.status_code == 200):
             daily_data[i]['moon_rise'] = one_call_json['daily'][i]['moonrise']
 
             if (daily_data[i]['moon_rise'] != None):
-                daily_data[i]['moon_rise_exists'] = True
                 daily_dt_m_rise = datetime.fromtimestamp(daily_data[i]['moon_rise'])
                 daily_mrh = daily_dt_m_rise.hour
                 daily_mrm = daily_dt_m_rise.minute
@@ -550,7 +533,6 @@ if (r_one_call_data.status_code == 200):
             daily_data[i]['moon_set'] = one_call_json['daily'][i]['moonset']
 
             if (daily_data[i]['moon_set']):
-                daily_data[i]['moon_set_exists'] = True
                 daily_dt_m_set = datetime.fromtimestamp(daily_data[i]['moon_set'])
                 daily_msh = daily_dt_m_set.hour
                 daily_msm = daily_dt_m_set.minute
@@ -571,32 +553,26 @@ if (r_one_call_data.status_code == 200):
         # Rain & Snow
         try:
             daily_data[i]['rain_vol'] = one_call_json['daily'][x]['rain']
-
-            if (daily_data[i]['rain_vol'] != None):
-                daily_data[i]['rain_exists'] = True
         except:
             if (dev_mode):
                 print(f'No daily rain data for json index: {x} | array index: {i}')
 
         try:
             daily_data[i]['snow_vol'] = one_call_json['daily'][x]['snow']
-
-            if (daily_data[i]['snow_vol'] != None):
-                daily_data[i]['snow_exists'] = True
         except:
             if (dev_mode):
                 print(f'No daily snow data for json index: {x} | array index: {i}')
 
-        if (t_units == 'imperial' and (daily_data[i]['rain_exists'] or daily_data[i]['snow_exists'])):
-            if (daily_data[i]['rain_exists']):
-                daily_data[i]['rain_vol'] *= mm_to_inch
-                daily_data[i]['rain_vol'] = round(daily_data[i]['rain_vol'], 2)
-                daily_data[i]['rain_units'] = 'in.'
+        if (t_units == 'imperial'):
+            if (daily_data[i]['rain_vol'] != None):
+                daily_data[i]['rain_vol'] = round(daily_data[i]['rain_vol'] * mm_to_inch, 2)
 
-            if (daily_data[i]['snow_exists']):
-                daily_data[i]['snow_vol'] *= mm_to_inch
-                daily_data[i]['snow_vol'] = round(daily_data[i]['snow_vol'], 2)
-                daily_data[i]['snow_units'] = 'in.'
+            daily_data[i]['rain_units'] = 'in.'
+
+            if (daily_data[i]['snow_vol'] != None):
+                daily_data[i]['snow_vol'] = round(daily_data[i]['snow_vol'] * mm_to_inch, 2)
+
+            daily_data[i]['snow_units'] = 'in.'
 
         # Icon & Alt text
         daily_data[i]['icon'] = one_call_json['daily'][x]['weather'][0]['icon']
@@ -667,35 +643,25 @@ output = template.render(
     use_half_of_day = twelveHourTime,
 
     # Location Data
-    location_name = location_data["name"],
-    location_state = location_data["state"],
+    location = location_data,
+
+    # Current Date
+    date = curr_date,
 
     # Current Weather Data
-    cw_icon = curr_weather_data['icon'],
-    cw_icon_alt = curr_weather_data["alt_text"],
-    curr_temp = curr_weather_data["temp"],
-    curr_description = curr_weather_data['description'],
+    current = curr_weather_data,
 
     # Sun Data
-    sun_rise_exists = sun_data["rise_exists"],
-    sun_rise_time = sun_data["rise"],
-    sun_rise_half_of_day = sun_data["rise_half"],
-
-    sun_set_exists = sun_data["set_exists"],
-    sun_set_time = sun_data["set"],
-    sun_set_half_of_day = sun_data["set_half"],
+    sun = sun_data,
 
     # Wind Speed Data
-    wind_speed = wind_data["speed"],
-    wind_deg = wind_data["deg"],
-    wind_gust = wind_data["gust"],
+    wind = wind_data,
 
     # Humidity Data
     humidity = humidity_data,
 
     # Visibility Data
-    visibility = visibility_data["distance"],
-    vis_symbol = visibility_data["symbol"],
+    visibility = visibility_data,
 
     # Pressure Data
     pressure = pressure_data,

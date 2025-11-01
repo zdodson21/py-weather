@@ -10,25 +10,26 @@
 <body>
   <div class="contents">
     <div class="top">
-      <p>{{ location_name }}, {{ location_state }}</p>
+      <p>{{ location.name }}, {{ location.state }}</p>
+      <p>{{ date.weekday }}, {{ date.month }} {{ date.day }}</p>
     </div>
 
     <div class="middle">
       <div class="current-weather">
         <div class="cw-top">
           <div class="cw-left">
-            <img src="./icons/{{ cw_icon }}.png" alt="{{ cw_icon_alt }}">
+            <img src="./icons/{{ current.icon }}.png" alt="{{ current.alt_text }}">
           </div>
 
           <div class="cw-right">
             <p>
-              {{ curr_temp }}{% if temp_unit != 'K' %}&#176;{% endif %} {{ temp_unit }}
+              {{ current.temp }}{% if temp_unit != 'K' %}&#176;{% endif %} {{ temp_unit }}
             </p>
           </div>
         </div>
 
         <div class="cw-bottom">
-          <p>{{ curr_description }}</p>
+          <p>{{ current.description }}</p>
         </div>
       </div>
 
@@ -38,12 +39,12 @@
           <p>Sunrise</p>
           <img src="./icons/01d.png" alt="sun rise icon">
 
-          {% if sun_rise_exists %}
+          {% if sun.rise != None %}
             <p>
-              <time datetime="{{ sun_rise_time }}">{{ sun_rise_time }}</time> 
+              <time datetime="{{ sun.rise }}">{{ sun.rise }}</time> 
 
               {% if use_half_of_day %}
-                {{ sun_rise_half_of_day }}
+                {{ sun.rise_half }}
               {% endif %}
             </p>
           {% else %}
@@ -55,8 +56,8 @@
 
         <div class="wind-speed col-item">
           <p>Wind Speed</p>
-          <img src="./icons/direction-arrow-{{ wind_deg }}.png" alt="wind icon">
-          <p>{{ wind_speed }} {{ speed_unit }}</p>
+          <img src="./icons/direction-arrow-{{ wind.deg }}.png" alt="wind icon">
+          <p>{{ wind.speed }} {{ speed_unit }}</p>
         </div>
 
         <div class="humidity col-item">
@@ -68,19 +69,19 @@
         <div class="visibility col-item">
           <p>Visibility</p>
           <img src="./icons/50n.png" alt="visibility icon">
-          <p>{{ vis_symbol }} {{ visibility }} km</p>
+          <p>{{ visibility.symbol }} {{ visibility.distance }} km</p>
         </div>
 
         <div class="sun-data sun-rise col-item">
           <p>Sunset</p>
           <img src="./icons/01d.png" alt="sun set icon">
 
-          {% if sun_set_exists %}
+          {% if sun.set != None %}
             <p>
-              <time datetime="{{ sun_set_time }}">{{ sun_set_time }}</time>
+              <time datetime="{{ sun.set }}">{{ sun.set }}</time>
               
               {% if use_half_of_day %}  
-                {{ sun_set_half_of_day }}
+                {{ sun.set_half }}
               {% endif %}
             </p>
           {% else %}
@@ -120,6 +121,8 @@
           <p>{{ cloud_coverage }}%</p>
         </div>
 
+        <!-- TODO acquire and display rain and snow data -->
+
       </div>
     </div>
     
@@ -146,11 +149,11 @@
               {{ item.high_temp }}{% if temp_unit != 'K' %}&#176; {% endif %} {{temp_unit}}
             </p>
 
-            {% if item.sun_rise_exists or item.sun_set_exists %}
+            {% if item.sun_rise != None or item.sun_set != None %}
               <div class="daily-sun">
                 <img src="./icons/01d.png" alt="sun icon">
                 <p>
-                  {% if item.sun_rise_exists %}
+                  {% if item.sun_rise != None %}
                     {{ item.sun_rise }}
 
                     {% if use_half_of_day %}
@@ -158,11 +161,11 @@
                     {% endif %} 
                   {% endif %}
 
-                  {% if item.sun_rise_exists and item.sun_set_exists %}
+                  {% if item.sun_rise != None and item.sun_set != None %}
                     |
                   {% endif %}
                   
-                  {% if item.sun_set_exists %}
+                  {% if item.sun_set != None %}
                     {{ item.sun_set }}
 
                     {% if use_half_of_day %}
@@ -173,11 +176,11 @@
               </div>
             {% endif %}
 
-            {% if item.moon_rise_exists or item.moon_set_exists %}
+            {% if item.moon_rise != None or item.moon_set != None %}
               <div class="daily-moon">
                 <img src="./icons/01n.png" alt="moon icon">
                 <p>
-                  {% if item.moon_rise_exists %}
+                  {% if item.moon_rise != None %}
                     {{ item.moon_rise }}
 
                     {% if use_half_of_day %}
@@ -185,11 +188,11 @@
                     {% endif %} 
                   {% endif %}
 
-                  {% if item.moon_rise_exists and item.moon_set_exists %}
+                  {% if item.moon_rise != None and item.moon_set != None %}
                     | 
                   {% endif %}
 
-                  {% if item.moon_set_exists %}
+                  {% if item.moon_set != None %}
                     {{ item.moon_set }}
 
                     {% if use_half_of_day %}
@@ -202,19 +205,23 @@
 
             <p>Precip: {{ item.prob_of_precip }}%</p>
 
-            {% if item.rain_exists %}
             <div class="daily-rain">
               <img src="./icons/09d.png" alt="rain icon">
-              <p>{{item.rain_vol}} {{item.rain_units}}</p>
+              {% if item.rain_vol != None %}
+                <p>{{ item.rain_vol }} {{ item.rain_units }}</p>
+              {% else %}
+                <p>0.00 {{ item.rain_units }}</p>
+              {% endif %}
             </div>
-            {% endif %}
 
-            {% if item.snow_exists %}
-              <div class="daily-snow">
-                <img src="./icons/13d.png" alt="snow icon">
-                <p>{{item.snow_vol}} {{item.snow_units}}</p>
+            <div class="daily-snow">
+              <img src="./icons/13d.png" alt="snow icon">
+              {% if item.snow_vol != None %}
+                <p>{{ item.snow_vol }} {{ item.snow_units }}</p>
+              {% else %}
+                <p>0.00 {{ item.snow_units }}</p>
+              {% endif %}
               </div>
-            {% endif %}
           </div>
         {% endfor %}
       </div>
