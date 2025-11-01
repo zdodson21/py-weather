@@ -103,13 +103,34 @@ You should now be able to properly populate an html file from the `template.html
 
 ### Temperature
 
+Temperature is the measure of the kintetic energy of the vibrating atoms of matter.
+
+#### Units of Measurement
+
+- **Kelvin**: Thermodynamic temperature measurement unit starting at the lowest possible temperature of 0 K (absolute zero).
+  - **Absolute Zero**: The lowest possible temperature in which any atoms of a substance cease to vibrate.
+- **Celcius**: Temperature system where the freezing point of water = 0&deg; and the boiling point of water = 100&deg;.
+- **Fahrenheit**: Temperature system where the freezing point of water = 32&deg; and the boiling point of water = 212&deg;.
+
 ### Wind
+
+- **Direction**: The direction the wind is coming from / travelling in.
+- **Speed**: Speed in which the wind is travelling.
+- **Gust**: A sudden increase in wind speed.
+
+### Humidity
+
+### Visibiltiy
 
 ### Pressure
 
 ### Ultra Violet Index (UVI)
 
 ### Air Quality
+
+### Dew Point
+
+### Cloud Coverage
 
 ## Other Information
 
