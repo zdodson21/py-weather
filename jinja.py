@@ -181,8 +181,11 @@ one_call_api: str = f'https://api.openweathermap.org/data/3.0/onecall?lat={LATIT
 sun_data = {
     'rise': None,
     'rise_half': None,
+    'rise_exists': False,
+
     'set': None,
     'set_half': None,
+    'set_exists': False,
 }
 pressure_data = None
 humidity_data = None
@@ -231,30 +234,36 @@ if (r_one_call_data.status_code == 200):
     try:
         # Unix time stamp (Epoch time / Posix time)
         sun_data['rise'] = one_call_json['current']['sunrise']
-        rise_dt = datetime.fromtimestamp(sun_data['rise'])
-        rise_hour = rise_dt.hour
-        rise_min = rise_dt.minute
 
-        if (twelveHourTime):
-            rise_hour, sun_data['rise_half'] = find_half_of_day(rise_hour)
-            sun_data['rise'] = f'{rise_hour}:{rise_min:02d}'
-        else:
-            sun_data['rise'] = f'{rise_hour:02d}:{rise_min:02d}'
+        if (sun_data['rise'] != None):
+            sun_data['rise_exists'] = True
+            rise_dt = datetime.fromtimestamp(sun_data['rise'])
+            rise_hour = rise_dt.hour
+            rise_min = rise_dt.minute
+
+            if (twelveHourTime):
+                rise_hour, sun_data['rise_half'] = find_half_of_day(rise_hour)
+                sun_data['rise'] = f'{rise_hour}:{rise_min:02d}'
+            else:
+                sun_data['rise'] = f'{rise_hour:02d}:{rise_min:02d}'
     except:
         if (dev_mode):
             print('Could not find sun rise for current weather')
 
     try:
         sun_data["set"] = one_call_json['current']['sunset']
-        set_dt = datetime.fromtimestamp(sun_data['set'])
-        set_hour = set_dt.hour
-        set_minute = set_dt.minute
 
-        if (twelveHourTime):
-            set_hour, sun_data['set_half'] = find_half_of_day(set_hour)
-            sun_data['set'] = f'{set_hour}:{set_minute:02d}'
-        else:
-            sun_data['set'] = f'{set_hour:02d}:{set_minute:02d}'
+        if (sun_data['set'] != None):
+            sun_data['set_exists'] = True
+            set_dt = datetime.fromtimestamp(sun_data['set'])
+            set_hour = set_dt.hour
+            set_minute = set_dt.minute
+
+            if (twelveHourTime):
+                set_hour, sun_data['set_half'] = find_half_of_day(set_hour)
+                sun_data['set'] = f'{set_hour}:{set_minute:02d}'
+            else:
+                sun_data['set'] = f'{set_hour:02d}:{set_minute:02d}'
     except:
         if (dev_mode):
             print('Could not find sun set for current weather')
@@ -315,6 +324,7 @@ if (r_one_call_data.status_code == 200):
     for i in range(12):
         hourly_data.append(
             {
+                'index': i,
                 'time': None,
                 'half_of_day': None,
                 'prob_of_precip': None,
@@ -382,6 +392,8 @@ if (r_one_call_data.status_code == 200):
     for i in range(5):
         daily_data.append(
             {
+                'index': i,
+                
                 'date': None,
 
                 'low_temp': None,
@@ -389,15 +401,19 @@ if (r_one_call_data.status_code == 200):
 
                 'sun_rise': None,
                 'sun_rise_half_of_day': None,
+                'sun_rise_exists': False,
 
                 'sun_set': None,
                 'sun_set_half_of_day': None,
+                'sun_set_exists': False,
 
                 'moon_rise': None,
                 'moon_rise_half_of_day': None,
+                'moon_rise_exists': False,
 
                 'moon_set': None,
                 'moon_set_half_of_day': None,
+                'moon_set_exists': False,
 
                 'prob_of_precip': None,
 
@@ -479,15 +495,18 @@ if (r_one_call_data.status_code == 200):
         # Sun Rise
         try:
             daily_data[i]['sun_rise'] = one_call_json['daily'][x]['sunrise']
-            daily_dt_s_rise = datetime.fromtimestamp(daily_data[i]['sun_rise'])
-            daily_srh = daily_dt_s_rise.hour
-            daily_srm = daily_dt_s_rise.minute
 
-            if (twelveHourTime):
-                daily_srh, daily_data[i]['sun_rise_half_of_day'] = find_half_of_day(daily_srh)
-                daily_data[i]['sun_rise'] = f'{daily_srh}:{daily_srm:02d}'
-            else:
-                daily_data[i]['sun_rise'] = f'{daily_srh:02d}:{daily_srm:02d}'
+            if (daily_data[i]['sun_rise'] != None):
+                daily_data[i]['sun_rise_exists'] = True
+                daily_dt_s_rise = datetime.fromtimestamp(daily_data[i]['sun_rise'])
+                daily_srh = daily_dt_s_rise.hour
+                daily_srm = daily_dt_s_rise.minute
+
+                if (twelveHourTime):
+                    daily_srh, daily_data[i]['sun_rise_half_of_day'] = find_half_of_day(daily_srh)
+                    daily_data[i]['sun_rise'] = f'{daily_srh}:{daily_srm:02d}'
+                else:
+                    daily_data[i]['sun_rise'] = f'{daily_srh:02d}:{daily_srm:02d}'
         except:
             if (dev_mode):
                 print('cannot find daily sun rise')
@@ -495,15 +514,18 @@ if (r_one_call_data.status_code == 200):
         # Sun Set
         try:
             daily_data[i]['sun_set'] = one_call_json['daily'][i]['sunset']
-            daily_dt_s_set = datetime.fromtimestamp(daily_data[i]['sun_set'])
-            daily_ssh = daily_dt_s_set.hour
-            daily_ssm = daily_dt_s_set.minute
+            
+            if (daily_data[i]['sun_set'] != None):
+                daily_data[i]['sun_set_exists'] = True
+                daily_dt_s_set = datetime.fromtimestamp(daily_data[i]['sun_set'])
+                daily_ssh = daily_dt_s_set.hour
+                daily_ssm = daily_dt_s_set.minute
 
-            if (twelveHourTime):
-                daily_ssh, daily_data[i]['sun_set_half_of_day'] = find_half_of_day(daily_ssh)
-                daily_data[i]['sun_set'] = f'{daily_ssh}:{daily_ssm:02d}'
-            else:
-                daily_data[i]['sun_set'] = f'{daily_ssh:02d}:{daily_ssm:02d}'
+                if (twelveHourTime):
+                    daily_ssh, daily_data[i]['sun_set_half_of_day'] = find_half_of_day(daily_ssh)
+                    daily_data[i]['sun_set'] = f'{daily_ssh}:{daily_ssm:02d}'
+                else:
+                    daily_data[i]['sun_set'] = f'{daily_ssh:02d}:{daily_ssm:02d}'
         except:
             if (dev_mode):
                 print('Cannot find daily sun set')
@@ -511,15 +533,18 @@ if (r_one_call_data.status_code == 200):
         # Moon Rise
         try:
             daily_data[i]['moon_rise'] = one_call_json['daily'][i]['moonrise']
-            daily_dt_m_rise = datetime.fromtimestamp(daily_data[i]['moon_rise'])
-            daily_mrh = daily_dt_m_rise.hour
-            daily_mrm = daily_dt_m_rise.minute
 
-            if (twelveHourTime):
-                daily_mrh, daily_data[i]['moon_rise_half_of_day'] = find_half_of_day(daily_mrh)
-                daily_data[i]['moon_rise'] = f'{daily_mrh}:{daily_mrh:02d}'
-            else:
-                daily_data[i]['moon_rise'] = f'{daily_mrh:02d}:{daily_mrh:02d}'
+            if (daily_data[i]['moon_rise'] != None):
+                daily_data[i]['moon_rise_exists'] = True
+                daily_dt_m_rise = datetime.fromtimestamp(daily_data[i]['moon_rise'])
+                daily_mrh = daily_dt_m_rise.hour
+                daily_mrm = daily_dt_m_rise.minute
+
+                if (twelveHourTime):
+                    daily_mrh, daily_data[i]['moon_rise_half_of_day'] = find_half_of_day(daily_mrh)
+                    daily_data[i]['moon_rise'] = f'{daily_mrh}:{daily_mrh:02d}'
+                else:
+                    daily_data[i]['moon_rise'] = f'{daily_mrh:02d}:{daily_mrh:02d}'
         except:
             if (dev_mode):
                 print('Cannot find daily moon rise')
@@ -527,15 +552,18 @@ if (r_one_call_data.status_code == 200):
         # Moon Set
         try:
             daily_data[i]['moon_set'] = one_call_json['daily'][i]['moonset']
-            daily_dt_m_set = datetime.fromtimestamp(daily_data[i]['moon_set'])
-            daily_msh = daily_dt_m_set.hour
-            daily_msm = daily_dt_m_set.minute
 
-            if (twelveHourTime):
-                daily_msh, daily_data[i]['moon_set_half_of_day'] = find_half_of_day(daily_msh)
-                daily_data[i]['moon_set'] = f'{daily_msh}:{daily_msh:02d}'
-            else:
-                daily_data[i]['moon_set'] = f'{daily_msh:02d}:{daily_msh:02d}'
+            if (daily_data[i]['moon_set']):
+                daily_data[i]['moon_set_exists'] = True
+                daily_dt_m_set = datetime.fromtimestamp(daily_data[i]['moon_set'])
+                daily_msh = daily_dt_m_set.hour
+                daily_msm = daily_dt_m_set.minute
+
+                if (twelveHourTime):
+                    daily_msh, daily_data[i]['moon_set_half_of_day'] = find_half_of_day(daily_msh)
+                    daily_data[i]['moon_set'] = f'{daily_msh}:{daily_msh:02d}'
+                else:
+                    daily_data[i]['moon_set'] = f'{daily_msh:02d}:{daily_msh:02d}'
         except:
             if (dev_mode):
                 print('Cannot find daily moon set')
@@ -640,6 +668,7 @@ output = template.render(
     # Selected Units
     temp_unit = disp_temp_units,
     speed_unit = s_units,
+    use_half_of_day = twelveHourTime,
 
     # Location Data
     location_name = location_data["name"],
@@ -652,10 +681,11 @@ output = template.render(
     curr_description = curr_weather_data['description'],
 
     # Sun Data
-    use_half_of_day = twelveHourTime,
+    sun_rise_exists = sun_data["rise_exists"],
     sun_rise_time = sun_data["rise"],
     sun_rise_half_of_day = sun_data["rise_half"],
 
+    sun_set_exists = sun_data["set_exists"],
     sun_set_time = sun_data["set"],
     sun_set_half_of_day = sun_data["set_half"],
 

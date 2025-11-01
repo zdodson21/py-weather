@@ -116,40 +116,65 @@
         </div>
       </div>
       <div class="daily-data">
-        <!-- TODO this first, jinja for loop for each item in daily, need ifs for anything that might be conditional -->
         {% for item in daily_template_data %}
           <div class="daily-item">
             <p>{{ item.date }}</p>
 
             <p>{{ item.low_temp }}&#176; {{temp_unit}} | {{item.high_temp}}&#176; {{temp_unit}}</p>
 
-            <div class="daily-sun">
-              <img src="./icons/01d.png" alt="sun icon">
-              <p>{{ item.sun_rise }}
-                {% if use_half_of_day %}
-                  {{ item.sun_rise_half_of_day }}
-                {% endif %} 
-                | 
-                {{ item.sun_set }}
-                {% if use_half_of_day %}
-                  {{ item.sun_set_half_of_day }}
-                {% endif %}
-              </p>
-            </div>
+            {% if item.sun_rise_exists or item.sun_set_exists %}
+              <div class="daily-sun">
+                <img src="./icons/01d.png" alt="sun icon">
+                <p>
+                  {% if item.sun_rise_exists %}
+                    {{ item.sun_rise }}
 
-            <div class="daily-moon">
-              <img src="./icons/01n.png" alt="moon icon">
-              <p>{{ item.moon_rise }}
-                {% if use_half_of_day %}
-                  {{ item.moon_rise_half_of_day }}
-                {% endif %} 
-                | 
-                {{ item.moon_set }}
-                {% if use_half_of_day %}
-                  {{ item.moon_set_half_of_day }}
-                {% endif %}
-              </p>
-            </div>
+                    {% if use_half_of_day %}
+                      {{ item.sun_rise_half_of_day }}
+                    {% endif %} 
+                  {% endif %}
+
+                  {% if item.sun_rise_exists and item.sun_set_exists %}
+                    |
+                  {% endif %}
+                  
+                  {% if item.sun_set_exists %}
+                    {{ item.sun_set }}
+
+                    {% if use_half_of_day %}
+                      {{ item.sun_set_half_of_day }}
+                    {% endif %}
+                  {% endif %}
+                </p>
+              </div>
+            {% endif %}
+
+            {% if item.moon_rise_exists or item.moon_set_exists %}
+              <div class="daily-moon">
+                <img src="./icons/01n.png" alt="moon icon">
+                <p>
+                  {% if item.moon_rise_exists %}
+                    {{ item.moon_rise }}
+
+                    {% if use_half_of_day %}
+                      {{ item.moon_rise_half_of_day }}
+                    {% endif %} 
+                  {% endif %}
+
+                  {% if item.moon_rise_exists and item.moon_set_exists %}
+                    | 
+                  {% endif %}
+
+                  {% if item.moon_set_exists %}
+                    {{ item.moon_set }}
+                    
+                    {% if use_half_of_day %}
+                      {{ item.moon_set_half_of_day }}
+                    {% endif %}
+                  {% endif %}
+                </p>
+              </div>
+            {% endif %}
 
             <p>Precip: {{ item.prob_of_precip }}%</p>
 
