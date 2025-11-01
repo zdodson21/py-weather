@@ -33,13 +33,22 @@
       <div class="right-side">
         <!-- TODO use CSS grid here -->
         <div class="sun-data sun-rise col-item">
-        <p>Sunrise</p>
+          <p>Sunrise</p>
           <img src="./icons/01d.png" alt="sun rise icon">
-          <p><time datetime="{{ sun_rise_time }}">{{ sun_rise_time }}</time> 
-            {% if use_half_of_day %}
-              {{ sun_rise_half_of_day }}
-            {% endif %}
-          </p>
+
+          {% if sun_rise_exists %}
+            <p>
+              <time datetime="{{ sun_rise_time }}">{{ sun_rise_time }}</time> 
+
+              {% if use_half_of_day %}
+                {{ sun_rise_half_of_day }}
+              {% endif %}
+            </p>
+          {% else %}
+            <p>
+              ---
+            </p>
+          {% endif %}
         </div>
 
         <div class="wind-speed col-item">
@@ -60,15 +69,23 @@
           <p>{{ vis_symbol }} {{ visibility }} km</p>
         </div>
 
-        
         <div class="sun-data sun-rise col-item">
           <p>Sunset</p>
           <img src="./icons/01d.png" alt="sun set icon">
-          <p><time datetime="{{ sun_set_time }}">{{ sun_set_time }}</time>
-            {% if use_half_of_day %}  
-              {{ sun_set_half_of_day }}
-            {% endif %}
+
+          {% if sun_set_exists %}
+            <p>
+              <time datetime="{{ sun_set_time }}">{{ sun_set_time }}</time>
+              
+              {% if use_half_of_day %}  
+                {{ sun_set_half_of_day }}
+              {% endif %}
+            </p>
+          {% else %}
+          <p>
+            ---
           </p>
+          {% endif %}
         </div>
 
         <div class="pressure col-item">
@@ -103,6 +120,7 @@
 
       </div>
     </div>
+    
     <div class="bottom">
       <div class="hourly-data">
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -167,7 +185,7 @@
 
                   {% if item.moon_set_exists %}
                     {{ item.moon_set }}
-                    
+
                     {% if use_half_of_day %}
                       {{ item.moon_set_half_of_day }}
                     {% endif %}
