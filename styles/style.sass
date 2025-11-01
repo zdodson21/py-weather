@@ -9,27 +9,38 @@ body
         .middle
             .current-weather
                 .cw-top
+                    display: flex
+                    flex-direction: row
+
                     .cw-left
+                        
+
                     .cw-right
                 
                 .cw-bottom
+                    text-align: center
             
             .right-side
                 .col-item
+                    border: 1px solid black
                    
         .bottom
             .hourly-data
                 .chart-horizontal
                     display: block
-                    @media (max-aspect-ratio: 1/1)
-                        display: none
+                    // TODO uncomment media queries when I know all data is being properly displayed
+                    // @media (max-aspect-ratio: 1/1)
+                    //     display: none
 
                 .chart-vertical
                     display: none
-                    @media (max-aspect-ratio: 1/1)
-                        display: block
+                    // @media (max-aspect-ratio: 1/1)
+                    //     display: block
             
             .daily-data
                 display: block
-                @media (max-aspect-ratio: 1/1)
-                    display: none
+                // @media (max-aspect-ratio: 1/1)
+                //     display: none
+
+                .daily-item
+                    border: 1px solid blue

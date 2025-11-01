@@ -33,8 +33,8 @@
       <div class="right-side">
         <!-- TODO use CSS grid here -->
         <div class="sun-data sun-rise col-item">
+        <p>Sunrise</p>
           <img src="./icons/01d.png" alt="sun rise icon">
-          <p>Sunrise</p>
           <p><time datetime="{{ sun_rise_time }}">{{ sun_rise_time }}</time> 
             {% if use_half_of_day %}
               {{ sun_rise_half_of_day }}
@@ -43,27 +43,27 @@
         </div>
 
         <div class="wind-speed col-item">
-          <img src="./icons/direction-arrow-{{ wind_deg }}.png" alt="wind icon">
           <p>Wind Speed</p>
+          <img src="./icons/direction-arrow-{{ wind_deg }}.png" alt="wind icon">
           <p>{{ wind_speed }} {{ speed_unit }}</p>
         </div>
 
         <div class="humidity col-item">
-          <img src="./icons/50d.png" alt="humidity icon">
           <p>Humidity</p>
+          <img src="./icons/50d.png" alt="humidity icon">
           <p>{{ humidity }}%</p>
         </div>
 
         <div class="visibility col-item">
-          <img src="./icons/50n.png" alt="visibility icon">
           <p>Visibility</p>
+          <img src="./icons/50n.png" alt="visibility icon">
           <p>{{ vis_symbol }} {{ visibility }} km</p>
         </div>
 
         
         <div class="sun-data sun-rise col-item">
-          <img src="./icons/01d.png" alt="sun set icon">
           <p>Sunset</p>
+          <img src="./icons/01d.png" alt="sun set icon">
           <p><time datetime="{{ sun_set_time }}">{{ sun_set_time }}</time>
             {% if use_half_of_day %}  
               {{ sun_set_half_of_day }}
@@ -72,39 +72,33 @@
         </div>
 
         <div class="pressure col-item">
-          <img src="./icons/03d.png" alt="pressure icon">
           <p>Pressure</p>
+          <img src="./icons/03d.png" alt="pressure icon">
           <p>{{ pressure }} hPa</p>
         </div>
 
         <div class="uvindex col-item">
-          <img src="./icons/01d.png" alt="ultra violet index icon">
           <p>UV Index</p>
+          <img src="./icons/01d.png" alt="ultra violet index icon">
           <p>{{ uvi }}</p>
         </div>
 
         <div class="air-quality col-item">
+          <p>Air Quality</p>
           <img src="./icons/50n.png" alt="air icon" />
-          <div class="col-item-right">
-            <p>Air Quality</p>
-            <p>{{ aqi }}</p>
-          </div>
+          <p>{{ aqi }}</p>
         </div>
 
         <div class="dew-point col-item">
+          <p>Dew Point</p>
           <img src="./icons/50d.png" alt="dew point icon">
-          <div class="col-item-right">
-            <p>Dew Point</p>
-            <p>{{ dew_point }}&#176; {{ temp_unit }}</p>
-          </div>
+          <p>{{ dew_point }}&#176; {{ temp_unit }}</p>
         </div>
 
         <div class="cloud-coverage col-item">
+          <p>Cloud Coverage</p>
           <img src="./icons/03d.png" alt="cloudiness icon">
-          <div class="col-item-right">
-            <p>Cloud Coverage</p>
-            <p>{{ cloud_coverage }}%</p>
-          </div>
+          <p>{{ cloud_coverage }}%</p>
         </div>
 
       </div>
@@ -123,6 +117,57 @@
       </div>
       <div class="daily-data">
         <!-- TODO this first, jinja for loop for each item in daily, need ifs for anything that might be conditional -->
+        {% for item in daily_template_data %}
+          <div class="daily-item">
+            <p>{{ item.date }}</p>
+
+            <p>{{ item.low_temp }}&#176; {{temp_unit}} | {{item.high_temp}}&#176; {{temp_unit}}</p>
+
+            <div class="daily-sun">
+              <img src="./icons/01d.png" alt="sun icon">
+              <p>{{ item.sun_rise }}
+                {% if use_half_of_day %}
+                  {{ item.sun_rise_half_of_day }}
+                {% endif %} 
+                | 
+                {{ item.sun_set }}
+                {% if use_half_of_day %}
+                  {{ item.sun_set_half_of_day }}
+                {% endif %}
+              </p>
+            </div>
+
+            <div class="daily-moon">
+              <img src="./icons/01n.png" alt="moon icon">
+              <p>{{ item.moon_rise }}
+                {% if use_half_of_day %}
+                  {{ item.moon_rise_half_of_day }}
+                {% endif %} 
+                | 
+                {{ item.moon_set }}
+                {% if use_half_of_day %}
+                  {{ item.moon_set_half_of_day }}
+                {% endif %}
+              </p>
+            </div>
+
+            <p>Precip: {{ item.prob_of_precip }}%</p>
+
+            {% if item.rain_exists %}
+            <div class="daily-rain">
+              <img src="./icons/09d.png" alt="rain icon">
+              <p>{{item.rain_vol}} {{item.rain_units}}</p>
+            </div>
+            {% endif %}
+
+            {% if item.snow_exists %}
+              <div class="daily-snow">
+                <img src="./icons/13d.png" alt="snow icon">
+                <p>{{item.snow_vol}} {{item.snow_units}}</p>
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
       </div>
     </div>
   </div>

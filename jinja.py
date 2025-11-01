@@ -180,9 +180,9 @@ one_call_api: str = f'https://api.openweathermap.org/data/3.0/onecall?lat={LATIT
 
 sun_data = {
     'rise': None,
-    'rise-half': None,
+    'rise_half': None,
     'set': None,
-    'set-half': None,
+    'set_half': None,
 }
 pressure_data = None
 humidity_data = None
@@ -205,7 +205,7 @@ curr_weather_data = {
     'description': None,
     'temp': None,
     'icon': None,
-    'alt-text': None
+    'alt_text': None
 }
 
 hourly_data = []
@@ -225,7 +225,7 @@ if (r_one_call_data.status_code == 200):
     # [modifiable] Rounds value to no decimals by default, remove `round()` function to prevent rounding
     curr_weather_data['temp'] = round(one_call_json['current']['temp'])
     curr_weather_data['icon'] = one_call_json['current']['weather'][0]['icon']
-    curr_weather_data['alt-text'] = set_alt_text(curr_weather_data['icon'])
+    curr_weather_data['alt_text'] = set_alt_text(curr_weather_data['icon'])
 
     # Sun Data
     try:
@@ -236,7 +236,7 @@ if (r_one_call_data.status_code == 200):
         rise_min = rise_dt.minute
 
         if (twelveHourTime):
-            rise_hour, sun_data['rise-half'] = find_half_of_day(rise_hour)
+            rise_hour, sun_data['rise_half'] = find_half_of_day(rise_hour)
             sun_data['rise'] = f'{rise_hour}:{rise_min:02d}'
         else:
             sun_data['rise'] = f'{rise_hour:02d}:{rise_min:02d}'
@@ -251,7 +251,7 @@ if (r_one_call_data.status_code == 200):
         set_minute = set_dt.minute
 
         if (twelveHourTime):
-            set_hour, sun_data['set-half'] = find_half_of_day(set_hour)
+            set_hour, sun_data['set_half'] = find_half_of_day(set_hour)
             sun_data['set'] = f'{set_hour}:{set_minute:02d}'
         else:
             sun_data['set'] = f'{set_hour:02d}:{set_minute:02d}'
@@ -316,15 +316,15 @@ if (r_one_call_data.status_code == 200):
         hourly_data.append(
             {
                 'time': None,
-                'half-of-day': None,
-                'prob-of-precip': None,
+                'half_of_day': None,
+                'prob_of_precip': None,
                 'temp': None,
-                'rain-exists': False,
-                'rain-vol': None,
-                'rain-units': 'mm/h',
-                'snow-exists': False,
-                'snow-vol': None,
-                'snow-units': 'mm/h',
+                'rain_exists': False,
+                'rain_vol': None,
+                'rain_units': 'mm/h',
+                'snow_exists': False,
+                'snow_vol': None,
+                'snow_units': 'mm/h',
             }
         )
 
@@ -336,23 +336,23 @@ if (r_one_call_data.status_code == 200):
         hour = hourly_time.hour
 
         if (twelveHourTime):
-            hour, hourly_data[i]['half-of-day'] = find_half_of_day(hour)
+            hour, hourly_data[i]['half_of_day'] = find_half_of_day(hour)
             hourly_data[i]['time'] = f'{hour}'
         else:
             hourly_data[i]['time'] = f'{hour:02d}'
 
         # Probability of Precipitation
-        hourly_data[i]['prob-of-precip'] = one_call_json['hourly'][x]['pop']
+        hourly_data[i]['prob_of_precip'] = one_call_json['hourly'][x]['pop']
 
         # Temp
         hourly_data[i]['temp'] = one_call_json['hourly'][x]['temp']
 
         # Rain & Snow Data
         try:
-            hourly_data[i]['rain-vol'] = one_call_json['hourly'][x]['rain']['1h']
+            hourly_data[i]['rain_vol'] = one_call_json['hourly'][x]['rain']['1h']
 
-            if (hourly_data[i]['rain-vol'] != None):
-                hourly_data[i]['rain-exists'] = True
+            if (hourly_data[i]['rain_vol'] != None):
+                hourly_data[i]['rain_exists'] = True
         except:
             # print('Could not find rain data')
             if (dev_mode):
@@ -360,23 +360,23 @@ if (r_one_call_data.status_code == 200):
                     f'No hourly rain data for json index: {x} | array index: {i}')
 
         try:
-            hourly_data[i]['snow-vol'] = one_call_json['hourly'][x]['snow']['1h']
+            hourly_data[i]['snow_vol'] = one_call_json['hourly'][x]['snow']['1h']
 
-            if (hourly_data[i]['snow-vol'] != None):
-                hourly_data[i]['snow-exists'] = True
+            if (hourly_data[i]['snow_vol'] != None):
+                hourly_data[i]['snow_exists'] = True
         except:
             if (dev_mode):
                 print(
                     f'No hourly snow data for json index: {x} | array index: {i}')
 
-        if (t_units == 'imperial' and (hourly_data[i]['rain-exists'] or hourly_data[i]['snow-exists'])):
-            if (hourly_data[i]['rain-exists']):
-                hourly_data[i]['rain-vol'] *= mm_to_inch
-                hourly_data[i]['rain-units'] = 'in/h'
+        if (t_units == 'imperial' and (hourly_data[i]['rain_exists'] or hourly_data[i]['snow_exists'])):
+            if (hourly_data[i]['rain_exists']):
+                hourly_data[i]['rain_vol'] *= mm_to_inch
+                hourly_data[i]['rain_units'] = 'in/h'
 
-            if (hourly_data[i]['snow-exists']):
-                hourly_data[i]['snow-vol'] *= mm_to_inch
-                hourly_data[i]['snow-units'] = 'in/h'
+            if (hourly_data[i]['snow_exists']):
+                hourly_data[i]['snow_vol'] *= mm_to_inch
+                hourly_data[i]['snow_units'] = 'in/h'
 
     # Daily Data
     for i in range(5):
@@ -384,33 +384,33 @@ if (r_one_call_data.status_code == 200):
             {
                 'date': None,
 
-                'low-temp': None,
-                'high-temp': None,
+                'low_temp': None,
+                'high_temp': None,
 
-                'sun-rise': None,
-                'sun-rise-half-of-day': None,
+                'sun_rise': None,
+                'sun_rise_half_of_day': None,
 
-                'sun-set': None,
-                'sun-set-half-of-day': None,
+                'sun_set': None,
+                'sun_set_half_of_day': None,
 
-                'moon-rise': None,
-                'moon-rise-half-of-day': None,
+                'moon_rise': None,
+                'moon_rise_half_of_day': None,
 
-                'moon-set': None,
-                'moon-set-half-of-day': None,
+                'moon_set': None,
+                'moon_set_half_of_day': None,
 
-                'prob-of-precip': None,
+                'prob_of_precip': None,
 
-                'rain-exists': False,
-                'rain-vol': None,
-                'rain-units': 'mm.',
+                'rain_exists': False,
+                'rain_vol': None,
+                'rain_units': 'mm.',
 
-                'snow-exists': False,
-                'snow-vol': None,
-                'snow-units': 'mm.',
+                'snow_exists': False,
+                'snow_vol': None,
+                'snow_units': 'mm.',
 
                 'icon': None,
-                'alt-text': None,
+                'alt_text': None,
             }
         )
 
@@ -418,111 +418,165 @@ if (r_one_call_data.status_code == 200):
 
         # Date
         daily_data[i]['date'] = one_call_json['daily'][x]['dt']
+        daily_date_dt = datetime.fromtimestamp(daily_data[i]['date'])
+        daily_month = daily_date_dt.month
+
+        match daily_month:
+            case 1:
+                daily_month = 'January'
+            case 2:
+                daily_month = 'February'
+            case 3:
+                daily_month = 'March'
+            case 4:
+                daily_month = 'April'
+            case 5:
+                daily_month = 'May'
+            case 6:
+                daily_month = 'June'
+            case 7:
+                daily_month = 'July'
+            case 8:
+                daily_month = 'August'
+            case 9:
+                daily_month = 'September'
+            case 10:
+                daily_month = 'October'
+            case 11:
+                daily_month = 'November'
+            case 12:
+                daily_month = 'December'
+
+        daily_day = daily_date_dt.day
+
+        daily_date = daily_date_dt.isoweekday()
+
+        match daily_date:
+            case 1:
+                daily_date = 'Monday'
+            case 2:
+                daily_date = 'Tuesday'
+            case 3:
+                daily_date = 'Wednesday'
+            case 4:
+                daily_date = 'Thursday'
+            case 5:
+                daily_date = 'Friday'
+            case 6:
+                daily_date = 'Saturday'
+            case 7:
+                daily_date = 'Sunday'
+
+        daily_data[i]['date'] = f'{daily_date}, {daily_month} {daily_day}'
 
         # Temp
-        daily_data[i]['low-temp'] = one_call_json['daily'][x]['temp']['min']
-        daily_data[i]['high-temp'] = one_call_json['daily'][x]['temp']['max']
+        daily_data[i]['low_temp'] = one_call_json['daily'][x]['temp']['min']
+        daily_data[i]['low_temp'] = round(daily_data[i]['low_temp'])
+
+        daily_data[i]['high_temp'] = one_call_json['daily'][x]['temp']['max']
+        daily_data[i]['high_temp'] = round(daily_data[i]['high_temp'])
 
         # Sun Rise
         try:
-            daily_data[i]['sun-rise'] = one_call_json['daily'][x]['sunrise']
-            daily_dt_s_rise = datetime.fromtimestamp(daily_data[i]['sun-rise'])
+            daily_data[i]['sun_rise'] = one_call_json['daily'][x]['sunrise']
+            daily_dt_s_rise = datetime.fromtimestamp(daily_data[i]['sun_rise'])
             daily_srh = daily_dt_s_rise.hour
             daily_srm = daily_dt_s_rise.minute
 
             if (twelveHourTime):
-                daily_srh, daily_data[i]['sun-rise-half-of-day'] = find_half_of_day(daily_srh)
-                daily_data[i]['sun-rise'] = f'{daily_srh}:{daily_srm:02d}'
+                daily_srh, daily_data[i]['sun_rise_half_of_day'] = find_half_of_day(daily_srh)
+                daily_data[i]['sun_rise'] = f'{daily_srh}:{daily_srm:02d}'
             else:
-                daily_data[i]['sun-rise'] = f'{daily_srh:02d}:{daily_srm:02d}'
+                daily_data[i]['sun_rise'] = f'{daily_srh:02d}:{daily_srm:02d}'
         except:
             if (dev_mode):
                 print('cannot find daily sun rise')
 
         # Sun Set
         try:
-            daily_data[i]['sun-set'] = one_call_json['daily'][i]['sunset']
-            daily_dt_s_set = datetime.fromtimestamp(daily_data[i]['sun-set'])
+            daily_data[i]['sun_set'] = one_call_json['daily'][i]['sunset']
+            daily_dt_s_set = datetime.fromtimestamp(daily_data[i]['sun_set'])
             daily_ssh = daily_dt_s_set.hour
             daily_ssm = daily_dt_s_set.minute
 
             if (twelveHourTime):
-                daily_ssh, daily_data[i]['sun-set-half-of-day'] = find_half_of_day(daily_ssh)
-                daily_data[i]['sun-set'] = f'{daily_ssh}:{daily_ssm:02d}'
+                daily_ssh, daily_data[i]['sun_set_half_of_day'] = find_half_of_day(daily_ssh)
+                daily_data[i]['sun_set'] = f'{daily_ssh}:{daily_ssm:02d}'
             else:
-                daily_data[i]['sun-set'] = f'{daily_ssh:02d}:{daily_ssm:02d}'
+                daily_data[i]['sun_set'] = f'{daily_ssh:02d}:{daily_ssm:02d}'
         except:
             if (dev_mode):
                 print('Cannot find daily sun set')
 
         # Moon Rise
         try:
-            daily_data[i]['moon-rise'] = one_call_json['daily'][i]['moonrise']
-            daily_dt_m_rise = datetime.fromtimestamp(daily_data[i]['moon-rise'])
+            daily_data[i]['moon_rise'] = one_call_json['daily'][i]['moonrise']
+            daily_dt_m_rise = datetime.fromtimestamp(daily_data[i]['moon_rise'])
             daily_mrh = daily_dt_m_rise.hour
             daily_mrm = daily_dt_m_rise.minute
 
             if (twelveHourTime):
-                daily_mrh, daily_data[i]['moon-rise-half-of-day'] = find_half_of_day(daily_mrh)
-                daily_data[i]['moon-rise'] = f'{daily_mrh}:{daily_mrh:02d}'
+                daily_mrh, daily_data[i]['moon_rise_half_of_day'] = find_half_of_day(daily_mrh)
+                daily_data[i]['moon_rise'] = f'{daily_mrh}:{daily_mrh:02d}'
             else:
-                daily_data[i]['moon-rise'] = f'{daily_mrh:02d}:{daily_mrh:02d}'
+                daily_data[i]['moon_rise'] = f'{daily_mrh:02d}:{daily_mrh:02d}'
         except:
             if (dev_mode):
                 print('Cannot find daily moon rise')
 
         # Moon Set
         try:
-            daily_data[i]['moon-set'] = one_call_json['daily'][i]['moonset']
-            daily_dt_m_set = datetime.fromtimestamp(daily_data[i]['moon-set'])
+            daily_data[i]['moon_set'] = one_call_json['daily'][i]['moonset']
+            daily_dt_m_set = datetime.fromtimestamp(daily_data[i]['moon_set'])
             daily_msh = daily_dt_m_set.hour
             daily_msm = daily_dt_m_set.minute
 
             if (twelveHourTime):
-                daily_msh, daily_data[i]['moon-set-half-of-day'] = find_half_of_day(daily_msh)
-                daily_data[i]['moon-set'] = f'{daily_msh}:{daily_msh:02d}'
+                daily_msh, daily_data[i]['moon_set_half_of_day'] = find_half_of_day(daily_msh)
+                daily_data[i]['moon_set'] = f'{daily_msh}:{daily_msh:02d}'
             else:
-                daily_data[i]['moon-set'] = f'{daily_msh:02d}:{daily_msh:02d}'
+                daily_data[i]['moon_set'] = f'{daily_msh:02d}:{daily_msh:02d}'
         except:
             if (dev_mode):
                 print('Cannot find daily moon set')
 
         # Probability of Precipitation
-        daily_data[i]['prob-of-precip'] = one_call_json['daily'][x]['pop']
+        daily_data[i]['prob_of_precip'] = one_call_json['daily'][x]['pop']
+        daily_data[i]['prob_of_precip'] = round(daily_data[i]['prob_of_precip'] * 100)
 
         # Rain & Snow
         try:
-            daily_data[i]['rain-vol'] = one_call_json['daily'][x]['rain']
+            daily_data[i]['rain_vol'] = one_call_json['daily'][x]['rain']
 
-            if (daily_data[i]['rain-vol'] != None):
-                daily_data[i]['rain-exists'] = True
+            if (daily_data[i]['rain_vol'] != None):
+                daily_data[i]['rain_exists'] = True
         except:
             if (dev_mode):
-                print(
-                    f'No daily rain data for json index: {x} | array index: {i}')
+                print(f'No daily rain data for json index: {x} | array index: {i}')
 
         try:
-            daily_data[i]['snow-vol'] = one_call_json['daily'][x]['snow']
+            daily_data[i]['snow_vol'] = one_call_json['daily'][x]['snow']
 
-            if (daily_data[i]['snow-vol'] != None):
-                daily_data[i]['snow-exists'] = True
+            if (daily_data[i]['snow_vol'] != None):
+                daily_data[i]['snow_exists'] = True
         except:
             if (dev_mode):
-                print(
-                    f'No daily snow data for json index: {x} | array index: {i}')
+                print(f'No daily snow data for json index: {x} | array index: {i}')
 
-        if (t_units == 'imperial' and (daily_data[i]['rain-exists'] or daily_data[i]['snow-exists'])):
-            if (daily_data[i]['rain-exists']):
-                daily_data[i]['rain-vol'] *= mm_to_inch
-                daily_data[i]['rain-units'] = 'in.'
+        if (t_units == 'imperial' and (daily_data[i]['rain_exists'] or daily_data[i]['snow_exists'])):
+            if (daily_data[i]['rain_exists']):
+                daily_data[i]['rain_vol'] *= mm_to_inch
+                daily_data[i]['rain_vol'] = round(daily_data[i]['rain_vol'], 2)
+                daily_data[i]['rain_units'] = 'in.'
 
-            if (daily_data[i]['snow-exists']):
-                daily_data[i]['snow-vol'] *= mm_to_inch
-                daily_data[i]['snow-units'] = 'in.'
+            if (daily_data[i]['snow_exists']):
+                daily_data[i]['snow_vol'] *= mm_to_inch
+                daily_data[i]['snow_vol'] = round(daily_data[i]['snow_vol'], 2)
+                daily_data[i]['snow_units'] = 'in.'
 
         # Icon & Alt text
         daily_data[i]['icon'] = one_call_json['daily'][x]['weather'][0]['icon']
-        daily_data[i]['alt-icon'] = set_alt_text(daily_data[i]['icon'])
+        daily_data[i]['alt_icon'] = set_alt_text(daily_data[i]['icon'])
 
 else:
     print(f'Could not get One Call API data: {r_one_call_data.status_code}')
@@ -593,17 +647,17 @@ output = template.render(
 
     # Current Weather Data
     cw_icon = curr_weather_data['icon'],
-    cw_icon_alt = curr_weather_data["alt-text"],
+    cw_icon_alt = curr_weather_data["alt_text"],
     curr_temp = curr_weather_data["temp"],
     curr_description = curr_weather_data['description'],
 
     # Sun Data
     use_half_of_day = twelveHourTime,
     sun_rise_time = sun_data["rise"],
-    sun_rise_half_of_day = sun_data["rise-half"],
+    sun_rise_half_of_day = sun_data["rise_half"],
 
     sun_set_time = sun_data["set"],
-    sun_set_half_of_day = sun_data["set-half"],
+    sun_set_half_of_day = sun_data["set_half"],
 
     # Wind Speed Data
     wind_speed = wind_data["speed"],
@@ -636,6 +690,7 @@ output = template.render(
     hourly_template_data = hourly_data,
 
     # Daily Data
+    daily_template_data = daily_data,
 )
 
 with open("weather.html", "w") as html:

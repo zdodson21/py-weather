@@ -4,32 +4,27 @@ body {
 body .contents .top p {
   text-align: center;
 }
-body .contents .middle .right-side .col-item.humidity img.direction-n {
-  transform: rotate(45deg);
+body .contents .middle .current-weather .cw-top {
+  display: flex;
+  flex-direction: row;
+}
+body .contents .middle .current-weather .cw-bottom {
+  text-align: center;
+}
+body .contents .middle .right-side .col-item {
+  border: 1px solid black;
 }
 body .contents .bottom .hourly-data .chart-horizontal {
   display: block;
 }
-@media (max-aspect-ratio: 1/1) {
-  body .contents .bottom .hourly-data .chart-horizontal {
-    display: none;
-  }
-}
 body .contents .bottom .hourly-data .chart-vertical {
   display: none;
-}
-@media (max-aspect-ratio: 1/1) {
-  body .contents .bottom .hourly-data .chart-vertical {
-    display: block;
-  }
 }
 body .contents .bottom .daily-data {
   display: block;
 }
-@media (max-aspect-ratio: 1/1) {
-  body .contents .bottom .daily-data {
-    display: none;
-  }
+body .contents .bottom .daily-data .daily-item {
+  border: 1px solid blue;
 }
 
 /*# sourceMappingURL=style.css.map */
