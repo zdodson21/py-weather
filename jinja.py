@@ -4,9 +4,9 @@ from jinja2 import Environment, FileSystemLoader
 import os
 import requests
 
-#############
-# Functions #
-#############
+####################
+# Functions & Data #
+####################
 
 
 def find_half_of_day(hour):
@@ -77,42 +77,30 @@ def set_alt_text(icon):
 
     return alt_text
 
-def get_week_day(week_day_num):
-    """
-    Description: returns day of week from inputted isoweekday value
-    """
+weekday = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+]
 
-    match week_day_num:
-        case 1: week_day_num = 'Monday'
-        case 2: week_day_num = 'Tuesday'
-        case 3: week_day_num = 'Wednesday'
-        case 4: week_day_num = 'Thursday'
-        case 5: week_day_num = 'Friday'
-        case 6: week_day_num = 'Saturday'
-        case 7: week_day_num = 'Sunday'
-    
-    return week_day_num
-
-def get_month(month_num):
-    """
-    Description returns month in string format
-    """
-
-    match month_num:
-        case 1: month_num = 'January'
-        case 2: month_num = 'February'
-        case 3: month_num = 'March'
-        case 4: month_num = 'April'
-        case 5: month_num = 'May'
-        case 6: month_num = 'June'
-        case 7: month_num = 'July'
-        case 8: month_num = 'August'
-        case 9: month_num = 'September'
-        case 10: month_num = 'October'
-        case 11: month_num = 'November'
-        case 12: month_num = 'December'
-
-    return month_num
+month = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+]
 
 #################
 # Env Variables #
@@ -258,8 +246,8 @@ if (r_one_call_data.status_code == 200):
     
     # Current Date
     converted_date = datetime.fromtimestamp(one_call_json['current']['dt'])
-    curr_date['weekday'] = get_week_day(converted_date.isoweekday())
-    curr_date['month'] = get_month(converted_date.month)
+    curr_date['weekday'] = weekday[converted_date.isoweekday() - 1]
+    curr_date['month'] = month[converted_date.month - 1]
     curr_date['day'] = converted_date.day
 
     # Current Weather
@@ -476,11 +464,11 @@ if (r_one_call_data.status_code == 200):
         # Date
         daily_data[i]['date'] = one_call_json['daily'][x]['dt']
         daily_date_dt = datetime.fromtimestamp(daily_data[i]['date'])
-        daily_month = get_month(daily_date_dt.month)
+        daily_month = month[daily_date_dt.month - 1]
 
         daily_day = daily_date_dt.day
 
-        daily_date = get_week_day(daily_date_dt.isoweekday())
+        daily_date = weekday[daily_date_dt.isoweekday() - 1]
 
         daily_data[i]['date'] = f'{daily_date}, {daily_month} {daily_day}'
 
