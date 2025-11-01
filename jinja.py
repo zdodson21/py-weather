@@ -92,9 +92,8 @@ LONGITUDE = os.getenv('LONGITUDE')
 # Open Weather API Stuff #
 ##########################
 
-temp_units = ['standard', 'metric', 'imperial']
-# [modifiable] Change this index value if you wish to use different temperature units (Imperial default)
-t_units = temp_units[2]
+temp_units = ['standard', 'metric', 'imperial'] # Kelvin, Celcius, Fahrenheit
+t_units = temp_units[2] # [modifiable] Change this index value if you wish to use different temperature units (Imperial default)
 disp_temp_units = None
 
 match t_units:
@@ -164,8 +163,7 @@ supported_langs = [
     "vi",  # 47: Vietnamese
     "zu",  # 48: Zulu
 ]
-# [modifiable] Change the index value if you wish to use a different language (English default)
-language = supported_langs[14]
+language = supported_langs[14] # [modifiable] Change the index value if you wish to use a different language (English default)
 
 mm_to_inch = 0.03937008  # 1mm = 0.03937008 inch
 
@@ -223,9 +221,7 @@ if (r_one_call_data.status_code == 200):
     # Current Weather
     curr_weather_data['id'] = one_call_json['current']['weather'][0]['id']
     curr_weather_data['forecast'] = one_call_json['current']['weather'][0]['main']
-    curr_weather_data['description'] = (
-        one_call_json['current']['weather'][0]['description']).capitalize()
-    # [modifiable] Rounds value to no decimals by default, remove `round()` function to prevent rounding
+    curr_weather_data['description'] = (one_call_json['current']['weather'][0]['description']).capitalize()
     curr_weather_data['temp'] = round(one_call_json['current']['temp'])
     curr_weather_data['icon'] = one_call_json['current']['weather'][0]['icon']
     curr_weather_data['alt_text'] = set_alt_text(curr_weather_data['icon'])

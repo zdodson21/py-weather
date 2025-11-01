@@ -21,7 +21,9 @@
           </div>
 
           <div class="cw-right">
-            <p>{{ curr_temp }}&#176; {{ temp_unit }}</p>
+            <p>
+              {{ curr_temp }}{% if temp_unit != 'K' %}&#176;{% endif %} {{ temp_unit }}
+            </p>
           </div>
         </div>
 
@@ -138,7 +140,11 @@
           <div class="daily-item">
             <p>{{ item.date }}</p>
 
-            <p>{{ item.low_temp }}&#176; {{temp_unit}} | {{item.high_temp}}&#176; {{temp_unit}}</p>
+            <p>
+              {{ item.low_temp }}{% if temp_unit != 'K' %}&#176;{% endif %} {{ temp_unit }} 
+              | 
+              {{ item.high_temp }}{% if temp_unit != 'K' %}&#176; {% endif %} {{temp_unit}}
+            </p>
 
             {% if item.sun_rise_exists or item.sun_set_exists %}
               <div class="daily-sun">
