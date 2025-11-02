@@ -8,7 +8,6 @@ import requests
 # Functions & Data #
 ####################
 
-
 def find_half_of_day(hour):
     """
     Description: Finds half of day (AM or PM) and adjusts param `half` if needed (subtract 12 from 24 hour clock) \n
@@ -419,9 +418,6 @@ if (r_one_call_data.status_code == 200):
         else:
             hourly_data_labels.append(i['time'])
 
-    print(hourly_temp_values)
-    print(hourly_pop_values)
-    print(hourly_data_labels)
 
     # Daily Data
     for i in range(4):

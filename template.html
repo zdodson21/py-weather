@@ -184,10 +184,27 @@
                   },
                   ticks: {
                     callback: function(value) {
-                      if (value === 0 || value === 100) {
-                        return `${value}%`;
-                      }
+                      if (value === 0 || value === 100) return `${value}%`;
                       return '';
+                    }
+                  }
+                },
+                temperature: {
+                  type: 'linear',
+                  position: 'left',
+                  grid: {
+                    display: false
+                  },
+                  border: {
+                    display: false
+                  },
+                  ticks: {
+                    callback: function(value) {
+                      if ('{{ temp_unit }}' !== 'K' ) { // Not Kelvin
+                        return `${value}° {{ temp_unit }}`;
+                      } else {
+                        return `${value} {{ temp_unit }}`;
+                      }
                     }
                   }
                 }
