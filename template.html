@@ -145,16 +145,21 @@
               datasets: [
                 {
                   type: 'line',
-                  backgroundColor: 'ffcc63',
                   borderColor: '#ffcc63',
                   data: {{ chart_temp_dataset }},
                   yAxisID: 'temperature',
+                  pointRadius: 0,
+                  fill: true,
+                  tension: 0.1,
                 },
                 {
                   type: 'bar',
                   backgroundColor: '#00a1e7',
                   data: {{ chart_pop_dataset }},
                   yAxisID: 'precipitation',
+                  fill: true,
+                  barPercentage: 1.0,
+                  categoryPercentage: 1.0,
                 },
               ],
               labels: {{ chart_labels }},
@@ -186,17 +191,14 @@
                     display: false,
                   },
                   ticks: {
-                    callback: function(value) {
-                      if (value === 0 || value === 100) return `${value}%`;
-                      return '';
-                    }
+                    callback: function(value) { return `${value}%`; }
                   }
                 },
                 temperature: {
                   type: 'linear',
                   position: 'left',
                   grid: {
-                    display: false
+                    display: true
                   },
                   border: {
                     display: false
