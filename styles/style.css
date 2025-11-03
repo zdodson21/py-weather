@@ -1,12 +1,14 @@
 body {
   font-family: sans-serif;
+  overflow: hidden;
 }
 body .contents .top {
   display: flex;
   flex-direction: row;
+  height: 10%;
 }
 body .contents .top .location {
-  width: 50%;
+  width: 40%;
 }
 body .contents .top .location p {
   text-align: center;
@@ -14,7 +16,7 @@ body .contents .top .location p {
 body .contents .top .space-objects {
   display: flex;
   flex-direction: row;
-  width: 50%;
+  width: 60%;
 }
 body .contents .top .space-objects .sun {
   width: 50%;
@@ -22,7 +24,7 @@ body .contents .top .space-objects .sun {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
 }
 body .contents .top .space-objects .sun p {
   text-align: center;
@@ -36,7 +38,7 @@ body .contents .top .space-objects .moon {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
 }
 body .contents .top .space-objects .moon p {
   text-align: center;
@@ -44,15 +46,35 @@ body .contents .top .space-objects .moon p {
 body .contents .top .space-objects .moon {
   border-left: 1px solid black;
 }
+body .contents .middle {
+  display: flex;
+  flex-direction: row;
+}
+body .contents .middle .current-weather {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40%;
+}
 body .contents .middle .current-weather .cw-top {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 body .contents .middle .current-weather .cw-bottom {
   text-align: center;
 }
+body .contents .middle .right-side {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 60%;
+}
 body .contents .middle .right-side .col-item {
-  border: 1px solid black;
+  display: flex;
+  border: 1px solid red;
+  height: 24%;
+  width: 48%;
 }
 body .contents .bottom .hourly-data .chart {
   display: block;

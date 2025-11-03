@@ -6,6 +6,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Ensures any commands that display content are displayed on the proper screen
+# Check to see if this only should be set when using SSH
 export DISPLAY=:0
 
 # Ensures script is being run within Python venv
@@ -15,8 +16,10 @@ if [[ -z "${VIRTUAL_ENV}" ]]; then
     exit 1
 fi
 
+python jinja.py
+
 # ! Firefox screenshot command:
-firefox --headless --screenshot "$(pwd)/screenshot.png" --window-size 800,480 "file://$(pwd)/weather.html"
+firefox --screenshot "$(pwd)/screenshot.png" --timeout 5000 --window-size 800,480 "file://$(pwd)/weather.html"
 
 
 # TODO this is where the timer will be set, and more
