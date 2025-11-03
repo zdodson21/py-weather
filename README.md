@@ -19,7 +19,6 @@ git pull
 
 ### Required Packages
 
-
 #### Firefox (should come pre-installed on Raspberry Pi OS)
 
 ```bash
@@ -79,13 +78,11 @@ export PIPENV_VENV_IN_PROJECT=1
 
 ```bash
 # Install dependencies
-
 pipenv install
 ```
 
 ```bash
 # Enter virtual environment
-
 pipenv shell
 ```
 
@@ -93,7 +90,6 @@ pipenv shell
 
 ```bash
 # Run Jinja Python Script (must be in virtual environment)
-
 python jinja.py
 ```
 
@@ -130,6 +126,28 @@ For this project to run you must complete the following:
 1. Rename `.sample.env` to `.env`
 
 You should now be able to properly populate an html file from the `template.html` file by running the `python jinja.py` command.
+
+## Managing the Process
+
+### Starting It
+
+You can either run the following command natively in your Raspberry Pi's terminal, or you can connect to it via ssh.
+Just ensure you run the following command from the root directory of this project while in your Python virtual environment.
+
+```bash
+# Start the program
+source run.sh
+```
+
+### Killing It
+
+To kill the process, run the following command:
+
+```bash
+
+```
+
+---
 
 ## Some Weather Terms Explained
 
