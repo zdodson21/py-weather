@@ -46,20 +46,22 @@ which is included with Python, and [Pipenv](https://pipenv.pypa.io/en/latest/), 
 
 ```bash
 # Set up .venv
-
 python -m venv .venv
 ```
 
 ```bash
 # Enter virtual environment 
-
 source .venv/bin/activate
 ```
 
 ```bash
 # Install packages
+pip install requests jinja2 python-dotenv playwright
+```
 
-pip install requests jinja2 python-dotenv selenium webdriver-manager
+```bash
+# Install playwright
+playwright install
 ```
 
 #### Using Pipenv
@@ -84,6 +86,11 @@ pipenv install
 ```bash
 # Enter virtual environment
 pipenv shell
+```
+
+```bash
+# Install playwright
+playwright install
 ```
 
 #### Running the Project

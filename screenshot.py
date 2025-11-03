@@ -1,28 +1,17 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
-import pathlib
+import asyncio
+from pathlib import Path
+from playwright.async_api import async_playwright
 
-# Path to your local HTML file
-html_path = pathlib.Path("weather.html").resolve().as_uri()   # converts to file:// URL
+async def capture():
+    html_path = Path("weather.html").resolve().as_uri()
 
-width = 800
-height = 480
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True)
+        page = await browser.new_page(viewport={"width": 1280, "height": 800})
+        await page.goto(html_path)
+        # Full‑page screenshot:
+        await page.screenshot(path="screenshot.png")
+        await browser.close()
+        print("✅ Screenshot saved as screenshot.png")
 
-chrome_options = Options()
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--disable-gpu")
-chrome_options.add_argument(f"--window-size={width},{height + 139}")
-
-driver = webdriver.Chrome(
-    service=Service(ChromeDriverManager().install()),
-    options=chrome_options,
-)
-
-try:
-    driver.get(html_path)               # load the file
-    driver.save_screenshot("screenshot.png")
-    print("✅ Screenshot saved as screenshot.png")
-finally:
-    driver.quit()
+asyncio.run(capture())
