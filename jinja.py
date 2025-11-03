@@ -211,6 +211,14 @@ sun_data = {
     'set': None,
     'set_half': None,
 }
+
+moon_data = {
+    'rise': None,
+    'rise_half': None,
+
+    'set': None,
+    'set_half': None,
+}
 pressure_data = None
 humidity_data = None
 dew_point_data = None
@@ -292,6 +300,41 @@ if (r_one_call_data.status_code == 200):
     except:
         if (dev_mode):
             print('Could not find sun set for current weather')
+
+    # Moon Data
+    try:
+        moon_data['rise'] = one_call_json['daily'][0]['moonrise']
+
+        if (moon_data['rise'] != None):
+            mrise_dt = datetime.fromtimestamp(moon_data['rise'])
+            mrise_hour = mrise_dt.hour
+            mrise_min = mrise_dt.minute
+
+            if (twelveHourTime):
+                mrise_hour, moon_data['rise_half'] = find_half_of_day(mrise_hour)
+                moon_data['rise'] = f'{mrise_hour}:{mrise_min:02d}'
+            else:
+                moon_data['rise'] = f'{mrise_hour:02d}:{mrise_min:02d}'
+    except:
+        if (dev_mode):
+            print('Could not find moon rise data for daily weather index 0')
+
+    try:
+        moon_data['set'] = one_call_json['daily'][0]['moonset']
+
+        if (moon_data['set'] != None):
+            mset_dt = datetime.fromtimestamp(moon_data['set'])
+            mset_hour = mset_dt.hour
+            mset_min = mset_dt.minute
+
+            if (twelveHourTime):
+                mset_hour, moon_data['set_half'] = find_half_of_day(mset_hour)
+                moon_data['set'] = f'{mset_hour}:{mset_min:02d}'
+            else:
+                moon_data['set'] = f'{mset_hour:02d}:{mset_min:02d}'
+    except:
+        if (dev_mode):
+            print('Could not find moon set data for daily weather index 0')
 
     # Wind Speed
     wind_data['speed'] = round(one_call_json['current']['wind_speed'])
@@ -653,6 +696,9 @@ output = template.render(
 
     # Sun Data
     sun = sun_data,
+
+    # Moon Data
+    moon = moon_data,
 
     # Wind Speed Data
     wind = wind_data,

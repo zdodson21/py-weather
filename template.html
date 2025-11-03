@@ -10,8 +10,83 @@
 <body>
   <div class="contents">
     <div class="top">
-      <p>{{ location.name }}, {{ location.state }}</p>
-      <p>{{ date.weekday }}, {{ date.month }} {{ date.day }}</p>
+      <div class="location">
+        <p>{{ location.name }}, {{ location.state }}</p>
+        <p>{{ date.weekday }}, {{ date.month }} {{ date.day }}</p>
+      </div>
+      <div class="space-objects">
+        <div class="sun">
+          <div class="sun-rise">
+            {% if sun.rise != None %}
+              <p>
+                <time datetime="{{ sun.rise }}">{{ sun.rise }}</time> 
+                
+                {% if use_half_of_day %}
+                {{ sun.rise_half }}
+                {% endif %}
+              </p>
+            {% else %}
+              <p>
+                ---
+              </p>
+            {% endif %}
+          </div>
+
+          <img src="./icons/01d.png" alt="sun icon">
+
+          <div class="sun-set">
+            {% if sun.set != None %}
+              <p>
+                <time datetime="{{ sun.set }}">{{ sun.set }}</time>
+                
+                {% if use_half_of_day %}  
+                  {{ sun.set_half }}
+                {% endif %}
+              </p>
+            {% else %}
+              <p>
+                ---
+              </p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="moon">
+          <div class="moon-rise">
+            {% if moon.rise != None %}
+              <p>
+                <time datetime="{{ moon.rise }}">{{ moon.rise }}</time>
+  
+                {% if use_half_of_day %}
+                  {{ moon.rise_half }}
+                {% endif %}
+              </p>
+            {% else %}
+              <p>
+                ---
+              </p>
+            {% endif %}
+          </div>
+
+          <img src="./icons/01n.png" alt="moon icon">
+
+          <div class="moon-set">
+            {% if moon.set != None %}
+              <p>
+                <time datetime="{{ moon.set }}">{{ moon.set }}</time>
+  
+                {% if use_half_of_day %}
+                  {{ moon.set_half }}
+                {% endif %}
+              </p>
+            {% else %}
+              <p>
+                ---
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="middle">
@@ -35,25 +110,6 @@
 
       <div class="right-side">
         <!-- TODO use CSS grid here -->
-        <div class="sun-data sun-rise col-item">
-          <p>Sunrise</p>
-          <img src="./icons/01d.png" alt="sun rise icon">
-
-          {% if sun.rise != None %}
-            <p>
-              <time datetime="{{ sun.rise }}">{{ sun.rise }}</time> 
-
-              {% if use_half_of_day %}
-                {{ sun.rise_half }}
-              {% endif %}
-            </p>
-          {% else %}
-            <p>
-              ---
-            </p>
-          {% endif %}
-        </div>
-
         <div class="wind-speed col-item">
           <p>Wind Speed</p>
           <img src="./icons/direction-arrow-{{ wind.deg }}.png" alt="wind icon">
@@ -70,25 +126,6 @@
           <p>Visibility</p>
           <img src="./icons/50n.png" alt="visibility icon">
           <p>{{ visibility.symbol }} {{ visibility.distance }} km</p>
-        </div>
-
-        <div class="sun-data sun-rise col-item">
-          <p>Sunset</p>
-          <img src="./icons/01d.png" alt="sun set icon">
-
-          {% if sun.set != None %}
-            <p>
-              <time datetime="{{ sun.set }}">{{ sun.set }}</time>
-              
-              {% if use_half_of_day %}  
-                {{ sun.set_half }}
-              {% endif %}
-            </p>
-          {% else %}
-          <p>
-            ---
-          </p>
-          {% endif %}
         </div>
 
         <div class="pressure col-item">
