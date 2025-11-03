@@ -414,7 +414,7 @@ if (r_one_call_data.status_code == 200):
         hourly_pop_values.append(i['prob_of_precip'])
 
         if (twelveHourTime):
-            hourly_data_labels.append(f'{i['time']} {i['half_of_day']}')
+            hourly_data_labels.append(f"{i['time']} {i['half_of_day']}")
         else:
             hourly_data_labels.append(i['time'])
 
