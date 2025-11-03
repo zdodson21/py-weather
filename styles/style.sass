@@ -3,8 +3,40 @@ body
 
     .contents
         .top
-            p
-                text-align: center
+            display: flex
+            flex-direction: row
+
+            .location
+                width: 50%
+
+                p
+                    text-align: center
+
+            .space-objects
+                display: flex
+                flex-direction: row
+                width: 50%
+
+                @mixin sun-moon-common()
+                    width: 50%
+                    display: flex
+                    flex-direction: row
+                    justify-content: center
+                    align-items: center
+                    gap: 4px
+
+                    p
+                        text-align: center
+
+                .sun
+                    @include sun-moon-common()
+                    border-right: 1px solid black
+
+                .moon
+                    @include sun-moon-common()
+                    border-left: 1px solid black
+                    
+                    
         
         .middle
             .current-weather
