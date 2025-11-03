@@ -5,6 +5,9 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
+# Ensures any commands that display content are displayed on the proper screen
+export DISPLAY=:0
+
 # Ensures script is being run within Python venv
 if [[ -z "${VIRTUAL_ENV}" ]]; then
     echo -e "${RED}Error:${NC} Not running in Python virtual environment"
@@ -13,7 +16,7 @@ if [[ -z "${VIRTUAL_ENV}" ]]; then
 fi
 
 # ! Firefox screenshot command:
-# firefox --headless --screenshot "$(pwd)/screenshot.png" --window-size 800,480 "file://$(pwd)/weather.html"
+firefox --headless --screenshot "$(pwd)/screenshot.png" --window-size 800,480 "file://$(pwd)/weather.html"
 
 
 # TODO this is where the timer will be set, and more
