@@ -59,7 +59,7 @@ source .venv/bin/activate
 ```bash
 # Install packages
 
-pip install requests jinja2 python-dotenv
+pip install requests jinja2 python-dotenv selenium webdriver-manager
 ```
 
 #### Using Pipenv

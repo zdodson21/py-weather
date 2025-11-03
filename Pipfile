@@ -7,6 +7,8 @@ name = "pypi"
 requests = "*"
 jinja2 = "*"
 python-dotenv = "*"
+selenium = "*"
+webdriver-manager = "*"
 
 [dev-packages]
 

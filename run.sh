@@ -16,10 +16,11 @@ if [[ -z "${VIRTUAL_ENV}" ]]; then
     exit 1
 fi
 
+# Fill template and output to weather.html
 python jinja.py
 
-# ! Firefox screenshot command:
-firefox --screenshot "$(pwd)/screenshot.png" --timeout 5000 --window-size 800,480 "file://$(pwd)/weather.html"
+# Obtain Screenshot
+python screenshot.py
 
 
 # TODO this is where the timer will be set, and more
