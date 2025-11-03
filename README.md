@@ -135,8 +135,8 @@ You can either run the following command natively in your Raspberry Pi's termina
 Just ensure you run the following command from the root directory of this project while in your Python virtual environment.
 
 ```bash
-# Start the program
-source run.sh
+# Start the program (if this does not work, then try `source`)
+bash run.sh
 ```
 
 ### Killing It
