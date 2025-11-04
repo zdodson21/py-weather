@@ -10,7 +10,6 @@ async def capture():
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page(viewport={"width": screen['width'], "height": screen['height']})
         await page.goto(html_path)
-        # Full‑page screenshot:
         await page.screenshot(path="screenshot.png")
         await browser.close()
         print("✅ Screenshot saved as screenshot.png")
