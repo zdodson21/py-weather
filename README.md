@@ -7,7 +7,7 @@ it is still assumed that you have at least a basic understanding of Python to be
 able to read and understand the code written here in order to configure this program
 for your personal use.**
 
-**For modifiable values, search for the string `[modifiable]` in the `jinja.py` file.**
+**Please see `config.py` for any configuration**
 
 ## Setup / Commands
 
@@ -39,7 +39,7 @@ source .venv/bin/activate
 
 ```bash
 # Install packages
-pip install requests jinja2 python-dotenv playwright
+pip install requests jinja2 python-dotenv playwright ipykernel
 ```
 
 ```bash
@@ -79,7 +79,12 @@ playwright install
 #### Running the Project
 
 ```bash
-# Run Jinja Python Script (must be in virtual environment)
+# Start program (must be in virtual environment)
+bash run.sh
+```
+
+```bash
+# Run Jinja Python Script (on its own) (must be in virtual environment)
 python jinja.py
 ```
 
@@ -106,7 +111,7 @@ For this project to run you must complete the following:
      You should audit / test this code yourself to ensure you will not exceed the API call limit, especially if you modify it for your needs.
    - This project uses the following APIs:
      - [One Call](https://openweathermap.org/api/one-call-3)
-     - [Geocoding](https://openweathermap.org/api/geocoding-api)
+     - [Geocoding](https://openweathermap.org/api/geocoding-api) (optional)
      - [Air Pollution](https://openweathermap.org/api/air-pollution)
 
 1. Populate the environment variables with your API key & coordinates. You are responsible for finding the coordinates you wish to use.

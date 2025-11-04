@@ -10,6 +10,7 @@ python-dotenv = "*"
 selenium = "*"
 webdriver-manager = "*"
 playwright = "*"
+ipykernel = "*"
 
 [dev-packages]
 
