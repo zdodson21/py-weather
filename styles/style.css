@@ -8,7 +8,7 @@ body .contents .top {
   height: 10%;
 }
 body .contents .top .location {
-  width: 40%;
+  width: 50%;
 }
 body .contents .top .location p {
   text-align: center;
@@ -16,7 +16,7 @@ body .contents .top .location p {
 body .contents .top .space-objects {
   display: flex;
   flex-direction: row;
-  width: 60%;
+  width: 50%;
 }
 body .contents .top .space-objects .sun {
   width: 50%;
@@ -47,6 +47,7 @@ body .contents .top .space-objects .moon {
   border-left: 1px solid black;
 }
 body .contents .middle {
+  height: 30%;
   display: flex;
   flex-direction: row;
 }
@@ -54,27 +55,53 @@ body .contents .middle .current-weather {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 40%;
+  width: 50%;
 }
 body .contents .middle .current-weather .cw-top {
   display: flex;
   flex-direction: row;
+  height: 80%;
   align-items: center;
+  gap: 1em;
+}
+body .contents .middle .current-weather .cw-top img {
+  width: 8em;
+  image-rendering: optimizeQuality;
+}
+body .contents .middle .current-weather .cw-top p {
+  font-size: 24px;
 }
 body .contents .middle .current-weather .cw-bottom {
   text-align: center;
+  height: 20%;
 }
 body .contents .middle .right-side {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  width: 60%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 8px;
+  width: 50%;
 }
 body .contents .middle .right-side .col-item {
   display: flex;
-  border: 1px solid red;
-  height: 24%;
-  width: 48%;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-around;
+  padding: 0px 1em;
+}
+body .contents .middle .right-side .col-item .img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+}
+body .contents .middle .right-side .col-item .item-text {
+  display: block;
+  text-align: center;
+  width: 50%;
+}
+body .contents .bottom {
+  height: 20%;
 }
 body .contents .bottom .hourly-data .chart {
   display: block;

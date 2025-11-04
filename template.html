@@ -110,53 +110,92 @@
       </div>
 
       <div class="right-side">
-        <!-- TODO use CSS grid here -->
         <div class="wind-speed col-item">
-          <p>Wind Speed</p>
-          <img src="./icons/direction-arrow-{{ wind.deg }}.png" alt="wind icon">
-          <p>{{ wind.speed }} {{ speed_unit }}</p>
+          <div class="img-container">
+            <img src="./icons/direction-arrow-{{ wind.deg }}.png" alt="wind icon">
+          </div>
+
+          <div class="item-text">
+            <p>Wind Speed:</p>
+            <p>{{ wind.speed }} {{ speed_unit }}</p>
+          </div>
         </div>
 
         <div class="humidity col-item">
-          <p>Humidity</p>
-          <img src="./icons/50d.png" alt="humidity icon">
-          <p>{{ humidity }}%</p>
+          <div class="img-container">
+            <img src="./icons/50d.png" alt="humidity icon">
+          </div>
+
+          <div class="item-text">
+            <p>Humidity</p>
+            <p>{{ humidity }}%</p>
+          </div>
         </div>
 
         <div class="visibility col-item">
-          <p>Visibility</p>
-          <img src="./icons/50n.png" alt="visibility icon">
-          <p>{{ visibility.symbol }} {{ visibility.distance }} km</p>
+          <div class="img-container">
+            <img src="./icons/50n.png" alt="visibility icon">
+          </div>
+          
+          <div class="item-text">
+            <p>Visibility</p>
+            <p>{{ visibility.symbol }} {{ visibility.distance }} km</p>
+          </div>
         </div>
 
         <div class="pressure col-item">
-          <p>Pressure</p>
-          <img src="./icons/03d.png" alt="pressure icon">
-          <p>{{ pressure }} hPa</p>
+          <div class="img-container">
+            <img src="./icons/03d.png" alt="pressure icon">
+          </div>
+          
+          <div class="item-text">
+            <p>Pressure</p>
+            <p>{{ pressure }} hPa</p>
+          </div>
         </div>
 
         <div class="uvindex col-item">
-          <p>UV Index</p>
-          <img src="./icons/01d.png" alt="ultra violet index icon">
-          <p>{{ uvi }}</p>
+          <div class="img-container">
+            <img src="./icons/01d.png" alt="ultra violet index icon">
+          </div>
+          
+          <div class="item-text">
+            <p>UV Index</p>
+            <p>{{ uvi }}</p>
+          </div>
         </div>
 
         <div class="air-quality col-item">
-          <p>Air Quality</p>
-          <img src="./icons/50n.png" alt="air icon" />
-          <p>{{ aqi }}</p>
+          <div class="img-container">
+            <img src="./icons/50n.png" alt="air icon" />
+          </div>
+          
+          <div class="item-text">
+            <p>Air Quality</p>
+            <p>{{ aqi }}</p>
+          </div>
         </div>
 
         <div class="dew-point col-item">
-          <p>Dew Point</p>
-          <img src="./icons/50d.png" alt="dew point icon">
-          <p>{{ dew_point }}&#176; {{ temp_unit }}</p>
+          <div class="img-container">
+            <img src="./icons/50d.png" alt="dew point icon">
+          </div>
+          
+          <div class="item-text">
+            <p>Dew Point</p>
+            <p>{{ dew_point }}&#176; {{ temp_unit }}</p>
+          </div>
         </div>
 
         <div class="cloud-coverage col-item">
-          <p>Cloud Coverage</p>
-          <img src="./icons/03d.png" alt="cloudiness icon">
-          <p>{{ cloud_coverage }}%</p>
+          <div class="img-container">
+            <img src="./icons/03d.png" alt="cloudiness icon">
+          </div>
+          
+          <div class="item-text">
+            <p>Cloud Coverage</p>
+            <p>{{ cloud_coverage }}%</p>
+          </div>
         </div>
 
         <!-- TODO acquire and display rain and snow data -->
