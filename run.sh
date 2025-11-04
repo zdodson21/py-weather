@@ -23,6 +23,7 @@ python jinja.py
 python screenshot.py
 
 # Display Screenshot
+nohup eom -f screenshot.png &
 
 # TODO this is where the timer will be set, and more
 # Need to run command so this can run independently as a process
