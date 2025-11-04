@@ -1,8 +1,19 @@
-from dotenv import load_dotenv
+from config import (
+    config_speed_units, 
+    config_temp_units, 
+    dev_mode, 
+    geocode,
+    language,
+    twelve_hour_time, 
+)
 from datetime import datetime
-from jinja2 import Environment, FileSystemLoader
-import os
-import requests
+from dotenv import load_dotenv
+from jinja2 import (
+    Environment,
+    FileSystemLoader,
+)
+from os import getenv
+from requests import get
 
 ####################
 # Functions & Data #
@@ -106,96 +117,34 @@ month = [
 #################
 load_dotenv()
 
-API_KEY = os.getenv('API_KEY')
-LATITUDE = os.getenv('LATITUDE')
-LONGITUDE = os.getenv('LONGITUDE')
+API_KEY = getenv('API_KEY')
+LATITUDE = getenv('LATITUDE')
+LONGITUDE = getenv('LONGITUDE')
 
-##########################
-# Open Weather API Stuff #
-##########################
+##############
+# Set Config #
+##############
 
-temp_units = ['standard', 'metric', 'imperial'] # Kelvin, Celcius, Fahrenheit
-t_units = temp_units[2] # [modifiable] Change this index value if you wish to use different temperature units (Imperial default)
 disp_temp_units = None
-
-match t_units:
+match config_temp_units:
     case 'standard': disp_temp_units = 'K'
     case 'metric': disp_temp_units = 'C'
     case 'imperial': disp_temp_units = 'F'
     case _: disp_temp_units = 'K'
 
-speed_units = ['standard', 'imperial']
-s_units = speed_units[1]
-
+s_units = config_speed_units
 match s_units:
     case 'standard': s_units = 'm/s'
     case 'imperial': s_units = 'mph'
     case _: s_units = 'm/s'
 
-twelveHourTime = True  # [modifiable] Change to false to use a 24 hour clock
-
-supported_langs = [
-    "sq",  # 0: Albanian
-    "af",  # 1: Afrikaans
-    "ar",  # 2: Arabic
-    "az",  # 3: Azerbaijani
-    "eu",  # 4: Basque
-    "be",  # 5: Belarusian
-    "bg",  # 6: Bulgarian
-    "ca",  # 7: Catalan
-    "zh_cn",  # 8: Chinese Simplified
-    "zh_tw",  # 9: Chinese Traditional
-    "hr",  # 10: Croatian
-    "cz",  # 11: Czech
-    "da",  # 12: Danish
-    "nl",  # 13: Dutch
-    "en",  # 14: English
-    "fi",  # 15: Finnish
-    "fr",  # 16: French
-    "gl",  # 17: Galician
-    "de",  # 18: German
-    "el",  # 19: Greek
-    "he",  # 20: Hebrew
-    "hi",  # 21: Hindi
-    "hu",  # 22: Hungarian
-    "is",  # 23: Icelandic
-    "id",  # 24: Indonesian
-    "it",  # 25: Italian
-    "ja",  # 26: Japanese
-    "kr",  # 27: Korean
-    "ku",  # 28: Kurmanji (Kurdish)
-    "la",  # 29: Latvian
-    "lt",  # 30: Lithuanian
-    "mk",  # 31: Macedonian
-    "no",  # 32: Norwegian
-    "fa",  # 33: Persian (Farsi)
-    "pl",  # 34: Polish
-    "pt",  # 35: Portuguese
-    "pt_br",  # 36: Português Brasil
-    "ro",  # 37: Romanian
-    "ru",  # 38: Russian
-    "sr",  # 39: Serbian
-    "sk",  # 40: Slovak
-    "sl",  # 41: Slovenian
-    "sp",  # 42: Spanish
-    "se",  # 43: Swedish
-    "th",  # 44: Thai
-    "tr",  # 45: Turkish
-    "uk",  # 46: Ukranian
-    "vi",  # 47: Vietnamese
-    "zu",  # 48: Zulu
-]
-language = supported_langs[14] # [modifiable] Change the index value if you wish to use a different language (English default)
-
 mm_to_inch = 0.03937008  # 1mm = 0.03937008 inch
-
-dev_mode = False
 
 #####################
 # One Call API Data #
 #####################
 
-one_call_api: str = f'https://api.openweathermap.org/data/3.0/onecall?lat={LATITUDE}&lon={LONGITUDE}&exclude=minutely,alerts&units={t_units}&lang={language}&appid={API_KEY}'
+one_call_api: str = f'https://api.openweathermap.org/data/3.0/onecall?lat={LATITUDE}&lon={LONGITUDE}&exclude=minutely,alerts&units={config_temp_units}&lang={language}&appid={API_KEY}'
 # https://openweathermap.org/api/one-call-3#parameter
 
 curr_date = {
@@ -246,7 +195,7 @@ curr_weather_data = {
 hourly_data = []
 daily_data = []
 
-r_one_call_data = requests.get(one_call_api)
+r_one_call_data = get(one_call_api)
 
 if (r_one_call_data.status_code == 200):
     one_call_json = r_one_call_data.json()
@@ -275,7 +224,7 @@ if (r_one_call_data.status_code == 200):
             rise_hour = rise_dt.hour
             rise_min = rise_dt.minute
 
-            if (twelveHourTime):
+            if (twelve_hour_time):
                 rise_hour, sun_data['rise_half'] = find_half_of_day(rise_hour)
                 sun_data['rise'] = f'{rise_hour}:{rise_min:02d}'
             else:
@@ -292,7 +241,7 @@ if (r_one_call_data.status_code == 200):
             set_hour = set_dt.hour
             set_minute = set_dt.minute
 
-            if (twelveHourTime):
+            if (twelve_hour_time):
                 set_hour, sun_data['set_half'] = find_half_of_day(set_hour)
                 sun_data['set'] = f'{set_hour}:{set_minute:02d}'
             else:
@@ -310,7 +259,7 @@ if (r_one_call_data.status_code == 200):
             mrise_hour = mrise_dt.hour
             mrise_min = mrise_dt.minute
 
-            if (twelveHourTime):
+            if (twelve_hour_time):
                 mrise_hour, moon_data['rise_half'] = find_half_of_day(mrise_hour)
                 moon_data['rise'] = f'{mrise_hour}:{mrise_min:02d}'
             else:
@@ -327,7 +276,7 @@ if (r_one_call_data.status_code == 200):
             mset_hour = mset_dt.hour
             mset_min = mset_dt.minute
 
-            if (twelveHourTime):
+            if (twelve_hour_time):
                 mset_hour, moon_data['set_half'] = find_half_of_day(mset_hour)
                 moon_data['set'] = f'{mset_hour}:{mset_min:02d}'
             else:
@@ -411,7 +360,7 @@ if (r_one_call_data.status_code == 200):
         hourly_time = datetime.fromtimestamp(hourly_data[i]['time'])
         hour = hourly_time.hour
 
-        if (twelveHourTime):
+        if (twelve_hour_time):
             hour, hourly_data[i]['half_of_day'] = find_half_of_day(hour)
             hourly_data[i]['time'] = f'{hour}'
         else:
@@ -439,7 +388,7 @@ if (r_one_call_data.status_code == 200):
                 print(
                     f'No hourly snow data for json index: {x} | array index: {i}')
 
-        if (t_units == 'imperial' and (hourly_data[i]['rain_vol'] != None or hourly_data[i]['snow_vol'] != None)):
+        if (config_temp_units == 'imperial' and (hourly_data[i]['rain_vol'] != None or hourly_data[i]['snow_vol'] != None)):
             if (hourly_data[i]['rain_vol'] != None):
                 hourly_data[i]['rain_vol'] *= mm_to_inch
                 hourly_data[i]['rain_units'] = 'in/h'
@@ -456,7 +405,7 @@ if (r_one_call_data.status_code == 200):
         hourly_temp_values.append(i['temp'])
         hourly_pop_values.append(i['prob_of_precip'])
 
-        if (twelveHourTime):
+        if (twelve_hour_time):
             hourly_data_labels.append(f"{i['time']} {i['half_of_day']}")
         else:
             hourly_data_labels.append(i['time'])
@@ -527,7 +476,7 @@ if (r_one_call_data.status_code == 200):
                 daily_srh = daily_dt_s_rise.hour
                 daily_srm = daily_dt_s_rise.minute
 
-                if (twelveHourTime):
+                if (twelve_hour_time):
                     daily_srh, daily_data[i]['sun_rise_half_of_day'] = find_half_of_day(daily_srh)
                     daily_data[i]['sun_rise'] = f'{daily_srh}:{daily_srm:02d}'
                 else:
@@ -545,7 +494,7 @@ if (r_one_call_data.status_code == 200):
                 daily_ssh = daily_dt_s_set.hour
                 daily_ssm = daily_dt_s_set.minute
 
-                if (twelveHourTime):
+                if (twelve_hour_time):
                     daily_ssh, daily_data[i]['sun_set_half_of_day'] = find_half_of_day(daily_ssh)
                     daily_data[i]['sun_set'] = f'{daily_ssh}:{daily_ssm:02d}'
                 else:
@@ -563,7 +512,7 @@ if (r_one_call_data.status_code == 200):
                 daily_mrh = daily_dt_m_rise.hour
                 daily_mrm = daily_dt_m_rise.minute
 
-                if (twelveHourTime):
+                if (twelve_hour_time):
                     daily_mrh, daily_data[i]['moon_rise_half_of_day'] = find_half_of_day(daily_mrh)
                     daily_data[i]['moon_rise'] = f'{daily_mrh}:{daily_mrh:02d}'
                 else:
@@ -581,7 +530,7 @@ if (r_one_call_data.status_code == 200):
                 daily_msh = daily_dt_m_set.hour
                 daily_msm = daily_dt_m_set.minute
 
-                if (twelveHourTime):
+                if (twelve_hour_time):
                     daily_msh, daily_data[i]['moon_set_half_of_day'] = find_half_of_day(daily_msh)
                     daily_data[i]['moon_set'] = f'{daily_msh}:{daily_msh:02d}'
                 else:
@@ -606,7 +555,7 @@ if (r_one_call_data.status_code == 200):
             if (dev_mode):
                 print(f'No daily snow data for json index: {x} | array index: {i}')
 
-        if (t_units == 'imperial'):
+        if (config_temp_units == 'imperial'):
             if (daily_data[i]['rain_vol'] != None):
                 daily_data[i]['rain_vol'] = round(daily_data[i]['rain_vol'] * mm_to_inch, 2)
 
@@ -631,7 +580,7 @@ else:
 air_quality_api: str = f'http://api.openweathermap.org/data/2.5/air_pollution?lat={LATITUDE}&lon={LONGITUDE}&appid={API_KEY}'
 aqi_data = None
 
-r_air_quality_data = requests.get(air_quality_api)
+r_air_quality_data = get(air_quality_api)
 
 if (r_air_quality_data.status_code == 200):
     air_quality_json = r_air_quality_data.json()
@@ -652,25 +601,25 @@ else:
 ####################
 # Geocoding API Data
 ####################
-
-geocoding_api: str = f'http://api.openweathermap.org/geo/1.0/reverse?lat={LATITUDE}&lon={LONGITUDE}&limit=1&appid={API_KEY}'
-
 location_data = {
     'name': None,
     'country': None,
     'state': None,
 }
 
-r_geocoding_data = requests.get(geocoding_api)
+if (geocode['use_api']):
+    geocoding_api: str = f'http://api.openweathermap.org/geo/1.0/reverse?lat={LATITUDE}&lon={LONGITUDE}&limit=1&appid={API_KEY}'
 
-if (r_geocoding_data.status_code == 200):
-    geocoding_json = r_geocoding_data.json()
+    r_geocoding_data = get(geocoding_api)
 
-    location_data["name"] = geocoding_json[0]['name']
-    location_data["country"] = geocoding_json[0]['country']
-    location_data["state"] = geocoding_json[0]['state']
-else:
-    print(f'Could not get Geocoding API data: {r_geocoding_data.status_code}')
+    if (r_geocoding_data.status_code == 200):
+        geocoding_json = r_geocoding_data.json()
+
+        location_data["name"] = geocoding_json[0]['name']
+        location_data["country"] = geocoding_json[0]['country']
+        location_data["state"] = geocoding_json[0]['state']
+    else:
+        print(f'Could not get Geocoding API data: {r_geocoding_data.status_code}')
 
 #####################
 # Jinja Environment #
@@ -683,9 +632,10 @@ output = template.render(
     # Selected Units
     temp_unit = disp_temp_units,
     speed_unit = s_units,
-    use_half_of_day = twelveHourTime,
+    use_half_of_day = twelve_hour_time,
 
     # Location Data
+    geocode_local = geocode,
     location = location_data,
 
     # Current Date

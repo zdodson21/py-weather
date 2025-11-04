@@ -1,3 +1,4 @@
+from config import screen
 import asyncio
 from pathlib import Path
 from playwright.async_api import async_playwright
@@ -7,7 +8,7 @@ async def capture():
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
-        page = await browser.new_page(viewport={"width": 1920, "height": 1080})
+        page = await browser.new_page(viewport={"width": screen['width'], "height": screen['height']})
         await page.goto(html_path)
         # Full‑page screenshot:
         await page.screenshot(path="screenshot.png")

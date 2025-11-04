@@ -11,7 +11,12 @@
   <div class="contents">
     <div class="top">
       <div class="location">
-        <p>{{ location.name }}, {{ location.state }}</p>
+        {% if geocode_local.use_api %}
+          <p>{{ location.name }}, {{ location.state }}</p>
+        {% else %}
+          <p>{{ geocode_local.location_name }}, {{ geocode_local.location_state }}</p>
+        {% endif %}
+        
         <p>{{ date.weekday }}, {{ date.month }} {{ date.day }}</p>
       </div>
       <div class="space-objects">
