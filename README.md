@@ -17,23 +17,6 @@ for your personal use.**
 git pull
 ```
 
-### Required Packages
-
-#### Firefox (should come pre-installed on Raspberry Pi OS)
-
-```bash
-# Test if Firefox is installed
-firefox --version
-
-# Output should look something like this (version number shouldn't* matter):
-# `Mozilla Firefox 142.0.1`
-
-# If you get a response saying something like 'firefox: command not found', run the following command to install it:
-sudo apt install firefox
-```
-
-#### Will add image viewer here when I better understand it
-
 ### Install Python  Dependencies
 
 Two options exist to install dependencies. [Pip](https://docs.python.org/3/installing/index.html),
