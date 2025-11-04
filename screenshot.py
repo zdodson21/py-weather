@@ -7,7 +7,7 @@ async def capture():
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
-        page = await browser.new_page(viewport={"width": 1280, "height": 800})
+        page = await browser.new_page(viewport={"width": 1920, "height": 1080})
         await page.goto(html_path)
         # Full‑page screenshot:
         await page.screenshot(path="screenshot.png")
