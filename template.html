@@ -262,7 +262,7 @@
                   min: 0,
                   max: 100,
                   grid: {
-                    display: false,
+                    display: true,
                   },
                   border: {
                     display: false,
@@ -275,7 +275,7 @@
                   type: 'linear',
                   position: 'left',
                   grid: {
-                    display: true
+                    display: false
                   },
                   border: {
                     display: false
@@ -361,7 +361,7 @@
               </div>
             {% endif %}
 
-            <p>Precip: {{ item.prob_of_precip }}%</p>
+            <p class="pop">Precip: {{ item.prob_of_precip }}%</p>
 
             <div class="daily-rain">
               <img src="./icons/09d.png" alt="rain icon">

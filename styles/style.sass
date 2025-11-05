@@ -1,23 +1,35 @@
+$chart-height: 144px
+    
 body
-    font-family: sans-serif
+    font-family: Verdana, Geneva, Tahoma, sans-serif
     overflow: hidden
+    margin: 0
+    padding: 0
+    width: 100vw
+    height: 100vh
 
     .contents
+        width: 100%
+        height: 100%
+
         .top
             display: flex
             flex-direction: row
-            height: 10%
+            height: 20vh
 
             .location
-                width: 50%
+                width: 40%
 
                 p
                     text-align: center
+                    font-size: 2vw // TODO set clamp
+
+                    // TODO set clamp
 
             .space-objects
                 display: flex
                 flex-direction: row
-                width: 50%
+                width: 60%
 
                 @mixin sun-moon-common()
                     width: 50%
@@ -30,16 +42,19 @@ body
                     p
                         text-align: center
 
+                img
+                    // TODO add dynamic resizing
+
                 .sun
                     @include sun-moon-common()
-                    border-right: 1px solid black
+                    // border-right: 1px solid black
 
                 .moon
                     @include sun-moon-common()
-                    border-left: 1px solid black
+                    // border-left: 1px solid black
                     
         .middle
-            height: 30%
+            height: 50vh
             display: flex;
             flex-direction: row
 
@@ -57,11 +72,11 @@ body
                     gap: 1em
 
                     img
-                        width: 8em
+                        width: clamp(4em, 8vw, 8em)
                         image-rendering: optimizeQuality
 
                     p
-                        font-size: 24px
+                        font-size: clamp(1rem, 3vw, 2rem)
                 
                 .cw-bottom
                     text-align: center
@@ -93,11 +108,14 @@ body
                         width: 50%
                    
         .bottom
-            height: 20%
+            height: 30vh
 
             .hourly-data
                 .chart
                     display: block
+
+                    #my-chart
+                        height: $chart-height
             
             .daily-data
                 display: block
@@ -106,3 +124,18 @@ body
 
                 .daily-item
                     border: 1px solid blue
+
+                    .daily-sun
+                        display: block
+
+                    .daily-moon
+                        display: none
+
+                    .pop
+                        display: block
+
+                    .daily-rain
+                        display: none
+
+                    .daily-snow
+                        display: none
