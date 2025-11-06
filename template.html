@@ -110,91 +110,107 @@
       </div>
 
       <div class="right-side">
-        <div class="wind-speed col-item">
-          <div class="img-container">
-            <img src="./icons/direction-arrow-{{ wind.deg }}.png" alt="wind icon">
-          </div>
-
-          <div class="item-text">
-            <p>Wind Speed:</p>
-            <p>{{ wind.speed }} {{ speed_unit }}</p>
-          </div>
-        </div>
-
-        <div class="humidity col-item">
-          <div class="img-container">
-            <img src="./icons/50d.png" alt="humidity icon">
-          </div>
-
-          <div class="item-text">
-            <p>Humidity</p>
-            <p>{{ humidity }}%</p>
+        <div class="cell-container">
+          <div class="wind-speed col-item">
+            <div class="img-container">
+              <img src="./icons/direction-arrow-{{ wind.deg }}.png" alt="wind icon">
+            </div>
+  
+            <div class="item-text">
+              <p>Wind Speed:</p>
+              <p>{{ wind.speed }} {{ speed_unit }}</p>
+            </div>
           </div>
         </div>
 
-        <div class="visibility col-item">
-          <div class="img-container">
-            <img src="./icons/50n.png" alt="visibility icon">
-          </div>
-          
-          <div class="item-text">
-            <p>Visibility</p>
-            <p>{{ visibility.symbol }} {{ visibility.distance }} km</p>
-          </div>
-        </div>
-
-        <div class="pressure col-item">
-          <div class="img-container">
-            <img src="./icons/03d.png" alt="pressure icon">
-          </div>
-          
-          <div class="item-text">
-            <p>Pressure</p>
-            <p>{{ pressure }} hPa</p>
+        <div class="cell-container">
+          <div class="humidity col-item">
+            <div class="img-container">
+              <img src="./icons/50d.png" alt="humidity icon">
+            </div>
+  
+            <div class="item-text">
+              <p>Humidity</p>
+              <p>{{ humidity }}%</p>
+            </div>
           </div>
         </div>
 
-        <div class="uvindex col-item">
-          <div class="img-container">
-            <img src="./icons/01d.png" alt="ultra violet index icon">
-          </div>
-          
-          <div class="item-text">
-            <p>UV Index</p>
-            <p>{{ uvi }}</p>
-          </div>
-        </div>
-
-        <div class="air-quality col-item">
-          <div class="img-container">
-            <img src="./icons/50n.png" alt="air icon" />
-          </div>
-          
-          <div class="item-text">
-            <p>Air Quality</p>
-            <p>{{ aqi }}</p>
+        <div class="cell-container">
+          <div class="visibility col-item">
+            <div class="img-container">
+              <img src="./icons/50n.png" alt="visibility icon">
+            </div>
+            
+            <div class="item-text">
+              <p>Visibility</p>
+              <p>{{ visibility.symbol }} {{ visibility.distance }} km</p>
+            </div>
           </div>
         </div>
 
-        <div class="dew-point col-item">
-          <div class="img-container">
-            <img src="./icons/50d.png" alt="dew point icon">
-          </div>
-          
-          <div class="item-text">
-            <p>Dew Point</p>
-            <p>{{ dew_point }}&#176; {{ temp_unit }}</p>
+        <div class="cell-container">
+          <div class="pressure col-item">
+            <div class="img-container">
+              <img src="./icons/03d.png" alt="pressure icon">
+            </div>
+            
+            <div class="item-text">
+              <p>Pressure</p>
+              <p>{{ pressure }} hPa</p>
+            </div>
           </div>
         </div>
 
-        <div class="cloud-coverage col-item">
-          <div class="img-container">
-            <img src="./icons/03d.png" alt="cloudiness icon">
+        <div class="cell-container">
+          <div class="uvindex col-item">
+            <div class="img-container">
+              <img src="./icons/01d.png" alt="ultra violet index icon">
+            </div>
+            
+            <div class="item-text">
+              <p>UV Index</p>
+              <p>{{ uvi }}</p>
+            </div>
           </div>
-          
-          <div class="item-text">
-            <p>Cloud Coverage</p>
-            <p>{{ cloud_coverage }}%</p>
+        </div>
+
+        <div class="cell-container">
+          <div class="air-quality col-item">
+            <div class="img-container">
+              <img src="./icons/50n.png" alt="air icon" />
+            </div>
+            
+            <div class="item-text">
+              <p>Air Quality</p>
+              <p>{{ aqi }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell-container">
+          <div class="dew-point col-item">
+            <div class="img-container">
+              <img src="./icons/50d.png" alt="dew point icon">
+            </div>
+            
+            <div class="item-text">
+              <p>Dew Point</p>
+              <p>{{ dew_point }}&#176; {{ temp_unit }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell-container">
+          <div class="cloud-coverage col-item">
+            <div class="img-container">
+              <img src="./icons/03d.png" alt="cloudiness icon">
+            </div>
+            
+            <div class="item-text">
+              <p>Cloud Coverage</p>
+              <p>{{ cloud_coverage }}%</p>
+            </div>
           </div>
         </div>
 
@@ -301,6 +317,8 @@
           <div class="daily-item">
             <p>{{ item.date }}</p>
 
+            <img src="./icons/{{ item.icon }}.png" alt="{{ item.alt_text }}">
+
             <p>
               {{ item.low_temp }}{% if temp_unit != 'K' %}&#176;{% endif %} {{ temp_unit }} 
               | 
@@ -309,7 +327,6 @@
 
             {% if item.sun_rise != None or item.sun_set != None %}
               <div class="daily-sun">
-                <img src="./icons/01d.png" alt="sun icon">
                 <p>
                   {% if item.sun_rise != None %}
                     {{ item.sun_rise }}
@@ -320,7 +337,7 @@
                   {% endif %}
 
                   {% if item.sun_rise != None and item.sun_set != None %}
-                    |
+                    <img src="./icons/01d.png" alt="sun icon">
                   {% endif %}
                   
                   {% if item.sun_set != None %}
@@ -336,18 +353,17 @@
 
             {% if item.moon_rise != None or item.moon_set != None %}
               <div class="daily-moon">
-                <img src="./icons/01n.png" alt="moon icon">
                 <p>
                   {% if item.moon_rise != None %}
-                    {{ item.moon_rise }}
-
-                    {% if use_half_of_day %}
-                      {{ item.moon_rise_half_of_day }}
-                    {% endif %} 
+                  {{ item.moon_rise }}
+                  
+                  {% if use_half_of_day %}
+                  {{ item.moon_rise_half_of_day }}
+                  {% endif %} 
                   {% endif %}
-
+                  
                   {% if item.moon_rise != None and item.moon_set != None %}
-                    | 
+                    <img src="./icons/01n.png" alt="moon icon">
                   {% endif %}
 
                   {% if item.moon_set != None %}
@@ -361,7 +377,7 @@
               </div>
             {% endif %}
 
-            <p class="pop">Precip: {{ item.prob_of_precip }}%</p>
+            <p class="pop">{{ item.prob_of_precip }}%</p>
 
             <div class="daily-rain">
               <img src="./icons/09d.png" alt="rain icon">

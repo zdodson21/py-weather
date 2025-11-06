@@ -14,14 +14,21 @@ body
         width: 100%
         height: 100%
 
+        $top-height: 15vh
+        $middle-height: 50vh
+        $bottom-height: calc(100vh - $top-height - $middle-height)
+
         .top
             display: flex
             flex-direction: row
-            height: 15vh
+            height: $top-height
             border-bottom: 1px dashed black
 
+            $location-width: 40%
+            $space-width: calc(100% - $location-width)
+
             .location
-                width: 40%
+                width: $location-width
                 align-content: center
 
                 p
@@ -40,7 +47,7 @@ body
             .space-objects
                 display: flex
                 flex-direction: row
-                width: 60%
+                width: $space-width
 
                 @mixin sun-moon-common()
                     width: 50%
@@ -66,23 +73,28 @@ body
                     // border-left: 1px solid black
                     
         .middle
-            height: 50vh
-            display: flex;
+            height: $middle-height
+            display: flex
             flex-direction: row
             border-bottom: 1px dashed black
+
+            $curr-weather-width: 50%
+            $right-side-width: calc(100% - $curr-weather-width)
 
             .current-weather
                 display: flex
                 flex-direction: column
                 align-items: center
-                width: 50%
-                border-right: 1px solid red
+                width: $curr-weather-width
+
+                $cw-top-height: 70%
+                $cw-bottom-height: calc(100% - $cw-top-height)
 
                 .cw-top
                     display: flex
                     flex-direction: row
                     justify-content: center
-                    height: 70%
+                    height: $cw-top-height
                     width: 100%
                     align-items: center
                     gap: 1em
@@ -96,7 +108,7 @@ body
                 
                 .cw-bottom
                     text-align: center
-                    height: 30%
+                    height: $cw-bottom-height
                     align-content: center
                     width: 100%
                     overflow: hidden
@@ -110,32 +122,51 @@ body
                         padding: 1em 1em
             
             .right-side
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(4, 1fr);
-                gap: 8px;
-                width: 50%;                    
+                display: grid
+                grid-template-columns: repeat(2, 1fr)
+                grid-template-rows: repeat(4, 1fr)
+                gap: 2px
+                width: $right-side-width
+                height: 100%
 
-                .col-item
-                    display: flex;
-                    flex-direction: row
-                    align-content: center
-                    justify-content: space-around
-                    padding: 0px 1em
+                .cell-container
+                    display: flex
+                    justify-content: center
+                    align-items: center
 
-                    .img-container
+                    .col-item
                         display: flex
-                        justify-content: center
-                        align-items: center
-                        width: 50%
+                        flex-direction: row
+                        align-content: center
+                        justify-content: space-around
+                        padding: 0px 1em
+                        border: 1px solid black
+                        border-radius: 25px
+                        width: 70%
+                        height: 80%
+                        $img-cont-width: 30%
 
-                    .item-text
-                        display: block
-                        text-align: center
-                        width: 50%
+                        .img-container
+                            display: flex
+                            justify-content: center
+                            align-items: center
+                            width: $img-cont-width
+
+                            img
+                                width: 36px
+
+                        .item-text
+                            display: block
+                            text-align: center
+                            align-content: center
+                            width: calc(100% - $img-cont-width)
+                            font-size: 12px
+
+                            p
+                                margin: 0
                    
         .bottom
-            height: 35vh
+            height: $bottom-height
 
             .hourly-data
                 .chart
@@ -162,7 +193,7 @@ body
                         display: block
 
                     .daily-rain
-                        display: none
+                        display: block
 
                     .daily-snow
-                        display: none
+                        display: block

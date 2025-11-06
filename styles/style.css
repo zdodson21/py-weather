@@ -77,7 +77,6 @@ body .contents .middle .current-weather {
   flex-direction: column;
   align-items: center;
   width: 50%;
-  border-right: 1px solid red;
 }
 body .contents .middle .current-weather .cw-top {
   display: flex;
@@ -113,26 +112,44 @@ body .contents .middle .right-side {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(4, 1fr);
-  gap: 8px;
+  gap: 2px;
   width: 50%;
+  height: 100%;
 }
-body .contents .middle .right-side .col-item {
+body .contents .middle .right-side .cell-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body .contents .middle .right-side .cell-container .col-item {
   display: flex;
   flex-direction: row;
   align-content: center;
   justify-content: space-around;
   padding: 0px 1em;
+  border: 1px solid black;
+  border-radius: 25px;
+  width: 70%;
+  height: 80%;
 }
-body .contents .middle .right-side .col-item .img-container {
+body .contents .middle .right-side .cell-container .col-item .img-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 30%;
 }
-body .contents .middle .right-side .col-item .item-text {
+body .contents .middle .right-side .cell-container .col-item .img-container img {
+  width: 36px;
+}
+body .contents .middle .right-side .cell-container .col-item .item-text {
   display: block;
   text-align: center;
-  width: 50%;
+  align-content: center;
+  width: 70%;
+  font-size: 12px;
+}
+body .contents .middle .right-side .cell-container .col-item .item-text p {
+  margin: 0;
 }
 body .contents .bottom {
   height: 35vh;
@@ -159,10 +176,10 @@ body .contents .bottom .daily-data .daily-item .pop {
   display: block;
 }
 body .contents .bottom .daily-data .daily-item .daily-rain {
-  display: none;
+  display: block;
 }
 body .contents .bottom .daily-data .daily-item .daily-snow {
-  display: none;
+  display: block;
 }
 
 /*# sourceMappingURL=style.css.map */
