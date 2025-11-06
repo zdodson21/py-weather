@@ -1,3 +1,5 @@
+// Developed to target resolutions between 800x480 - 1920x1080
+
 $chart-height: 144px
     
 body
@@ -15,16 +17,25 @@ body
         .top
             display: flex
             flex-direction: row
-            height: 20vh
+            height: 15vh
+            border-bottom: 1px dashed black
 
             .location
                 width: 40%
+                align-content: center
 
                 p
                     text-align: center
-                    font-size: 2vw // TODO set clamp
+                    font-size: 16px // TODO set clamp
+                    margin: 0
+                    
+                    $gap: 2px
 
-                    // TODO set clamp
+                    &:is(:first-child)
+                        padding-bottom: $gap
+                    
+                    &:is(:last-child)
+                        padding-top: $gap
 
             .space-objects
                 display: flex
@@ -41,9 +52,10 @@ body
 
                     p
                         text-align: center
-
-                img
-                    // TODO add dynamic resizing
+                        font-size: 16px
+                    
+                    img
+                        width: 40px // TODO set clamp
 
                 .sun
                     @include sun-moon-common()
@@ -57,30 +69,45 @@ body
             height: 50vh
             display: flex;
             flex-direction: row
+            border-bottom: 1px dashed black
 
             .current-weather
                 display: flex
                 flex-direction: column
                 align-items: center
                 width: 50%
+                border-right: 1px solid red
 
                 .cw-top
                     display: flex
                     flex-direction: row
-                    height: 80%
+                    justify-content: center
+                    height: 70%
+                    width: 100%
                     align-items: center
                     gap: 1em
 
                     img
-                        width: clamp(4em, 8vw, 8em)
+                        width: 124px
                         image-rendering: optimizeQuality
 
                     p
-                        font-size: clamp(1rem, 3vw, 2rem)
+                        font-size: 28px
                 
                 .cw-bottom
                     text-align: center
-                    height: 20%
+                    height: 30%
+                    align-content: center
+                    width: 100%
+                    overflow: hidden
+
+                    p
+                        margin: 0
+                        font-size: 18px
+                        // white-space: nowrap
+                        overflow: hidden
+                        text-overflow: ellipsis
+                        padding: 1em 1em
             
             .right-side
                 display: grid;
@@ -108,7 +135,7 @@ body
                         width: 50%
                    
         .bottom
-            height: 30vh
+            height: 35vh
 
             .hourly-data
                 .chart

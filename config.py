@@ -3,6 +3,7 @@ dev_mode = False # ! True = developer mode output | False (default) = no develop
 
 # Screen Size
 screen = {
+    # This program is developed to support resolutions between 800x480 - 1920x1080
     'width': 1920, # ! Change this value to modify screenshot width (default: 1920)
     'height': 1080, # ! Change this value to modify screenshot height (default: 1080)
 }

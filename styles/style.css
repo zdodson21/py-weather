@@ -13,17 +13,23 @@ body .contents {
 body .contents .top {
   display: flex;
   flex-direction: row;
-  height: 20vh;
+  height: 15vh;
+  border-bottom: 1px dashed black;
 }
 body .contents .top .location {
   width: 40%;
+  align-content: center;
 }
 body .contents .top .location p {
   text-align: center;
-  font-size: 2vw;
+  font-size: 16px;
+  margin: 0;
 }
-body .contents .top .location p time {
-  font-size: 2vw;
+body .contents .top .location p:is(:first-child) {
+  padding-bottom: 2px;
+}
+body .contents .top .location p:is(:last-child) {
+  padding-top: 2px;
 }
 body .contents .top .space-objects {
   display: flex;
@@ -40,6 +46,10 @@ body .contents .top .space-objects .sun {
 }
 body .contents .top .space-objects .sun p {
   text-align: center;
+  font-size: 16px;
+}
+body .contents .top .space-objects .sun img {
+  width: 40px;
 }
 body .contents .top .space-objects .moon {
   width: 50%;
@@ -51,35 +61,53 @@ body .contents .top .space-objects .moon {
 }
 body .contents .top .space-objects .moon p {
   text-align: center;
+  font-size: 16px;
+}
+body .contents .top .space-objects .moon img {
+  width: 40px;
 }
 body .contents .middle {
   height: 50vh;
   display: flex;
   flex-direction: row;
+  border-bottom: 1px dashed black;
 }
 body .contents .middle .current-weather {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 50%;
+  border-right: 1px solid red;
 }
 body .contents .middle .current-weather .cw-top {
   display: flex;
   flex-direction: row;
-  height: 80%;
+  justify-content: center;
+  height: 70%;
+  width: 100%;
   align-items: center;
   gap: 1em;
 }
 body .contents .middle .current-weather .cw-top img {
-  width: clamp(4em, 8vw, 8em);
+  width: 124px;
   image-rendering: optimizeQuality;
 }
 body .contents .middle .current-weather .cw-top p {
-  font-size: clamp(1rem, 3vw, 2rem);
+  font-size: 28px;
 }
 body .contents .middle .current-weather .cw-bottom {
   text-align: center;
-  height: 20%;
+  height: 30%;
+  align-content: center;
+  width: 100%;
+  overflow: hidden;
+}
+body .contents .middle .current-weather .cw-bottom p {
+  margin: 0;
+  font-size: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 1em 1em;
 }
 body .contents .middle .right-side {
   display: grid;
@@ -107,7 +135,7 @@ body .contents .middle .right-side .col-item .item-text {
   width: 50%;
 }
 body .contents .bottom {
-  height: 30vh;
+  height: 35vh;
 }
 body .contents .bottom .hourly-data .chart {
   display: block;
