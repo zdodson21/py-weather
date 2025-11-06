@@ -87,7 +87,7 @@ def set_alt_text(icon):
 
     return alt_text
 
-weekday = [
+weekday = (
     'Monday',
     'Tuesday',
     'Wednesday',
@@ -95,9 +95,9 @@ weekday = [
     'Friday',
     'Saturday',
     'Sunday',
-]
+)
 
-month = [
+month = (
     'January',
     'February',
     'March',
@@ -110,7 +110,7 @@ month = [
     'October',
     'November',
     'December',
-]
+)
 
 #################
 # Env Variables #
@@ -319,8 +319,7 @@ if (r_one_call_data.status_code == 200):
     humidity_data = one_call_json['current']['humidity']
 
     # Visibility
-    visibility_data['distance'] = round(
-        one_call_json['current']['visibility'] * 0.001, 2)
+    visibility_data['distance'] = round(one_call_json['current']['visibility'] * 0.001, 2)
 
     if (visibility_data['distance'] == 10.00):
         visibility_data['symbol'] = '>'
@@ -332,28 +331,28 @@ if (r_one_call_data.status_code == 200):
     uvi_data = one_call_json['current']['uvi']
 
     # Dew Point Data
-    dew_point_data = one_call_json['current']['dew_point']
+    dew_point_data = round(one_call_json['current']['dew_point'])
 
     # Cloud Data
     cloud_data = one_call_json['current']['clouds']
 
     # Hourly Data
     for i in range(12):
+        x = i + 1  # Index for json, 0 = current hour
+        
         hourly_data.append(
             {
                 'index': i,
                 'time': None,
                 'half_of_day': None,
-                'prob_of_precip': None,
-                'temp': None,
+                'prob_of_precip': round(one_call_json['hourly'][x]['pop'] * 100),
+                'temp': round(one_call_json['hourly'][x]['temp']),
                 'rain_vol': None,
                 'rain_units': 'mm/h',
                 'snow_vol': None,
                 'snow_units': 'mm/h',
             }
         )
-
-        x = i + 1  # Index for json, 0 = current hour
 
         # Time
         hourly_data[i]['time'] = one_call_json['hourly'][x]['dt']
@@ -365,12 +364,6 @@ if (r_one_call_data.status_code == 200):
             hourly_data[i]['time'] = f'{hour}'
         else:
             hourly_data[i]['time'] = f'{hour:02d}'
-
-        # Probability of Precipitation
-        hourly_data[i]['prob_of_precip'] = round(one_call_json['hourly'][x]['pop'] * 100)
-
-        # Temp
-        hourly_data[i]['temp'] = round(one_call_json['hourly'][x]['temp'])
 
         # Rain & Snow Data
         try:
@@ -397,14 +390,11 @@ if (r_one_call_data.status_code == 200):
                 hourly_data[i]['snow_vol'] *= mm_to_inch
                 hourly_data[i]['snow_units'] = 'in/h'
 
-    hourly_temp_values = []
-    hourly_pop_values = []
+    hourly_temp_values = [item['temp'] for item in hourly_data]
+    hourly_pop_values = [item['prob_of_precip'] for item in hourly_data]
     hourly_data_labels = []
 
     for i in hourly_data:
-        hourly_temp_values.append(i['temp'])
-        hourly_pop_values.append(i['prob_of_precip'])
-
         if (twelve_hour_time):
             hourly_data_labels.append(f"{i['time']} {i['half_of_day']}")
         else:
@@ -413,14 +403,16 @@ if (r_one_call_data.status_code == 200):
 
     # Daily Data
     for i in range(4):
+        x = i + 1  # index for json, 0 = current day
+        
         daily_data.append(
             {
                 'index': i,
                 
                 'date': None,
 
-                'low_temp': None,
-                'high_temp': None,
+                'low_temp': round(one_call_json['daily'][x]['temp']['min']),
+                'high_temp': round(one_call_json['daily'][x]['temp']['max']),
 
                 'sun_rise': None,
                 'sun_rise_half_of_day': None,
@@ -434,7 +426,7 @@ if (r_one_call_data.status_code == 200):
                 'moon_set': None,
                 'moon_set_half_of_day': None,
 
-                'prob_of_precip': None,
+                'prob_of_precip': round(one_call_json['daily'][x]['pop'] * 100),
 
                 'rain_vol': None,
                 'rain_units': 'mm.',
@@ -442,12 +434,10 @@ if (r_one_call_data.status_code == 200):
                 'snow_vol': None,
                 'snow_units': 'mm.',
 
-                'icon': None,
+                'icon': one_call_json['daily'][x]['weather'][0]['icon'],
                 'alt_text': None,
             }
         )
-
-        x = i + 1  # index for json, 0 = current day
 
         # Date
         daily_data[i]['date'] = one_call_json['daily'][x]['dt']
@@ -459,13 +449,6 @@ if (r_one_call_data.status_code == 200):
         daily_date = weekday[daily_date_dt.isoweekday() - 1]
 
         daily_data[i]['date'] = f'{daily_date}, {daily_month} {daily_day}'
-
-        # Temp
-        daily_data[i]['low_temp'] = one_call_json['daily'][x]['temp']['min']
-        daily_data[i]['low_temp'] = round(daily_data[i]['low_temp'])
-
-        daily_data[i]['high_temp'] = one_call_json['daily'][x]['temp']['max']
-        daily_data[i]['high_temp'] = round(daily_data[i]['high_temp'])
 
         # Sun Rise
         try:
@@ -539,9 +522,6 @@ if (r_one_call_data.status_code == 200):
             if (dev_mode):
                 print('Cannot find daily moon set')
 
-        # Probability of Precipitation
-        daily_data[i]['prob_of_precip'] = round(one_call_json['daily'][x]['pop'] * 100)
-
         # Rain & Snow
         try:
             daily_data[i]['rain_vol'] = one_call_json['daily'][x]['rain']
@@ -566,8 +546,7 @@ if (r_one_call_data.status_code == 200):
 
             daily_data[i]['snow_units'] = 'in.'
 
-        # Icon & Alt text
-        daily_data[i]['icon'] = one_call_json['daily'][x]['weather'][0]['icon']
+        # Alt Text
         daily_data[i]['alt_icon'] = set_alt_text(daily_data[i]['icon'])
 
 else:
@@ -583,17 +562,11 @@ aqi_data = None
 r_air_quality_data = get(air_quality_api)
 
 if (r_air_quality_data.status_code == 200):
+    quality_list = ('Good', 'Fair', 'Moderate', 'Poor', 'Very Poor')
+    
     air_quality_json = r_air_quality_data.json()
 
-    aqi_data = air_quality_json['list'][0]['main']['aqi']
-
-    match aqi_data:
-        case 1: aqi_data = 'Good'
-        case 2: aqi_data = 'Fair'
-        case 3: aqi_data = 'Moderate'
-        case 4: aqi_data = 'Poor'
-        case 5: aqi_data = 'Very Poor'
-        case _: aqi_data = 'ERROR'
+    aqi_data = quality_list[air_quality_json['list'][0]['main']['aqi'] - 1]
 else:
     print(
         f'Could not get Air Quality API data: {r_air_quality_data.status_code}')
