@@ -1,6 +1,7 @@
 // Developed to target resolutions between 800x480 - 1920x1080
 
-$chart-height: 144px
+// TODO Portrait mode!!!
+// TODO screen resizing stuff
     
 body
     font-family: Verdana, Geneva, Tahoma, sans-serif
@@ -14,8 +15,8 @@ body
         width: 100%
         height: 100%
 
-        $top-height: 15vh
-        $middle-height: 50vh
+        $top-height: 12vh
+        $middle-height: 40vh
         $bottom-height: calc(100vh - $top-height - $middle-height)
 
         .top
@@ -116,7 +117,6 @@ body
                     p
                         margin: 0
                         font-size: 18px
-                        // white-space: nowrap
                         overflow: hidden
                         text-overflow: ellipsis
                         padding: 1em 1em
@@ -168,20 +168,20 @@ body
         .bottom
             height: $bottom-height
 
-            .hourly-data
-                .chart
-                    display: block
+            $hourly-height: 50%
+            $daily-height: calc(100% - $hourly-height)
 
-                    #my-chart
-                        height: $chart-height
+            .hourly-data
+                height: 50%
+
+                .chart
+                    height: 100%
             
             .daily-data
-                display: block
-                // @media (max-aspect-ratio: 1/1)
-                //     display: none
+                display: flex
+                flex-direction: row
 
                 .daily-item
-                    border: 1px solid blue
 
                     .daily-sun
                         display: block

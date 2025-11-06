@@ -13,7 +13,7 @@ body .contents {
 body .contents .top {
   display: flex;
   flex-direction: row;
-  height: 15vh;
+  height: 12vh;
   border-bottom: 1px dashed black;
 }
 body .contents .top .location {
@@ -67,7 +67,7 @@ body .contents .top .space-objects .moon img {
   width: 40px;
 }
 body .contents .middle {
-  height: 50vh;
+  height: 40vh;
   display: flex;
   flex-direction: row;
   border-bottom: 1px dashed black;
@@ -152,19 +152,17 @@ body .contents .middle .right-side .cell-container .col-item .item-text p {
   margin: 0;
 }
 body .contents .bottom {
-  height: 35vh;
+  height: 48vh;
+}
+body .contents .bottom .hourly-data {
+  height: 50%;
 }
 body .contents .bottom .hourly-data .chart {
-  display: block;
-}
-body .contents .bottom .hourly-data .chart #my-chart {
-  height: 144px;
+  height: 100%;
 }
 body .contents .bottom .daily-data {
-  display: block;
-}
-body .contents .bottom .daily-data .daily-item {
-  border: 1px solid blue;
+  display: flex;
+  flex-direction: row;
 }
 body .contents .bottom .daily-data .daily-item .daily-sun {
   display: block;
