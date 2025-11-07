@@ -19,18 +19,21 @@ body
         $middle-height: 40vh
         $bottom-height: calc(100vh - $top-height - $middle-height)
 
+        $default-border: 1px dashed black
+
         .top
             display: flex
             flex-direction: row
             height: $top-height
-            border-bottom: 1px dashed black
+            border-bottom: $default-border
 
             $location-width: 40%
-            $space-width: calc(100% - $location-width)
+            $space-width: calc(100% - $location-width - 1px)
 
             .location
                 width: $location-width
                 align-content: center
+                border-right: $default-border
 
                 p
                     text-align: center
@@ -67,26 +70,25 @@ body
 
                 .sun
                     @include sun-moon-common()
-                    // border-right: 1px solid black
 
                 .moon
                     @include sun-moon-common()
-                    // border-left: 1px solid black
                     
         .middle
             height: $middle-height
             display: flex
             flex-direction: row
-            border-bottom: 1px dashed black
+            border-bottom: $default-border
 
             $curr-weather-width: 50%
-            $right-side-width: calc(100% - $curr-weather-width)
+            $right-side-width: calc(100% - $curr-weather-width - 1px)
 
             .current-weather
                 display: flex
                 flex-direction: column
                 align-items: center
                 width: $curr-weather-width
+                border-right: $default-border
 
                 $cw-top-height: 70%
                 $cw-bottom-height: calc(100% - $cw-top-height)
@@ -141,7 +143,7 @@ body
                         justify-content: space-around
                         padding: 0px 1em
                         border: 1px solid black
-                        border-radius: 25px
+                        border-radius: 10px
                         width: 70%
                         height: 80%
                         $img-cont-width: 30%
@@ -153,7 +155,7 @@ body
                             width: $img-cont-width
 
                             img
-                                width: 36px
+                                width: 32px
 
                         .item-text
                             display: block
@@ -168,11 +170,12 @@ body
         .bottom
             height: $bottom-height
 
-            $hourly-height: 50%
-            $daily-height: calc(100% - $hourly-height)
+            $hourly-height: 40%
+            $daily-height: calc(100% - $hourly-height - 4px)
 
             .hourly-data
-                height: 50%
+                height: $hourly-height
+                border-bottom: $default-border
 
                 .chart
                     height: 100%
@@ -180,20 +183,76 @@ body
             .daily-data
                 display: flex
                 flex-direction: row
+                justify-content: space-around
+                width: 100%
+                height: $daily-height
+                font-size: 16px
 
                 .daily-item
+                    display: flex;
+                    justify-content: space-between
+                    flex-direction: column
+                    width: 32%
+                    height: 100%
+
+                    &:not(:first-child):not(:last-child)
+                        border-left: $default-border
+                        border-right: $default-border
+
+                    p
+                        margin: 0
+                        text-align: center
+                        
+                        &.daily-title
+                            text-decoration: underline
+
+                    .weather
+                        display: flex
+                        width: 100%
+                        justify-content: center
+                        align-items: center
+                        flex-direction: row
+                        gap: 16px
+
+                        .icon-wrapper
+                            img
+                                height: 36px
 
                     .daily-sun
-                        display: block
+                        display: none
+
 
                     .daily-moon
                         display: none
 
-                    .pop
-                        display: block
+                    .daily-precipitation
+                        display: flex
+                        flex-direction: row
+                        width: 100%
+                        align-items: center
+                        justify-content: center
+                        gap: 18px
 
-                    .daily-rain
-                        display: block
+                        @mixin precip-item()
+                            display: flex
+                            justify-content: center
+                            flex-direction: column
+                            align-items: center
+                            gap: 10px
 
-                    .daily-snow
-                        display: block
+                            img
+                                height: 32px
+
+                        .daily-rain
+                            @include precip-item()
+                            
+                        .pop
+                            align-content: center
+                            text-align: center
+                            border: 1px solid black
+                            border-radius: 5px
+                            padding: 2px 4px
+
+                        .daily-snow
+                            @include precip-item()
+                            

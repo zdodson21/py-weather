@@ -402,7 +402,7 @@ if (r_one_call_data.status_code == 200):
 
 
     # Daily Data
-    for i in range(4):
+    for i in range(3):
         x = i + 1  # index for json, 0 = current day
         
         daily_data.append(

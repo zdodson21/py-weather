@@ -19,6 +19,7 @@ body .contents .top {
 body .contents .top .location {
   width: 40%;
   align-content: center;
+  border-right: 1px dashed black;
 }
 body .contents .top .location p {
   text-align: center;
@@ -34,7 +35,7 @@ body .contents .top .location p:is(:last-child) {
 body .contents .top .space-objects {
   display: flex;
   flex-direction: row;
-  width: 60%;
+  width: calc(60% - 1px);
 }
 body .contents .top .space-objects .sun {
   width: 50%;
@@ -77,6 +78,7 @@ body .contents .middle .current-weather {
   flex-direction: column;
   align-items: center;
   width: 50%;
+  border-right: 1px dashed black;
 }
 body .contents .middle .current-weather .cw-top {
   display: flex;
@@ -113,7 +115,7 @@ body .contents .middle .right-side {
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(4, 1fr);
   gap: 2px;
-  width: 50%;
+  width: calc(50% - 1px);
   height: 100%;
 }
 body .contents .middle .right-side .cell-container {
@@ -128,7 +130,7 @@ body .contents .middle .right-side .cell-container .col-item {
   justify-content: space-around;
   padding: 0px 1em;
   border: 1px solid black;
-  border-radius: 25px;
+  border-radius: 10px;
   width: 70%;
   height: 80%;
 }
@@ -139,7 +141,7 @@ body .contents .middle .right-side .cell-container .col-item .img-container {
   width: 30%;
 }
 body .contents .middle .right-side .cell-container .col-item .img-container img {
-  width: 36px;
+  width: 32px;
 }
 body .contents .middle .right-side .cell-container .col-item .item-text {
   display: block;
@@ -155,7 +157,8 @@ body .contents .bottom {
   height: 48vh;
 }
 body .contents .bottom .hourly-data {
-  height: 50%;
+  height: 40%;
+  border-bottom: 1px dashed black;
 }
 body .contents .bottom .hourly-data .chart {
   height: 100%;
@@ -163,21 +166,80 @@ body .contents .bottom .hourly-data .chart {
 body .contents .bottom .daily-data {
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  height: calc(60% - 4px);
+  font-size: 16px;
+}
+body .contents .bottom .daily-data .daily-item {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 32%;
+  height: 100%;
+}
+body .contents .bottom .daily-data .daily-item:not(:first-child):not(:last-child) {
+  border-left: 1px dashed black;
+  border-right: 1px dashed black;
+}
+body .contents .bottom .daily-data .daily-item p {
+  margin: 0;
+  text-align: center;
+}
+body .contents .bottom .daily-data .daily-item p.daily-title {
+  text-decoration: underline;
+}
+body .contents .bottom .daily-data .daily-item .weather {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 16px;
+}
+body .contents .bottom .daily-data .daily-item .weather .icon-wrapper img {
+  height: 36px;
 }
 body .contents .bottom .daily-data .daily-item .daily-sun {
-  display: block;
+  display: none;
 }
 body .contents .bottom .daily-data .daily-item .daily-moon {
   display: none;
 }
-body .contents .bottom .daily-data .daily-item .pop {
-  display: block;
+body .contents .bottom .daily-data .daily-item .daily-precipitation {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
 }
-body .contents .bottom .daily-data .daily-item .daily-rain {
-  display: block;
+body .contents .bottom .daily-data .daily-item .daily-precipitation .daily-rain {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
-body .contents .bottom .daily-data .daily-item .daily-snow {
-  display: block;
+body .contents .bottom .daily-data .daily-item .daily-precipitation .daily-rain img {
+  height: 32px;
+}
+body .contents .bottom .daily-data .daily-item .daily-precipitation .pop {
+  align-content: center;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 2px 4px;
+}
+body .contents .bottom .daily-data .daily-item .daily-precipitation .daily-snow {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+body .contents .bottom .daily-data .daily-item .daily-precipitation .daily-snow img {
+  height: 32px;
 }
 
 /*# sourceMappingURL=style.css.map */
