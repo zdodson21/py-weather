@@ -32,6 +32,9 @@ body .contents .top .location p:is(:first-child) {
 body .contents .top .location p:is(:last-child) {
   padding-top: 2px;
 }
+body .contents .top .location .date {
+  font-size: 14px;
+}
 body .contents .top .space-objects {
   display: flex;
   flex-direction: row;
@@ -45,9 +48,19 @@ body .contents .top .space-objects .sun {
   align-items: center;
   gap: 8px;
 }
+@media (max-aspect-ratio: 1/1) {
+  body .contents .top .space-objects .sun {
+    gap: 0px;
+  }
+}
 body .contents .top .space-objects .sun p {
   text-align: center;
   font-size: 16px;
+}
+@media (max-aspect-ratio: 1/1) {
+  body .contents .top .space-objects .sun p {
+    font-size: 14px;
+  }
 }
 body .contents .top .space-objects .sun img {
   width: 40px;
@@ -60,9 +73,19 @@ body .contents .top .space-objects .moon {
   align-items: center;
   gap: 8px;
 }
+@media (max-aspect-ratio: 1/1) {
+  body .contents .top .space-objects .moon {
+    gap: 0px;
+  }
+}
 body .contents .top .space-objects .moon p {
   text-align: center;
   font-size: 16px;
+}
+@media (max-aspect-ratio: 1/1) {
+  body .contents .top .space-objects .moon p {
+    font-size: 14px;
+  }
 }
 body .contents .top .space-objects .moon img {
   width: 40px;
@@ -77,7 +100,7 @@ body .contents .middle .current-weather {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 50%;
+  width: 40%;
   border-right: 1px dashed black;
 }
 body .contents .middle .current-weather .cw-top {
@@ -95,6 +118,14 @@ body .contents .middle .current-weather .cw-top img {
 }
 body .contents .middle .current-weather .cw-top p {
   font-size: 28px;
+}
+@media (max-aspect-ratio: 1/1) {
+  body .contents .middle .current-weather .cw-top img {
+    width: 112px;
+  }
+  body .contents .middle .current-weather .cw-top p {
+    font-size: 22px;
+  }
 }
 body .contents .middle .current-weather .cw-bottom {
   text-align: center;
@@ -115,7 +146,7 @@ body .contents .middle .right-side {
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(4, 1fr);
   gap: 2px;
-  width: calc(50% - 1px);
+  width: calc(60% - 1px);
   height: 100%;
 }
 body .contents .middle .right-side .cell-container {
@@ -157,7 +188,7 @@ body .contents .bottom {
   height: 48vh;
 }
 body .contents .bottom .hourly-data {
-  height: 40%;
+  height: 42%;
   border-bottom: 1px dashed black;
 }
 body .contents .bottom .hourly-data .chart {
@@ -168,14 +199,14 @@ body .contents .bottom .daily-data {
   flex-direction: row;
   justify-content: space-around;
   width: 100%;
-  height: calc(60% - 4px);
+  height: calc(58% - 4px);
   font-size: 16px;
 }
 body .contents .bottom .daily-data .daily-item {
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  width: 32%;
+  width: 32.33%;
   height: 100%;
 }
 body .contents .bottom .daily-data .daily-item:not(:first-child):not(:last-child) {
@@ -200,6 +231,14 @@ body .contents .bottom .daily-data .daily-item .weather {
 body .contents .bottom .daily-data .daily-item .weather .icon-wrapper img {
   height: 36px;
 }
+@media (max-aspect-ratio: 1/1) {
+  body .contents .bottom .daily-data .daily-item .weather {
+    gap: 8px;
+  }
+  body .contents .bottom .daily-data .daily-item .weather .icon-wrapper img {
+    height: 44px;
+  }
+}
 body .contents .bottom .daily-data .daily-item .daily-sun {
   display: none;
 }
@@ -214,6 +253,11 @@ body .contents .bottom .daily-data .daily-item .daily-precipitation {
   justify-content: center;
   gap: 18px;
 }
+@media (max-aspect-ratio: 1/1) {
+  body .contents .bottom .daily-data .daily-item .daily-precipitation {
+    gap: 8px;
+  }
+}
 body .contents .bottom .daily-data .daily-item .daily-precipitation .daily-rain {
   display: flex;
   justify-content: center;
@@ -227,9 +271,9 @@ body .contents .bottom .daily-data .daily-item .daily-precipitation .daily-rain 
 body .contents .bottom .daily-data .daily-item .daily-precipitation .pop {
   align-content: center;
   text-align: center;
+  padding: 2px 4px;
   border: 1px solid black;
   border-radius: 5px;
-  padding: 2px 4px;
 }
 body .contents .bottom .daily-data .daily-item .daily-precipitation .daily-snow {
   display: flex;

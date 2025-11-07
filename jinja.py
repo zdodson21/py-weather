@@ -97,6 +97,16 @@ weekday = (
     'Sunday',
 )
 
+weekday_abrev = (
+    'Mon.',
+    'Tues.',
+    'Wed.',
+    'Thur.',
+    'Fri.',
+    'Sat.',
+    'Sun.'
+)
+
 month = (
     'January',
     'February',
@@ -446,9 +456,9 @@ if (r_one_call_data.status_code == 200):
 
         daily_day = daily_date_dt.day
 
-        daily_date = weekday[daily_date_dt.isoweekday() - 1]
+        daily_date = weekday_abrev[daily_date_dt.isoweekday() - 1]
 
-        daily_data[i]['date'] = f'{daily_date}, {daily_month} {daily_day}'
+        daily_data[i]['date'] = f'{daily_date} {daily_month} {daily_day}'
 
         # Sun Rise
         try:

@@ -12,12 +12,12 @@
     <div class="top">
       <div class="location">
         {% if geocode_local.use_api %}
-          <p>{{ location.name }}, {{ location.state }}</p>
+          <p class="location-name">{{ location.name }}, {{ location.state }}</p>
         {% else %}
-          <p>{{ geocode_local.location_name }}, {{ geocode_local.location_state }}</p>
+          <p class="location-name">{{ geocode_local.location_name }}, {{ geocode_local.location_state }}</p>
         {% endif %}
         
-        <p>{{ date.weekday }}, {{ date.month }} {{ date.day }}</p>
+        <p class="date">{{ date.weekday }}, {{ date.month }} {{ date.day }}</p>
       </div>
       <div class="space-objects">
         <div class="sun">
