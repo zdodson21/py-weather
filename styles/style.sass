@@ -1,6 +1,10 @@
-// Developed to target resolutions between 800x480 - 1920x1080
+// Developed to target a resolution of 800x480.
+// All size values you may wish to modify will be marked with a "// ! " next to them.
+// You can test your changes by either running the run.sh script and checking the screenshot
+// or by using your browsers developer tools to test custom sizing (set to the size of the screen you wish to target).
+// You can also modify the CSS file directly if you are not comfortable with SASS (or can't install the build tool).
 
-// TODO screen resizing stuff (calculate current items as percentages of whole screen, then set clamps)
+// Feel free to modify this as however you wish, but if you wish to contribute any changes ensure they fit in an 800x480 resolution!
     
 body
     font-family: Verdana, Geneva, Tahoma, sans-serif
@@ -18,8 +22,8 @@ body
         width: 100%
         height: 100%
 
-        $top-height: 12vh
-        $middle-height: 40vh
+        $top-height: 12vh // !
+        $middle-height: 40vh // !
         $bottom-height: calc(100vh - $top-height - $middle-height)
 
         $default-border: 1px dashed black
@@ -30,7 +34,7 @@ body
             height: $top-height
             border-bottom: $default-border
 
-            $location-width: 40%
+            $location-width: 40% // !
             $space-width: calc(100% - $location-width - 1px)
 
             .location
@@ -40,7 +44,7 @@ body
 
                 p
                     text-align: center
-                    font-size: 16px // TODO set clamp
+                    font-size: 16px // !
                     margin: 0
                     
                     $gap: 2px
@@ -52,7 +56,7 @@ body
                         padding-top: $gap
 
                 .date
-                    font-size: 14px
+                    font-size: 14px // !
 
             .space-objects
                 display: flex
@@ -72,13 +76,13 @@ body
 
                     p
                         text-align: center
-                        font-size: 16px
+                        font-size: 16px // !
 
                         @media (max-aspect-ratio: 1/1)
-                            font-size: 14px
+                            font-size: 14px // !
                     
                     img
-                        width: 40px
+                        width: 40px // !
 
                 .sun
                     @include sun-moon-common()
@@ -92,7 +96,7 @@ body
             flex-direction: row
             border-bottom: $default-border
 
-            $curr-weather-width: 40%
+            $curr-weather-width: 40% // !
             $right-side-width: calc(100% - $curr-weather-width - 1px)
 
             .current-weather
@@ -102,7 +106,7 @@ body
                 width: $curr-weather-width
                 border-right: $default-border
 
-                $cw-top-height: 70%
+                $cw-top-height: 70% // !
                 $cw-bottom-height: calc(100% - $cw-top-height)
 
                 .cw-top
@@ -115,18 +119,18 @@ body
                     gap: 1em
 
                     img
-                        width: 124px
+                        width: 124px // !
                         image-rendering: optimizeQuality
 
                     p
-                        font-size: 28px
+                        font-size: 28px // !
 
                     @media (max-aspect-ratio: 1/1)
                         img
-                            width: 112px
+                            width: 112px // !
 
                         p
-                            font-size: 22px
+                            font-size: 22px // !
                 
                 .cw-bottom
                     text-align: center
@@ -137,7 +141,7 @@ body
 
                     p
                         margin: 0
-                        font-size: 18px
+                        font-size: 18px // !
                         overflow: hidden
                         text-overflow: ellipsis
                         padding: 1em 1em
@@ -164,7 +168,7 @@ body
                         @include rounded-border(10px)
                         width: 70%
                         height: 80%
-                        $img-cont-width: 30%
+                        $img-cont-width: 30% // !
 
                         .img-container
                             display: flex
@@ -173,14 +177,14 @@ body
                             width: $img-cont-width
 
                             img
-                                width: 32px
+                                width: 32px // !
 
                         .item-text
                             display: block
                             text-align: center
                             align-content: center
                             width: calc(100% - $img-cont-width)
-                            font-size: 12px
+                            font-size: 12px // !
 
                             p
                                 margin: 0
@@ -188,7 +192,7 @@ body
         .bottom
             height: $bottom-height
 
-            $hourly-height: 42%
+            $hourly-height: 42% // !
             $daily-height: calc(100% - $hourly-height - 4px)
 
             .hourly-data
@@ -204,7 +208,7 @@ body
                 justify-content: space-around
                 width: 100%
                 height: $daily-height
-                font-size: 16px
+                font-size: 16px // !
 
                 .daily-item
                     display: flex;
@@ -234,14 +238,14 @@ body
 
                         .icon-wrapper
                             img
-                                height: 36px
+                                height: 36px // !
                         
                         @media (max-aspect-ratio: 1/1)
                             gap: 8px
 
                             .icon-wrapper
                                 img
-                                    height: 44px
+                                    height: 44px // !
 
                     .daily-sun
                         display: none
@@ -269,7 +273,7 @@ body
                             gap: 10px
 
                             img
-                                height: 32px
+                                height: 32px // !
 
                         .daily-rain
                             @include precip-item()
@@ -282,5 +286,4 @@ body
                             
 
                         .daily-snow
-                            @include precip-item()
-                            
+                            @include precip-item()                       
