@@ -120,7 +120,7 @@ For this project to run you must complete the following:
 
 1. Rename `.sample.env` to `.env`
 
-You should now be able to properly populate an html file from the `template.html` file by running the `python jinja.py` command.
+You should now be able to properly populate an html file from the `template.html.j2` file by running the `python jinja.py` command.
 
 ## Managing the Process
 

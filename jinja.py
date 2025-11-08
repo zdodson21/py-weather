@@ -609,7 +609,7 @@ if (geocode['use_api']):
 #####################
 
 env = Environment(loader=FileSystemLoader('./'))
-template = env.get_template('template.html')
+template = env.get_template('template.html.j2')
 
 output = template.render(
     # Selected Units
