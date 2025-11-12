@@ -7,7 +7,7 @@ it is still assumed that you have at least a basic understanding of Python to be
 able to read and understand the code written here in order to configure this program
 for your personal use.**
 
-**Please see `config.py` for any configuration**
+**Please see `config.py` for configuration options!**
 
 ## Setup / Commands
 
@@ -17,10 +17,10 @@ for your personal use.**
 git pull
 ```
 
-### Install Python  Dependencies
+### Install Python Dependencies
 
 Two options exist to install dependencies. [Pip](https://docs.python.org/3/installing/index.html),
-which is included with Python, and [Pipenv](https://pipenv.pypa.io/en/latest/), which is a separate install.
+which is included with Python (and by extension Raspberry Pi OS), and [Pipenv](https://pipenv.pypa.io/en/latest/), which requires a separate installation (`sudo apt install pipenv`).
 
 - Use `pip` if you are a beginner with Python & Raspberry Pi / Linux
 - Use `pipenv` if you are a more advanced user of Python & Raspberry Pi / Linux.
@@ -28,7 +28,7 @@ which is included with Python, and [Pipenv](https://pipenv.pypa.io/en/latest/), 
 #### Using Pip
 
 ```bash
-# Set up .venv
+# Set up virtual environment
 python -m venv .venv
 ```
 
@@ -49,20 +49,18 @@ playwright install
 
 #### Using Pipenv
 
-[Pipenv Install](https://packaging.python.org/en/latest/tutorials/managing-dependencies/)
+To install `pipenv` on Raspberry Pi, run the command: `sudo apt install pipenv`
 
-Run the following commands from root project directory to setup project:
+Run the following commands from root of the project directory to setup project:
 
 ```bash
 # Ensure virtual environment is created within project root directory
-
-# You can either run this command every time you use this project or place it in your `.bashrc` / `.zshenv`
-
+# You can either run this command every time you use this project or paste it in your `.bashrc` file (located in home directory).
 export PIPENV_VENV_IN_PROJECT=1
 ```
 
 ```bash
-# Install dependencies
+# Install dependencies & set up virtual environment
 pipenv install
 ```
 
@@ -88,12 +86,12 @@ bash run.sh
 python jinja.py
 ```
 
-**Optional: The following command is not required to use this project. CSS will be updated before `git push`,
+**Optional: The following command is not required to use this project. CSS will be kept up-to-date if this program is ever updated,
 so you do not have to build it yourself. The following is provided in case I forget to provide updated CSS
 or you wish to compile the CSS file yourself.**
 
 ```bash
-# Install Sass (Node.Js Required)
+# Install Sass (Node.Js Required, use Node Version Manager (NVM))
 npm install -g sass
 
 # Compile .sass to .css
@@ -106,39 +104,37 @@ Included is a file named `.sample.env`. This file is prepopulated with all envir
 For this project to run you must complete the following:
 
 1. Obtain an API key from [OpenWeather](https://openweathermap.org/api)
-   - Note: The code for this program is written to stay well below the "1,000 API calls per day for free",
-     however I am not responsible for any charges that may occur for use of this API in conjunction with this code.
+   - Note: The code and setup instructions for this program are written to stay well below the "1,000 API calls per day for free",
+     however developers of this code are not responsible for any charges that may occur for use of this API in conjunction with this code.
      You should audit / test this code yourself to ensure you will not exceed the API call limit, especially if you modify it for your needs.
    - This project uses the following APIs:
      - [One Call](https://openweathermap.org/api/one-call-3)
-     - [Geocoding](https://openweathermap.org/api/geocoding-api) (optional)
+     - [Geocoding](https://openweathermap.org/api/geocoding-api) (optional, can be set manually from `config.py`)
      - [Air Pollution](https://openweathermap.org/api/air-pollution)
 
-1. Populate the environment variables with your API key & coordinates. You are responsible for finding the coordinates you wish to use.
+2. Populate the environment variables with your API key & coordinates. You are responsible for finding the coordinates you wish to use.
 
-1. Remove the comments from the top of `.sample.env`
+3. Remove the comments from the top of `.sample.env`
 
-1. Rename `.sample.env` to `.env`
+4. Rename `.sample.env` to `.env`
 
-You should now be able to properly populate an html file from the `template.html.j2` file by running the `python jinja.py` command.
+You should now be able to properly populate an html file (`weather.html`) from the `template.html.j2` file by running the `python jinja.py` command.
 
-## Managing the Process
+---
 
-### Starting It
+## Managing the Program
 
 You can either run the following command natively in your Raspberry Pi's terminal, or you can connect to it via ssh.
 Just ensure you run the following command from the root directory of this project while in your Python virtual environment.
 
 ```bash
-# Start the program (if this does not work, then try `source`)
-bash run.sh
+# Setup a cronjob for the run.sh script to be run every 30 minutes.
+export EDITOR=/usr/bin/nano
+crontab -e
 ```
 
-### Killing It
-
-To kill the process, run the following command:
-
 ```bash
+# Cancelling the cronjob
 
 ```
 

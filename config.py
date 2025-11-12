@@ -3,9 +3,10 @@ dev_mode = False # ! True = developer mode output | False (default) = no develop
 
 # Screen Size
 screen = {
-    # This program is developed to support resolutions between 800x480 - 1920x1080
-    'width': 1920, # ! Change this value to modify screenshot width (default: 1920)
-    'height': 1080, # ! Change this value to modify screenshot height (default: 1080)
+    # This program is developed to target an 800x480 resolution
+    # Note: You may have to modify values in styles/style.css or styles/style.sass if you modify the below values.
+    'width': 800, # ! Change this value to modify screenshot width (default: 800)
+    'height': 480, # ! Change this value to modify screenshot height (default: 480)
 }
 
 # Temperature Units
@@ -18,6 +19,14 @@ config_speed_units = speed_units[1] # ! Change this index value to change which 
 
 # Use 12 hour clock or 24 hour clock
 twelve_hour_time = True # ! True (default) = use 12 hour clock | False = use 24 hour clock
+
+# Use Geocoding API
+# Note: Technically the Geocoding API does not need to be used, but you will have to manually set your location values in the fields provided here:
+geocode = {
+  'use_api': True, # ! Switch to `False` to disable geocoding API calls, set below geocode values if set to False
+  'location_name': '', # ! Town, township, borough, etc.
+  'location_state': '', # ! State, province, etc.
+}
 
 # API Language
 supported_langs = [
@@ -72,12 +81,3 @@ supported_langs = [
     "zu",  # 48: Zulu
 ]
 language = supported_langs[14] # ! Change this index value to select your preferred language for API requests (Note: will not change any hard-coded text in the HTML)
-
-# Use Geocoding API
-# Note: Technically the Geocoding API does not need to be used, but you will have to manually set your location values in the fields provided here:
-geocode = {
-  'use_api': True, # ! KEEP AS TRUE IF YOU WISH TO CONTRIBUTE CODE TO THIS PROJECT
-  'location_name': '', # ! DO NOT FILL IF YOU WISH TO CONTRIBUTE CODE TO THIS PROJECT
-  'location_state': '', # ! DO NOT FILL IF YOU WISH TO CONTRIBUTE CODE TO THIS PROJECT
-}
-
