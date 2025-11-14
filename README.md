@@ -12,8 +12,7 @@ for your personal use.**
 ## Setup / Commands
 
 ```bash
-# Ensure you have the latest updates
-
+# Ensure you have the latest updates (if cloned from main repo)
 git pull
 ```
 
