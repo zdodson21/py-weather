@@ -1,30 +1,38 @@
-# Py-Weather
+# 🌥️ Py-Weather
 
 Beginner friendly weather dashboard designed for Raspberry Pi computers paired with an external display.
 
-**Note: While this code is documented to make changing it as simple as possible,
-it is still assumed that you have at least a basic understanding of Python to be
-able to read and understand the code written here in order to configure this program
-for your personal use.**
+## 💡 Tips before Starting
 
-**Please see `config.py` for configuration options!**
+* You should understand the following concepts before utilizing this program:
+  * Terminal based text editors (such as `nano` or `vim`).
+  * File navigation in Linux.
+  * How to read Python code and understand what it is doing.
+  * How to get an API key from [OpenWeather](https://openweathermap.org/api).
+  * Modifying CSS (SASS).
+  * Read and understand the [license](https://github.com/zdodson21/py-weather/blob/main/LICENSE) provided with this project.
 
-## Setup / Commands
+* You can modify program configuration in the `config.py` file.
+* You can calculate how frequently you can run this program while staying under the "1,000" free calls limits using the `calculate.ipynb` file. (You will need a program that can run Jupyter files).
+  * The default configuration should keep you under the 1,000 call / day limit. However, you are responsible for ensuring you will not exceed the 1,000 free call per day limit, even with the default configuration.
+    * It is good practice to double check any code you use to ensure it works how you want it to work!
+
+## 🛠️ Setup / Commands
 
 ```bash
 # Ensure you have the latest updates (if cloned from main repo)
 git pull
 ```
 
-### Install Python Dependencies
+### 🐍 Install Python Dependencies
 
 Two options exist to install dependencies. [Pip](https://docs.python.org/3/installing/index.html),
 which is included with Python (and by extension Raspberry Pi OS), and [Pipenv](https://pipenv.pypa.io/en/latest/), which requires a separate installation (`sudo apt install pipenv`).
 
-- Use `pip` if you are a beginner with Python & Raspberry Pi / Linux
-- Use `pipenv` if you are a more advanced user of Python & Raspberry Pi / Linux.
+* Use `pip` if you are a beginner with Python & Raspberry Pi / Linux
+* Use `pipenv` if you are a more advanced user of Python & Raspberry Pi / Linux.
 
-#### Using Pip
+#### 📦 Using Pip
 
 ```bash
 # Set up virtual environment
@@ -46,7 +54,7 @@ pip install requests jinja2 python-dotenv playwright ipykernel
 playwright install
 ```
 
-#### Using Pipenv
+#### 📦 Using Pipenv
 
 To install `pipenv` on Raspberry Pi, run the command: `sudo apt install pipenv`
 
@@ -73,7 +81,7 @@ pipenv shell
 playwright install
 ```
 
-#### Running the Project
+#### 🏃 Running the Project
 
 ```bash
 # Start program (must be in virtual environment)
@@ -97,19 +105,19 @@ npm install -g sass
 sass styles/style.sass styles/style.css
 ```
 
-### Environment Variables
+### ⚙️ Environment Variables
 
 Included is a file named `.sample.env`. This file is prepopulated with all environment variables set to blank values.
 For this project to run you must complete the following:
 
 1. Obtain an API key from [OpenWeather](https://openweathermap.org/api)
-   - Note: The code and setup instructions for this program are written to stay well below the "1,000 API calls per day for free",
+   * Note: The code and setup instructions for this program are written to stay well below the "1,000 API calls per day for free",
      however developers of this code are not responsible for any charges that may occur for use of this API in conjunction with this code.
      You should audit / test this code yourself to ensure you will not exceed the API call limit, especially if you modify it for your needs.
-   - This project uses the following APIs:
-     - [One Call](https://openweathermap.org/api/one-call-3)
-     - [Geocoding](https://openweathermap.org/api/geocoding-api) (optional, can be set manually from `config.py`)
-     - [Air Pollution](https://openweathermap.org/api/air-pollution)
+   * This project uses the following APIs:
+     * [One Call](https://openweathermap.org/api/one-call-3)
+     * [Geocoding](https://openweathermap.org/api/geocoding-api) (optional, can be set manually from `config.py`)
+     * [Air Pollution](https://openweathermap.org/api/air-pollution)
 
 2. Populate the environment variables with your API key & coordinates. You are responsible for finding the coordinates you wish to use.
 
@@ -121,16 +129,40 @@ You should now be able to properly populate an html file (`weather.html`) from t
 
 ---
 
-## Managing the Program
+## 🚗 Automating the Program
 
-You can either run the following command natively in your Raspberry Pi's terminal, or you can connect to it via ssh.
-Just ensure you run the following command from the root directory of this project while in your Python virtual environment.
+### 🏁 File Permissions
+
+For the automation to work properly, you must give necessary file executable permissions. Run the following script to do so.
+
+```bash
+chmod +x run.sh
+chmod +x jinja.py
+chmod +x screenshot.py
+```
+
+If you wish to revoke executable permissions for any reason:
+
+```bash
+chmod -x run.sh
+chmod -x jinja.py
+chmod -x screenshot.py
+```
+
+### 🖥️ CronJob
+
+#### 🔧 Setup
 
 ```bash
 # Setup a cronjob for the run.sh script to be run every 30 minutes.
 export EDITOR=/usr/bin/nano
 crontab -e
 ```
+
+Add the following line to crontab (you must modify the following line with your file path to the run.sh file):
+`CRONJOB HERE!!!`
+
+#### 🛑 Cancelling
 
 ```bash
 # Cancelling the cronjob
@@ -139,7 +171,7 @@ crontab -e
 
 ---
 
-## Some Weather Terms Explained
+## ⛅ Some Weather Terms Explained
 
 **Note:** These explanations are not written by a meteorologist.
 They are intended to be an introduction to each term.
@@ -200,7 +232,7 @@ Moon phases are caused by the Moon's position in Earth's orbit and how much ligh
 ![Image by NASA](https://spaceplace.nasa.gov/review/moon-phases/moon-phases.en.png)
 [You can learn more about the Moon phases on this Nasa website.](https://spaceplace.nasa.gov/moon-phases/en/)
 
-## Other Information
+## ℹ️ Other Information
 
 - [Project Repository](https://github.com/zdodson21/py-weather)
 - [License](https://github.com/zdodson21/py-weather/blob/main/LICENSE)
