@@ -183,48 +183,48 @@ Temperature is the measure of the kinetic energy of the vibrating atoms of matte
 
 #### Units of Measurement
 
-- **Kelvin**: Thermodynamic temperature measurement unit starting at the lowest possible temperature of 0 K (absolute zero).
-  - **Absolute Zero**: The lowest possible temperature in which any atoms of a substance cease to vibrate.
-- **Celsius**: Temperature system where the freezing point of water = 0&deg; and the boiling point of water = 100&deg;.
-- **Fahrenheit**: Temperature system where the freezing point of water = 32&deg; and the boiling point of water = 212&deg;.
+* **Kelvin**: Thermodynamic temperature measurement unit starting at the lowest possible temperature of 0 K (absolute zero).
+  * **Absolute Zero**: The lowest possible temperature in which any atoms of a substance cease to vibrate.
+* **Celsius**: Temperature system where the freezing point of water = 0&deg; and the boiling point of water = 100&deg;.
+* **Fahrenheit**: Temperature system where the freezing point of water = 32&deg; and the boiling point of water = 212&deg;.
 
 ### Wind
 
-- **Direction**: The direction the wind is coming from / traveling in.
-- **Speed**: Speed in which the wind is traveling.
-- **Gust**: A sudden increase in wind speed.
+* **Direction**: The direction the wind is coming from / traveling in.
+* **Speed**: Speed in which the wind is traveling.
+* **Gust**: A sudden increase in wind speed.
 
 ### Humidity
 
-- **Definition**: Concentration of water vapor present in the air, indicating the likelihood for precipitation, dew, and/or fog to be present.
-- **What does 100% humidity mean?**: 100% humidity means the air is holding the maximum amount of water it can at its current temperature.
+* **Definition**: Concentration of water vapor present in the air, indicating the likelihood for precipitation, dew, and/or fog to be present.
+* **What does 100% humidity mean?**: 100% humidity means the air is holding the maximum amount of water it can at its current temperature.
 
 ### Visibility
 
-- **Definition**: How far a healthy human eye can see factoring in meteorological obstacles such as fog, clouds, and more.
+* **Definition**: How far a healthy human eye can see factoring in meteorological obstacles such as fog, clouds, and more.
 
 ### Barometric Pressure
 
-- **Definition**: Force exerted by the body of air above an area.
-- **How is it measured?**: A mercury barometer can be used, with the height of the mercury in the barometer changing with the
+* **Definition**: Force exerted by the body of air above an area.
+* **How is it measured?**: A mercury barometer can be used, with the height of the mercury in the barometer changing with the
                            barometric pressure surrounding it. It is measured in pascal units (Pa), with 1 Pa = N/m^2 (1 newton (N) = 1 kg * m/s^2).
-- **What is `hPa`?**: hPa stands for hectopascal (1 hPa = 100 Pa)
+* **What is `hPa`?**: hPa stands for hectopascal (1 hPa = 100 Pa)
 
 ### Ultra Violet Index (UVI)
 
-- **Definition**: Measurement of the intensity of ultra-violet radiation. Higher UVI results in increased risk of sunburn.
+* **Definition**: Measurement of the intensity of ultra-violet radiation. Higher UVI results in increased risk of sunburn.
 
 ### Air Quality
 
-- **Definition**: Measurement of how polluted the air is at a given time.
+* **Definition**: Measurement of how polluted the air is at a given time.
 
 ### Dew Point
 
-- **Definition**: The temperature air has to be cools to for the relative humidity to be 100%.
+* **Definition**: The temperature air has to be cools to for the relative humidity to be 100%.
 
 ### Cloud Coverage
 
-- **Definition**: Volume of the sky covered by clouds, measured as a percentage.
+* **Definition**: Volume of the sky covered by clouds, measured as a percentage.
 
 ### Moon Phases
 
@@ -234,7 +234,7 @@ Moon phases are caused by the Moon's position in Earth's orbit and how much ligh
 
 ## ℹ️ Other Information
 
-- [Project Repository](https://github.com/zdodson21/py-weather)
-- [License](https://github.com/zdodson21/py-weather/blob/main/LICENSE)
-- [OpenWeather](https://openweathermap.org/)
-- [Project Inspiration](https://youtu.be/65sda565l9Y?si=k6-RwbBIYO7BNilD)
+* [Project Repository](https://github.com/zdodson21/py-weather)
+* [License](https://github.com/zdodson21/py-weather/blob/main/LICENSE)
+* [OpenWeather](https://openweathermap.org/)
+* [Project Inspiration](https://youtu.be/65sda565l9Y?si=k6-RwbBIYO7BNilD)
