@@ -133,7 +133,7 @@ You should now be able to properly populate an html file (`weather.html`) from t
 
 ### 🏁 File Permissions
 
-For the automation to work properly, you must give necessary file executable permissions. Run the following script to do so.
+For the automation to work properly, you must give necessary file executable permissions. Execute the following commands to do so.
 
 ```bash
 chmod +x run.sh
@@ -151,22 +151,26 @@ chmod -x screenshot.py
 
 ### 🖥️ CronJob
 
+**If prompted to select a text editor, it is recommended to select *nano* for its simplicity, but choose whichever you are comfortable with.**
+
 #### 🔧 Setup
 
 ```bash
-# Setup a cronjob for the run.sh script to be run every 30 minutes.
+# Setup a cronjob for the run.sh script to be run every 5 minutes.
 export EDITOR=/usr/bin/nano
 crontab -e
 ```
 
 Add the following line to crontab (you must modify the following line with your file path to the run.sh file):
-`CRONJOB HERE!!!`
+`*/5 * * * * bash ~/path/to/run.sh`
 
 #### 🛑 Cancelling
 
 ```bash
 # Cancelling the cronjob
-
+# Run the following commands and remove the line added in the "Setup" section.
+export EDITOR=/usr/bin/nano
+crontab -e
 ```
 
 ---
