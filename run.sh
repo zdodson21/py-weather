@@ -21,5 +21,5 @@ python jinja.py
 # Obtain Screenshot
 python screenshot.py
 
-# Display Screenshot
+# Display Screenshot (must have Eye of Mate image viewer installed (installed by default on Raspberry Pi OS))
 nohup eom -f screenshot.png &

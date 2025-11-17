@@ -8,6 +8,7 @@ Beginner friendly weather dashboard designed for Raspberry Pi computers paired w
   * Terminal based text editors (such as `nano` or `vim`).
   * File navigation in Linux.
   * How to read Python code and understand what it is doing.
+  * Understand basic *Bash* commands and Linux terminal usage.
   * How to get an API key from [OpenWeather](https://openweathermap.org/api).
   * Modifying CSS (SASS).
   * Read and understand the [license](https://github.com/zdodson21/py-weather/blob/main/LICENSE) provided with this project.
